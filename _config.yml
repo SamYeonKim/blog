@@ -93,4 +93,4 @@ exclude:
   - README
   - .jekyll-cache
 lsi: false
-incremental: true
+incremental: false

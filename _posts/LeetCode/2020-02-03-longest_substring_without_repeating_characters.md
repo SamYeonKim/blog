@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Longest Substring Without Repeating Characters
+title: Longest Substring Without Repeating Characters
 tags: [LeetCode, Java]
 categories : [LeetCode]
 ---
