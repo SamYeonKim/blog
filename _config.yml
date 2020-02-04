@@ -88,5 +88,4 @@ exclude:
   - Gemfile.lock
 
 lsi: false
-excerpt_separator: "\n\n"
-incremental: false
+incremental: true
