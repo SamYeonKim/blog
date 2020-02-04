@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Convert Recursion to Iteration | TechInno</title>
+	<meta name="description"
+		content="Definition">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/leetcode/2020/02/03/convert_recursion_to_iteration.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="TechInno"
+		href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+		integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet"
+		type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+		integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+
+	<script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+		integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+		crossorigin="anonymous"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/">
+			<img class="avatar" src="/assets/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/">TechInno</a>
+		</h1>
+		<br><h1 class="site-description">Korean Programmer</h1></br>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled  -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Search bar -->
+            
+            <li>
+            <form action="/search.html" method="get">
+                <input type="text" id="search-box" name="query" placeholder="Search" class="">
+                <button type="submit" class="">
+                    <i class="fa fa-fw fa-search"></i>
+                </button>
+            </form>
+            </li>
+            
+		</ul>
+	</nav>
+
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Convert Recursion to Iteration</h1>
+    
+    <p class="meta">
+      February 3, 2020
+      
+    </p>
+  </header>
+  <section class="post-content"><h4 id="definition">Definition</h4>
+
+<p>재귀적으로 알고리즘을 구현하는것은 좋은 접근이나, 다음과 같은 이유에 의해서 재귀적으로 구현 못 하는경우가 발생한다.</p>
+
+<ol>
+  <li>Stackoverflow의 발생  <br />
+ 재귀적인 알고리즘을 제대로 구현 하지 못했을때, Stackoverflow를 발생시킬 여지가 있다.</li>
+  <li>효율성
+재귀적인 함수 호출은 System Stack에 추가적인 메모리 할당이 요구 된다. 간혹 중복 계산의 문제가 발생할 수 있다. 예를 들어 <a href="/Leetcode/pascals_triangle.md">Pascal’s Triangle</a></li>
+  <li>복잡성
+ 재귀적인 알고리즘은 코드의 흐름을 이해하기 어렵게 만든다.</li>
+</ol>
+
+<h4 id="example">Example</h4>
+
+<p>2개의 Binary Tree가 있을때 같은지 다른지 확인 하는 코드를 <code class="language-plaintext highlighter-rouge">재귀적</code>으로, <code class="language-plaintext highlighter-rouge">반복적</code>으로 구현하면 다음과 같이 할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="nc">Recursion</span><span class="o">]</span>
+
+<span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSameTree</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">p</span><span class="o">,</span> <span class="nc">TreeNode</span> <span class="n">q</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// p and q are both null</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">q</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="c1">// one of p and q is null</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">q</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">p</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">val</span> <span class="o">!=</span> <span class="n">q</span><span class="o">.</span><span class="na">val</span><span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">return</span> <span class="nf">isSameTree</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">q</span><span class="o">.</span><span class="na">right</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+            <span class="n">isSameTree</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">q</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="nc">Iteration</span><span class="o">]</span>
+
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">check</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">p</span><span class="o">,</span> <span class="nc">TreeNode</span> <span class="n">q</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// p and q are null</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">q</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="c1">// one of p and q is null</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">q</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">p</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">val</span> <span class="o">!=</span> <span class="n">q</span><span class="o">.</span><span class="na">val</span><span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSameTree</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">p</span><span class="o">,</span> <span class="nc">TreeNode</span> <span class="n">q</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">q</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">check</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">q</span><span class="o">))</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="c1">// init deques</span>
+    <span class="nc">ArrayDeque</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">deqP</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayDeque</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;();</span>
+    <span class="nc">ArrayDeque</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">deqQ</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayDeque</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;();</span>
+    <span class="n">deqP</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">p</span><span class="o">);</span>
+    <span class="n">deqQ</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">q</span><span class="o">);</span>
+
+    <span class="k">while</span> <span class="o">(!</span><span class="n">deqP</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+      <span class="n">p</span> <span class="o">=</span> <span class="n">deqP</span><span class="o">.</span><span class="na">removeFirst</span><span class="o">();</span>
+      <span class="n">q</span> <span class="o">=</span> <span class="n">deqQ</span><span class="o">.</span><span class="na">removeFirst</span><span class="o">();</span>
+
+      <span class="k">if</span> <span class="o">(!</span><span class="n">check</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">q</span><span class="o">))</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// in Java nulls are not allowed in Deque</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">check</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">q</span><span class="o">.</span><span class="na">left</span><span class="o">))</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">deqP</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+          <span class="n">deqQ</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">q</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">check</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">q</span><span class="o">.</span><span class="na">right</span><span class="o">))</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">deqP</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+          <span class="n">deqQ</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">q</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="conclusion">Conclusion</h4>
+
+<p>재귀적인 알고리즘을 반복적인 알고리즘으로 변경할 땐 다음과 같은 흐름으로 하면 된다.</p>
+
+<ol>
+  <li>Stack이나 Queue같은 데이터 구조를 이용해서 재귀함수를 호출할 때 사용할 파라미터들을 추가해 주면된다.</li>
+  <li>미리 구성해 놓은 데이터 구조를 이용해서 반복 수행 하면 된다.</li>
+</ol>
+</section>
+  
+<footer>
+  <div class="tags">
+    
+    <a class="tag" href="/tags#LeetCode">#LeetCode</a>
+    
+    <a class="tag" href="/tags#Article">#Article</a>
+    
+  </div>
+</footer>
+
+
+</article>
+
+<!-- Disqus -->
+
+<div class="comments">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'techinno';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view comments.</noscript>
+
+</div>
+
+
+<!-- Post navigation -->
+
+  <div id="post-nav">
+  
+  <div id="previous-post" class="post-nav-post">
+      <p>Previous post</p>
+      <a href="/leetcode/2020/02/03/contains_duplicate_iii.html">
+        Contains Duplicate III
+      </a>
+  </div>
+  
+  
+  <div id="next-post" class="post-nav-post">
+      <p>Next post</p>
+      <a href="/leetcode/2020/02/03/convert_sorted_array_to_binary_search_tree.html">
+        Convert Sorted Array to Binary Search Tree
+      </a>
+  </div>
+  
+</div>
+
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+</html>

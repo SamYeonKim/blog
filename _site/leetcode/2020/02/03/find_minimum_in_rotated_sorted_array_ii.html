@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Find Minimum in Rotated Sorted Array II | TechInno</title>
+	<meta name="description"
+		content="Problem">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/leetcode/2020/02/03/find_minimum_in_rotated_sorted_array_ii.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="TechInno"
+		href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+		integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet"
+		type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+		integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+
+	<script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+		integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+		crossorigin="anonymous"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/">
+			<img class="avatar" src="/assets/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/">TechInno</a>
+		</h1>
+		<br><h1 class="site-description">Korean Programmer</h1></br>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled  -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Search bar -->
+            
+            <li>
+            <form action="/search.html" method="get">
+                <input type="text" id="search-box" name="query" placeholder="Search" class="">
+                <button type="submit" class="">
+                    <i class="fa fa-fw fa-search"></i>
+                </button>
+            </form>
+            </li>
+            
+		</ul>
+	</nav>
+
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Find Minimum in Rotated Sorted Array II</h1>
+    
+    <p class="meta">
+      February 3, 2020
+      
+    </p>
+  </header>
+  <section class="post-content"><h1 id="problem">Problem</h1>
+
+<p>Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.</p>
+
+<p>(i.e.,  [0,1,2,4,5,6,7] might become  [4,5,6,7,0,1,2]).</p>
+
+<p>Find the minimum element.</p>
+
+<p>The array may contain duplicates.</p>
+
+<h4 id="example-1">Example 1:</h4>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h4 id="example-2">Example 2:</h4>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<h4 id="note">Note:</h4>
+
+<ol>
+  <li>This is a follow up problem to <a href="/Leetcode/find_minimum_in_rotated_sorted_array.md">Find Minimum in Rotated Sorted Array</a></li>
+  <li>Would allow duplicates affect the run-time complexity? How and why?</li>
+</ol>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>중간값을 이용해서 찾자.</li>
+  <li>만약 <code class="language-plaintext highlighter-rouge">i</code>와 <code class="language-plaintext highlighter-rouge">j</code>인덱스가 다른데 값이 같다면 <code class="language-plaintext highlighter-rouge">i</code>를 증가 시키자 <code class="language-plaintext highlighter-rouge">[2,4,5,1,2]</code> 이런 케이스때문에.</li>
+  <li>오름차순이기 때문에, <code class="language-plaintext highlighter-rouge">nums[i]</code>가 <code class="language-plaintext highlighter-rouge">nums[j]</code>보다 작거나 같으면 <code class="language-plaintext highlighter-rouge">nums[i]</code>가 제일 작은 값이다.</li>
+  <li>만약 그렇지 않다면, 중간값을 이용해서 범위를 줄이자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">findMin</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+
+        <span class="k">while</span><span class="o">(</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">j</span><span class="o">){</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]==</span><span class="n">nums</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">!=</span><span class="n">j</span><span class="o">){</span>
+                <span class="n">i</span><span class="o">++;</span>
+            <span class="o">}</span>
+
+            <span class="k">if</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]&lt;=</span><span class="n">nums</span><span class="o">[</span><span class="n">j</span><span class="o">]){</span>
+                <span class="k">return</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="o">}</span>
+
+            <span class="kt">int</span> <span class="n">m</span><span class="o">=(</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">)/</span><span class="mi">2</span><span class="o">;</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">m</span><span class="o">]&gt;=</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]){</span>
+                <span class="n">i</span><span class="o">=</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">j</span><span class="o">=</span><span class="n">m</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+</section>
+  
+<footer>
+  <div class="tags">
+    
+    <a class="tag" href="/tags#LeetCode">#LeetCode</a>
+    
+    <a class="tag" href="/tags#Java">#Java</a>
+    
+  </div>
+</footer>
+
+
+</article>
+
+<!-- Disqus -->
+
+<div class="comments">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'techinno';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view comments.</noscript>
+
+</div>
+
+
+<!-- Post navigation -->
+
+  <div id="post-nav">
+  
+  <div id="previous-post" class="post-nav-post">
+      <p>Previous post</p>
+      <a href="/leetcode/2020/02/03/find_minimum_in_rotated_sorted_array.html">
+        Find Minimum in Rotated Sorted Array
+      </a>
+  </div>
+  
+  
+  <div id="next-post" class="post-nav-post">
+      <p>Next post</p>
+      <a href="/leetcode/2020/02/03/find_peak_element.html">
+        Find Peak Element
+      </a>
+  </div>
+  
+</div>
+
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>First Unique Character in s String | TechInno</title>
+	<meta name="description"
+		content="Problem">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/leetcode/2020/02/03/first_unique_char_in_string.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="TechInno"
+		href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+		integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet"
+		type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+		integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+
+	<script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+		integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+		crossorigin="anonymous"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/">
+			<img class="avatar" src="/assets/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/">TechInno</a>
+		</h1>
+		<br><h1 class="site-description">Korean Programmer</h1></br>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled  -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Search bar -->
+            
+            <li>
+            <form action="/search.html" method="get">
+                <input type="text" id="search-box" name="query" placeholder="Search" class="">
+                <button type="submit" class="">
+                    <i class="fa fa-fw fa-search"></i>
+                </button>
+            </form>
+            </li>
+            
+		</ul>
+	</nav>
+
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">First Unique Character in s String</h1>
+    
+    <p class="meta">
+      February 3, 2020
+      
+    </p>
+  </header>
+  <section class="post-content"><h1 id="problem">Problem</h1>
+
+<p>Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1.</p>
+
+<h4 id="example-1">Example 1:</h4>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">Input</span><span class="p">:</span> <span class="s">"leetcode"</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<h4 id="example-2">Example 2:</h4>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">Input</span><span class="p">:</span> <span class="s">"loveleetcode"</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<h4 id="note-">Note :</h4>
+
+<ul>
+  <li>You mau assume the string contain only lowercase letters.</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">HashMap</code>을 이용하자. <code class="language-plaintext highlighter-rouge">s</code>를 순회하면서, 문자의 발생횟수를 <code class="language-plaintext highlighter-rouge">HashMap</code>의 값으로 넣자.</li>
+  <li>이후 <code class="language-plaintext highlighter-rouge">s</code>를 순회하면서, <code class="language-plaintext highlighter-rouge">HashMap</code>의 값이 1인것이 나오면 해당 <code class="language-plaintext highlighter-rouge">index</code>가 정답이다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">firstUniqChar</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">count</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;();</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+        
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            <span class="n">count</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">c</span><span class="o">,</span> <span class="n">count</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="n">c</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">count</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">))</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+                <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<ul>
+  <li>소문자 문자 [a~z]만 포함되기 때문에, <code class="language-plaintext highlighter-rouge">s</code>에서 각 문자가 위치하고 있는 <code class="language-plaintext highlighter-rouge">가장 작은 index</code>와 <code class="language-plaintext highlighter-rouge">가장 큰 index</code>를 찾자.</li>
+  <li>만약 <code class="language-plaintext highlighter-rouge">가장 작은 index</code>가 -1이면, 해당 문자는 <code class="language-plaintext highlighter-rouge">s</code>에 없다는 뜻.</li>
+  <li>만약 <code class="language-plaintext highlighter-rouge">가장 작은 index</code>와 <code class="language-plaintext highlighter-rouge">가장 큰 index</code>가 같다면, 해당 문자는 <code class="language-plaintext highlighter-rouge">s</code>에서 하나만 있다는 뜻.</li>
+  <li>위의 조건을 만족하는 것들중 가장 작은 <code class="language-plaintext highlighter-rouge">index</code>값이 정답.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">firstUniqChar</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        
+        <span class="kt">int</span> <span class="n">min_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">=</span><span class="sc">'a'</span><span class="o">;</span> <span class="n">c</span><span class="o">&lt;=</span> <span class="sc">'z'</span><span class="o">;</span> <span class="n">c</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">first</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+            <span class="kt">int</span> <span class="n">last</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">lastIndexOf</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">first</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="n">first</span> <span class="o">!=</span> <span class="n">last</span> <span class="o">)</span> <span class="k">continue</span><span class="o">;</span>
+                
+            <span class="n">min_index</span> <span class="o">=</span> <span class="n">min_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="n">min_index</span> <span class="o">&gt;</span> <span class="n">first</span> <span class="o">?</span> <span class="n">first</span> <span class="o">:</span> <span class="n">min_index</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">min_index</span><span class="o">;</span>        
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+</section>
+  
+<footer>
+  <div class="tags">
+    
+    <a class="tag" href="/tags#LeetCode">#LeetCode</a>
+    
+    <a class="tag" href="/tags#Java">#Java</a>
+    
+  </div>
+</footer>
+
+
+</article>
+
+<!-- Disqus -->
+
+<div class="comments">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'techinno';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view comments.</noscript>
+
+</div>
+
+
+<!-- Post navigation -->
+
+  <div id="post-nav">
+  
+  <div id="previous-post" class="post-nav-post">
+      <p>Previous post</p>
+      <a href="/leetcode/2020/02/03/first_bad_version.html">
+        First Bad Version
+      </a>
+  </div>
+  
+  
+  <div id="next-post" class="post-nav-post">
+      <p>Next post</p>
+      <a href="/leetcode/2020/02/03/generate_parenthesis.html">
+        Generate Parenthesis
+      </a>
+  </div>
+  
+</div>
+
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+</html>

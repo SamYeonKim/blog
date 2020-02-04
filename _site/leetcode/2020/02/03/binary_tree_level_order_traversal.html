@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Binary Tree Level Order Traversal | TechInno</title>
+	<meta name="description"
+		content="Problem">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/leetcode/2020/02/03/binary_tree_level_order_traversal.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="TechInno"
+		href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+		integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet"
+		type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+		integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+
+	<script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+		integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+		crossorigin="anonymous"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/">
+			<img class="avatar" src="/assets/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/">TechInno</a>
+		</h1>
+		<br><h1 class="site-description">Korean Programmer</h1></br>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled  -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Search bar -->
+            
+            <li>
+            <form action="/search.html" method="get">
+                <input type="text" id="search-box" name="query" placeholder="Search" class="">
+                <button type="submit" class="">
+                    <i class="fa fa-fw fa-search"></i>
+                </button>
+            </form>
+            </li>
+            
+		</ul>
+	</nav>
+
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Binary Tree Level Order Traversal</h1>
+    
+    <p class="meta">
+      February 3, 2020
+      
+    </p>
+  </header>
+  <section class="post-content"><h1 id="problem">Problem</h1>
+
+<p>Given a binary tree, return the level order traversal of its nodes’ values. (ie, from left to right, level by level).</p>
+
+<h4 id="example-">Example :</h4>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+    <span class="mi">3</span>
+   <span class="o">/</span> <span class="p">\</span>
+  <span class="mi">9</span>  <span class="mi">20</span>
+    <span class="o">/</span>  <span class="p">\</span>
+   <span class="mi">15</span>   <span class="mi">7</span>
+<span class="kt">Output</span><span class="p">:</span>
+<span class="p">[</span>
+  <span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">15</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<h1 id="my-answer--recursive-">My Answer ( Recursive )</h1>
+
+<ul>
+  <li>재귀로 해결</li>
+  <li><code class="language-plaintext highlighter-rouge">solver</code> 함수로 현재 <code class="language-plaintext highlighter-rouge">Level</code>과 <code class="language-plaintext highlighter-rouge">Level</code>별 값을 저장할 최종 리스트를 같이 넘겨서 <code class="language-plaintext highlighter-rouge">Level</code> 값을 기준으로 넣어야할 리스트를 찾아서 현재 <code class="language-plaintext highlighter-rouge">Node</code>의 값을 넣어 준다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">levelOrder</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;();</span>
+        
+        <span class="n">solver</span><span class="o">(</span><span class="n">result</span><span class="o">,</span> <span class="n">root</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">void</span> <span class="nf">solver</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">ans</span><span class="o">,</span> <span class="nc">TreeNode</span> <span class="n">root</span><span class="o">,</span> <span class="kt">int</span> <span class="n">level</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+            <span class="k">return</span><span class="o">;</span>
+        
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">l_level</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">ans</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="n">level</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">l_level</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;();</span>
+            <span class="n">ans</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">l_level</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">l_level</span> <span class="o">=</span> <span class="n">ans</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">level</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="n">l_level</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">solver</span><span class="o">(</span><span class="n">ans</span><span class="o">,</span> <span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">solver</span><span class="o">(</span><span class="n">ans</span><span class="o">,</span> <span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="my-answer--iteration_1-">My Answer ( Iteration_1 )</h1>
+
+<ul>
+  <li>반복문을 이용해서 해결</li>
+  <li>다음 <code class="language-plaintext highlighter-rouge">Level</code>의 <code class="language-plaintext highlighter-rouge">node</code>들을 <code class="language-plaintext highlighter-rouge">next_nodes</code>에 저장하고, <code class="language-plaintext highlighter-rouge">while</code>문에서는 <code class="language-plaintext highlighter-rouge">next_nodes</code>를 순회 돌면서, <code class="language-plaintext highlighter-rouge">node</code>들의 값을 결과 리스트에 추가 한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">node</code>의 <code class="language-plaintext highlighter-rouge">left</code>와 <code class="language-plaintext highlighter-rouge">right</code>가 <code class="language-plaintext highlighter-rouge">null</code>이 아니라면 다음 순회를 위해서 <code class="language-plaintext highlighter-rouge">next_nodes</code> 리스트에 추가 하기 위해, <code class="language-plaintext highlighter-rouge">temp_nodes</code> 리스트에 추가 한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">next_nodes</code> 순회가 끝나면, <code class="language-plaintext highlighter-rouge">next_nodes</code>를 비우고 <code class="language-plaintext highlighter-rouge">temp_nodes</code>의 내용을 <code class="language-plaintext highlighter-rouge">next_nodes</code>에 채운 후, <code class="language-plaintext highlighter-rouge">temp_nodes</code>도 비운다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">levelOrder</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;();</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">next_nodes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;();</span>      <span class="c1">//다음 Level의 Node들을 담고 있는 리스트</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">temp_nodes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;();</span>      <span class="c1">//result 리스트에 Node의 값을 넣은 이후 다음 Level의 Node들을 담을 임시 리스트</span>
+        <span class="n">next_nodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">root</span><span class="o">);</span>
+        
+        <span class="k">while</span> <span class="o">(</span><span class="n">next_nodes</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>        <span class="c1">//next_nodes의 원소 갯수가 0개 라는것은 다음 Level에 해당하는 Node가 없다는 의미</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">sub_result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;();</span>
+            
+            <span class="k">for</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">node</span> <span class="o">:</span> <span class="n">next_nodes</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">sub_result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+                
+                <span class="k">if</span> <span class="o">(</span> <span class="n">node</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span>
+                    <span class="n">temp_nodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">node</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span>
+                    <span class="n">temp_nodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">next_nodes</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+            
+            <span class="k">for</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">node</span> <span class="o">:</span> <span class="n">temp_nodes</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">next_nodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">temp_nodes</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+            
+            <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sub_result</span><span class="o">);</span>
+        <span class="o">}</span>        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="my-answer--iteration_2-">My Answer ( Iteration_2 )</h1>
+
+<ul>
+  <li>반복문을 이용해서 해결</li>
+  <li>위의 <a href="#my-answer--iteration1">My Answer ( Iteration_1 )</a>는 2개의 <code class="language-plaintext highlighter-rouge">List&lt;TreeNode&gt;</code>를 사용했던것을 하나의 <code class="language-plaintext highlighter-rouge">Queue&lt;TreeNode&gt;</code>쓰는 방식으로 변경</li>
+  <li><code class="language-plaintext highlighter-rouge">while</code>문 반복시 마다 현재 <code class="language-plaintext highlighter-rouge">Queue</code>에 있는 갯수 만큼 순회 하면서 결과 리스트에 넣고, 자식 노드를 넣어 준다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">levelOrder</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;();</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="nc">Queue</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">q</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;();</span>
+        
+        <span class="n">q</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">root</span><span class="o">);</span>
+        
+        <span class="k">while</span> <span class="o">(</span><span class="n">q</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>            
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">sub_result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;();</span>
+            
+            <span class="kt">int</span> <span class="n">n_size</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+            <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">n_size</span><span class="o">;</span> <span class="n">n</span><span class="o">++</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="nc">TreeNode</span> <span class="n">node</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+                <span class="n">sub_result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+                
+                <span class="k">if</span> <span class="o">(</span> <span class="n">node</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span>
+                    <span class="n">q</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">node</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span>
+                    <span class="n">q</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+            <span class="o">}</span>
+            
+            <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sub_result</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+</section>
+  
+<footer>
+  <div class="tags">
+    
+    <a class="tag" href="/tags#LeetCode">#LeetCode</a>
+    
+    <a class="tag" href="/tags#Java">#Java</a>
+    
+  </div>
+</footer>
+
+
+</article>
+
+<!-- Disqus -->
+
+<div class="comments">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'techinno';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view comments.</noscript>
+
+</div>
+
+
+<!-- Post navigation -->
+
+  <div id="post-nav">
+  
+  <div id="previous-post" class="post-nav-post">
+      <p>Previous post</p>
+      <a href="/leetcode/2020/02/03/binary_tree_inorder_traversal.html">
+        Binary Tree Inorder Traversal
+      </a>
+  </div>
+  
+  
+  <div id="next-post" class="post-nav-post">
+      <p>Next post</p>
+      <a href="/leetcode/2020/02/03/binary_tree_postorder_traversal.html">
+        Binary Tree Postorder Traversal
+      </a>
+  </div>
+  
+</div>
+
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+</html>

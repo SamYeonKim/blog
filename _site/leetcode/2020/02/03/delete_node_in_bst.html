@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Delete Node in a BST | TechInno</title>
+	<meta name="description"
+		content="Problem">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/leetcode/2020/02/03/delete_node_in_bst.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="TechInno"
+		href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+		integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet"
+		type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+		integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+
+	<script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+		integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+		crossorigin="anonymous"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/">
+			<img class="avatar" src="/assets/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/">TechInno</a>
+		</h1>
+		<br><h1 class="site-description">Korean Programmer</h1></br>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled  -->
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Search bar -->
+            
+            <li>
+            <form action="/search.html" method="get">
+                <input type="text" id="search-box" name="query" placeholder="Search" class="">
+                <button type="submit" class="">
+                    <i class="fa fa-fw fa-search"></i>
+                </button>
+            </form>
+            </li>
+            
+		</ul>
+	</nav>
+
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Delete Node in a BST</h1>
+    
+    <p class="meta">
+      February 3, 2020
+      
+    </p>
+  </header>
+  <section class="post-content"><h1 id="problem">Problem</h1>
+
+<p>Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.</p>
+
+<p>Basically, the deletion can be divided into two stages:</p>
+
+<p>Search for a node to remove.
+If the node is found, delete the node.</p>
+
+<h4 id="example-">Example :</h4>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">Input</span><span class="p">:</span> 
+<span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="n">key</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="mi">5</span>
+   <span class="o">/</span> <span class="p">\</span>
+  <span class="mi">3</span>   <span class="mi">6</span>
+ <span class="o">/</span> <span class="p">\</span>   <span class="p">\</span>
+<span class="mi">2</span>   <span class="mi">4</span>   <span class="mi">7</span>
+
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+    <span class="mi">5</span>
+   <span class="o">/</span> <span class="p">\</span>
+  <span class="mi">4</span>   <span class="mi">6</span>
+ <span class="o">/</span>     <span class="p">\</span>
+<span class="mi">2</span>       <span class="mi">7</span>
+
+
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">Given</span> <span class="n">key</span> <span class="n">to</span> <span class="n">delete</span> <span class="k">is</span> <span class="mi">3</span><span class="o">.</span> <span class="kt">So</span> <span class="n">we</span> <span class="n">find</span> <span class="n">the</span> <span class="n">node</span> <span class="n">with</span> <span class="n">value</span> <span class="mi">3</span> <span class="n">and</span> <span class="n">delete</span> <span class="n">it</span><span class="o">.</span>
+</code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">key</code>에 해당하는 <code class="language-plaintext highlighter-rouge">target</code>노드를 찾는다.</li>
+  <li>만약 <code class="language-plaintext highlighter-rouge">target</code> 노드의 자식이 없는 경우, <code class="language-plaintext highlighter-rouge">target</code>노드가 이전 노드의 왼쪽이면 <code class="language-plaintext highlighter-rouge">prev.left</code>를 오른쪽이면 <code class="language-plaintext highlighter-rouge">prev.right</code>를 <code class="language-plaintext highlighter-rouge">null</code>로 한다.</li>
+  <li>만약 <code class="language-plaintext highlighter-rouge">target</code> 노드의 자식이 하나만 있는 경우, <code class="language-plaintext highlighter-rouge">target</code>노드의 <code class="language-plaintext highlighter-rouge">left</code>가 있다면 <code class="language-plaintext highlighter-rouge">prev.left = target.left</code>, <code class="language-plaintext highlighter-rouge">right</code>가 있다면 <code class="language-plaintext highlighter-rouge">prev.right = target.right</code></li>
+  <li>만약 <code class="language-plaintext highlighter-rouge">target</code> 노드의 자식이 둘 다 있는 경우, <code class="language-plaintext highlighter-rouge">target</code>노드의 자식 중 적절한 노드를 찾는다. <code class="language-plaintext highlighter-rouge">target.right</code>부터해서 <code class="language-plaintext highlighter-rouge">left</code>가 <code class="language-plaintext highlighter-rouge">null</code>이 아닐때 까지 찾는다.
+    <blockquote>
+      <p><code class="language-plaintext highlighter-rouge">BST</code>에서 <code class="language-plaintext highlighter-rouge">root</code>를 대체 하기 가장 좋은 노드는 오른쪽의 가장 왼쪽 즉 오른쪽 노드들 중 가장 작은 것이다.</p>
+    </blockquote>
+    <ul>
+      <li>적절한 자식노드를 찾았다면, 해당 노드의 <code class="language-plaintext highlighter-rouge">right</code>가 <code class="language-plaintext highlighter-rouge">null</code>이 아니라면 이전 노드의 <code class="language-plaintext highlighter-rouge">left</code>에 할당하고, 그렇지 않다면 이전 노드의 <code class="language-plaintext highlighter-rouge">left</code>에 <code class="language-plaintext highlighter-rouge">null</code>을 할당한다.
+        <blockquote>
+          <p>위 작업에 의해 적절한 자식노드가 없어져서 빈공간이 발생하는 것을 해결한다.</p>
+        </blockquote>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">target</code>노드의 값을 찾은 적절한 자식노드의 값으로 변경해 준다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">TreeNode</span> <span class="nf">deleteNode</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">,</span> <span class="kt">int</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">TreeNode</span> <span class="n">prev</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">TreeNode</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>        
+        <span class="kt">boolean</span> <span class="n">is_left</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span> <span class="n">curr</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">val</span> <span class="o">==</span> <span class="n">key</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>        <span class="c1">//자식이 아무것도 없는 경우</span>
+                    <span class="k">if</span> <span class="o">(</span> <span class="n">prev</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                        <span class="n">root</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>                        
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="k">if</span> <span class="o">(</span> <span class="n">is_left</span> <span class="o">)</span> <span class="n">prev</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                        <span class="k">else</span> <span class="n">prev</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span> <span class="c1">//자식이 둘다 있는 경우</span>
+                    <span class="nc">TreeNode</span> <span class="n">properChild</span> <span class="o">=</span> <span class="n">searchChild</span><span class="o">(</span><span class="n">curr</span><span class="o">);</span>
+                    
+                    <span class="k">if</span><span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span><span class="o">.</span><span class="na">val</span> <span class="o">==</span> <span class="n">properChild</span><span class="o">.</span><span class="na">val</span> <span class="o">)</span> <span class="o">{</span>
+                        <span class="n">curr</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">properChild</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+                    <span class="o">}</span>
+                    
+                    <span class="n">curr</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">properChild</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>    <span class="c1">//자식이 둘중 하나만 있는 경우</span>
+                    <span class="k">if</span> <span class="o">(</span> <span class="n">prev</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                        <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                            <span class="n">root</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+                        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                            <span class="n">root</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+                        <span class="o">}</span>                            
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="k">if</span> <span class="o">(</span> <span class="n">is_left</span> <span class="o">)</span> <span class="o">{</span>
+                            <span class="n">prev</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">:</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>                     
+                        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                            <span class="n">prev</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">:</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>                     
+                        <span class="o">}</span>
+                        
+                    <span class="o">}</span>                    
+                <span class="o">}</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">is_left</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">val</span> <span class="o">&gt;</span> <span class="n">key</span><span class="o">;</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span><span class="o">;</span>
+                <span class="n">curr</span> <span class="o">=</span> <span class="n">is_left</span> <span class="o">?</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">:</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>    
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>        
+    <span class="o">}</span>
+    
+    <span class="nc">TreeNode</span> <span class="nf">searchChild</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">TreeNode</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>
+        <span class="nc">TreeNode</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span><span class="o">;</span>
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> 
+                    <span class="n">prev</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>  
+                <span class="k">else</span> 
+                    <span class="n">prev</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> 
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">curr</span><span class="o">;</span>        
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<ul>
+  <li>재귀를 이용</li>
+  <li>순회 보다 훨씬 깔끔하다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">TreeNode</span> <span class="nf">deleteNode</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">,</span> <span class="kt">int</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">root</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">val</span> <span class="o">==</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// only one children</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="c1">// two children</span>
+            <span class="nc">TreeNode</span> <span class="n">suc</span> <span class="o">=</span> <span class="n">inorderSuc</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+            <span class="n">root</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">suc</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+            <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">deleteNode</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">root</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">val</span> <span class="o">&gt;</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">deleteNode</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">key</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">deleteNode</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">key</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="nc">TreeNode</span> <span class="nf">inorderSuc</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+</section>
+  
+<footer>
+  <div class="tags">
+    
+    <a class="tag" href="/tags#LeetCode">#LeetCode</a>
+    
+    <a class="tag" href="/tags#Java">#Java</a>
+    
+  </div>
+</footer>
+
+
+</article>
+
+<!-- Disqus -->
+
+<div class="comments">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'techinno';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view comments.</noscript>
+
+</div>
+
+
+<!-- Post navigation -->
+
+  <div id="post-nav">
+  
+  <div id="previous-post" class="post-nav-post">
+      <p>Previous post</p>
+      <a href="/leetcode/2020/02/03/convert_sorted_array_to_binary_search_tree.html">
+        Convert Sorted Array to Binary Search Tree
+      </a>
+  </div>
+  
+  
+  <div id="next-post" class="post-nav-post">
+      <p>Next post</p>
+      <a href="/leetcode/2020/02/03/design_hashmap.html">
+        Design HashMap
+      </a>
+  </div>
+  
+</div>
+
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+</html>
