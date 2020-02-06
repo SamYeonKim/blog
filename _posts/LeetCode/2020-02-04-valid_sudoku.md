@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Valid Sudoku
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,7 +14,7 @@ Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be valid
 2. Each column must contain the digits `1-9` without repetition.
 3. Each of the 9 `3x3` sub-boxes of the grid must contain the digits `1-9` without repetition.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input:
@@ -31,7 +32,7 @@ Input:
 Output: true
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input:
@@ -51,7 +52,7 @@ Explanation: Same as Example 1, except with the 5 in the top left corner being
     modified to 8. Since there are two 8's in the top left 3x3 sub-box, it is invalid.
 ```
 
-#### Note :
+## Note
 
 * A Sudoku board(partially filled) could be valid but is not necessarily solvable.
 * Only the filled cells need to be validated according to the mentioned rules.

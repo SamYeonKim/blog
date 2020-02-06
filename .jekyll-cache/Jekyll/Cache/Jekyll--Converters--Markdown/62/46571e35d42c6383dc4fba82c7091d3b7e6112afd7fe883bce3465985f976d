@@ -1,0 +1,104 @@
+I"�<h1 id="problem">Problem</h1>
+
+<p>Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.</p>
+
+<p>(i.e.,  [0,1,2,4,5,6,7] might become  [4,5,6,7,0,1,2]).</p>
+
+<p>Find the minimum element.</p>
+
+<p>You may assume no duplicate exists in the array.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> 
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">0</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>중간값을 이용해서 찾자.</li>
+  <li><code class="highlighter-rouge">l</code>과 <code class="highlighter-rouge">r</code>을 이용해서 <code class="highlighter-rouge">중간 index(mid)</code>를 찾고 <code class="highlighter-rouge">min</code>과 <code class="highlighter-rouge">nums[mid]</code> 중 작은값을 <code class="highlighter-rouge">min</code>에 할당하자.</li>
+  <li>회전되어 있는 상황인지 확인 하기 위해서, 다음과 같은 조건검사를 한다.
+  ```java
+    <ol>
+      <li>nums[l] &lt; nums[mid] &amp;&amp; nums[r] &gt; nums[mid] =&gt; l -&gt; mid -&gt; r =&gt; 최소 값이 mid 보다 앞에 있다.</li>
+      <li>nums[l] &lt; nums[mid] &amp;&amp; nums[r] &lt; nums[mid] =&gt; l -&gt; mid &lt;- l =&gt; 최소 값이 mid 보다 뒤에 있다.</li>
+      <li>nums[l] &gt; nums[mid] &amp;&amp; nums[r] &gt; nums[mid] =&gt; l &lt;- mid -&gt; r =&gt; 최소 값이 mid 보다 앞에 있다.</li>
+      <li>nums[l] &gt; nums[mid] &amp;&amp; nums[r] &lt; nums[mid] =&gt; l &lt;- mid &lt;- l =&gt; 최소 값이 mid 보다 뒤에 있다.
+  ```</li>
+    </ol>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">findMin</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">r</span><span class="o">=</span><span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="n">r</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="o">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="o">)/</span><span class="mi">2</span><span class="o">;</span>
+            
+            <span class="n">min</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">],</span> <span class="n">min</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">nums</span><span class="o">[</span><span class="n">l</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">])</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">nums</span><span class="o">[</span><span class="n">r</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">])</span> <span class="o">{</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">nums</span><span class="o">[</span><span class="n">r</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">])</span> <span class="o">{</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>                                        
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>                    
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">min</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

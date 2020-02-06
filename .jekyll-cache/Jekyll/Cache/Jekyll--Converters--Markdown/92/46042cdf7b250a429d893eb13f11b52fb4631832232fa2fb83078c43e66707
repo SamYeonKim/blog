@@ -1,0 +1,187 @@
+I"-4<h1 id="problem">Problem</h1>
+
+<p>Write a program to solve a Sudoku puzzle by filling the empty cells.</p>
+
+<p>A sudoku solution must satisfy all of the following rules:</p>
+
+<p>Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+Empty cells are indicated by the character ‘.’.</p>
+
+<h3 id="note">Note:</h3>
+
+<ul>
+  <li>The given board contain only digits 1-9 and the character ‘.’.</li>
+  <li>You may assume that the given Sudoku puzzle will have a single unique solution.</li>
+  <li>The given board size is always 9x9.</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">BackTracking</code>을 이용해서 해결</li>
+  <li>넣을 수 있는 문자 <code class="highlighter-rouge">1~9</code>를 배열로 미리 선언해 놓는다.</li>
+  <li><code class="highlighter-rouge">solver</code>를 재귀로 호출, <code class="highlighter-rouge">solver</code>를 재귀로 호출 한 이후 결과값이 <code class="highlighter-rouge">false</code>이면 이번에 넣었던 숫자는 맞지 않는다는 의미이기 때문에 <code class="highlighter-rouge">.</code>으로 설정한다.</li>
+  <li><code class="highlighter-rouge">isValid</code> 함수에서 현재 넣으려는 Row, Column 그리고 숫자를 이용해서 스도쿠의 규칙에 위배 되지 않는지를 검증한다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kt">char</span><span class="o">[]</span> <span class="n">candidate</span> <span class="o">=</span> <span class="o">{</span><span class="sc">'1'</span><span class="o">,</span><span class="sc">'2'</span><span class="o">,</span><span class="sc">'3'</span><span class="o">,</span><span class="sc">'4'</span><span class="o">,</span><span class="sc">'5'</span><span class="o">,</span><span class="sc">'6'</span><span class="o">,</span><span class="sc">'7'</span><span class="o">,</span><span class="sc">'8'</span><span class="o">,</span><span class="sc">'9'</span><span class="o">};</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">solveSudoku</span><span class="o">(</span><span class="kt">char</span><span class="o">[][]</span> <span class="n">board</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">solver</span><span class="o">(</span><span class="n">board</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="kt">boolean</span> <span class="nf">solver</span><span class="o">(</span><span class="kt">char</span><span class="o">[][]</span> <span class="n">board</span><span class="o">){</span>           
+        <span class="kt">boolean</span> <span class="n">is_empty</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">next_row</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">next_col</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="o">;</span> <span class="n">row</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="o">;</span> <span class="n">col</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">board</span><span class="o">[</span><span class="n">row</span><span class="o">][</span><span class="n">col</span><span class="o">]</span> <span class="o">==</span> <span class="sc">'.'</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">is_empty</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                    <span class="n">next_row</span> <span class="o">=</span> <span class="n">row</span><span class="o">;</span>
+                    <span class="n">next_col</span> <span class="o">=</span> <span class="n">col</span><span class="o">;</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>                    
+            <span class="o">}</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">is_empty</span> <span class="o">)</span>
+                <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="n">is_empty</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">number</span> <span class="o">:</span> <span class="n">candidate</span> <span class="o">)</span> <span class="o">{</span>    
+            <span class="k">if</span> <span class="o">(</span> <span class="n">isValid</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">next_row</span><span class="o">,</span> <span class="n">next_col</span><span class="o">,</span> <span class="n">number</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">board</span><span class="o">[</span><span class="n">next_row</span><span class="o">][</span><span class="n">next_col</span><span class="o">]</span> <span class="o">=</span> <span class="n">number</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">solver</span><span class="o">(</span><span class="n">board</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">board</span><span class="o">[</span><span class="n">next_row</span><span class="o">][</span><span class="n">next_col</span><span class="o">]</span> <span class="o">=</span> <span class="sc">'.'</span><span class="o">;</span>    <span class="c1">//재귀 호출 이후 결과값이 false가 나왔다는 것은 다른 숫자를 넣어야 한다는것이니 빈값으로 설정</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">boolean</span> <span class="nf">isValid</span><span class="o">(</span><span class="kt">char</span><span class="o">[][]</span> <span class="n">board</span><span class="o">,</span> <span class="kt">int</span> <span class="n">cur_row</span><span class="o">,</span> <span class="kt">int</span> <span class="n">cur_col</span><span class="o">,</span> <span class="kt">char</span> <span class="n">number</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="o">;</span> <span class="n">col</span><span class="o">++)</span> <span class="o">{</span>      <span class="c1">//현재 Row에 number와 중복된 숫자가 있는지 확인</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">board</span><span class="o">[</span><span class="n">cur_row</span><span class="o">][</span><span class="n">col</span><span class="o">]</span> <span class="o">==</span> <span class="n">number</span> <span class="o">)</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="o">;</span> <span class="n">row</span><span class="o">++)</span> <span class="o">{</span>      <span class="c1">//현재 Column에 number와 중복된 숫자가 있는지 확인</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">board</span><span class="o">[</span><span class="n">row</span><span class="o">][</span><span class="n">cur_col</span><span class="o">]</span> <span class="o">==</span> <span class="n">number</span> <span class="o">)</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="kt">int</span> <span class="n">start_row</span> <span class="o">=</span> <span class="n">getStartIndex</span><span class="o">(</span><span class="n">cur_row</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">start_col</span> <span class="o">=</span> <span class="n">getStartIndex</span><span class="o">(</span><span class="n">cur_col</span><span class="o">);</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">start_row</span><span class="o">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">start_row</span> <span class="o">+</span><span class="mi">3</span><span class="o">;</span> <span class="n">row</span><span class="o">++)</span> <span class="o">{</span>       <span class="c1">//현재 Row와 Column이 속해 있는 3x3 영역에 중복된 숫자가 있는지 확인</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="n">start_col</span><span class="o">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">start_col</span> <span class="o">+</span><span class="mi">3</span><span class="o">;</span> <span class="n">col</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">board</span><span class="o">[</span><span class="n">row</span><span class="o">][</span><span class="n">col</span><span class="o">]</span> <span class="o">==</span> <span class="n">number</span> <span class="o">)</span>
+                    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">int</span> <span class="nf">getStartIndex</span><span class="o">(</span><span class="kt">int</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">target</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span> <span class="n">target</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="mi">3</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="mi">6</span><span class="o">;</span>
+        <span class="o">}</span>            
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

@@ -1,0 +1,352 @@
+I"*�<h1 id="problem">Problem</h1>
+
+<p>A city’s skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. Now suppose you are given the locations and height of all the buildings as shown on a cityscape photo (Figure A), write a program to output the skyline formed by these buildings collectively (Figure B).</p>
+
+<p><img src="/assets/img/leetcode/skyline_a.png" alt="" /> <img src="/assets/img/leetcode/skyline_b.png" alt="" /></p>
+
+<p>Buildings Skyline Contour
+The geometric information of each building is represented by a triplet of integers <code class="highlighter-rouge">[Li, Ri, Hi]</code>, where <code class="highlighter-rouge">Li</code> and <code class="highlighter-rouge">Ri</code> are the x coordinates of the left and right edge of the ith building, respectively, and <code class="highlighter-rouge">Hi</code> is its height. It is guaranteed that <code class="highlighter-rouge">0 ≤ Li, Ri ≤ INT_MAX</code>, <code class="highlighter-rouge">0 &lt; Hi ≤ INT_MAX</code>, and <code class="highlighter-rouge">Ri - Li &gt; 0</code>. You may assume all buildings are perfect rectangles grounded on an absolutely flat surface at height 0.</p>
+
+<p>For instance, the dimensions of all buildings in Figure A are recorded as: <code class="highlighter-rouge">[ [2 9 10], [3 7 15], [5 12 12], [15 20 10], [19 24 8] ]</code> .</p>
+
+<p>The output is a list of “key points” (red dots in Figure B) in the format of <code class="highlighter-rouge">[ [x1,y1], [x2, y2], [x3, y3], ... ]</code> that uniquely defines a skyline. A key point is the left endpoint of a horizontal line segment. Note that the last key point, where the rightmost building ends, is merely used to mark the termination of the skyline, and always has zero height. Also, the ground in between any two adjacent buildings should be considered part of the skyline contour.</p>
+
+<p>For instance, the skyline in Figure B should be represented as:<code class="highlighter-rouge">[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8], [24, 0] ]</code>.</p>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>The number of buildings in any input list is guaranteed to be in the range <code class="highlighter-rouge">[0, 10000]</code></li>
+  <li>The input list is already sorted in ascending order by the left x position <code class="highlighter-rouge">Li</code></li>
+  <li>The output list must be sorted by the x position</li>
+  <li>There must be no consecutive horizontal lines of equal height in the output skyline. For instance, <code class="highlighter-rouge">[...[2 3], [4 5], [7 5], [11 5], [12 7]...]</code> is not acceptable; the three lines of height 5 should be merged into one in the final output as such: <code class="highlighter-rouge">[...[2 3], [4 5], [12 7], ...]</code></li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>알고리즘은 다음과 같다.
+    <ol>
+      <li>x좌표대로 진행 하면서, 높이 차가 발생할때 마다 결과 리스트에 넣으면 된다.</li>
+      <li>예제 처럼 <code class="highlighter-rouge">[2 9 10]</code> 일때 2개의 좌표가 나온다. <code class="highlighter-rouge">[[2 10], [9 10]]</code> 앞의 좌표는 빌딩의 시작 좌표이고, 뒤의 좌표는 빌딩의 끝 좌표 이다.</li>
+      <li>
+        <p><code class="highlighter-rouge">[3 7 15]</code>까지 추가 되면 <code class="highlighter-rouge">[[2 10], [9 10], [3 15], [7 15]]</code>가 된다. 이걸 그림으로 표현 하면 다음과 같다.</p>
+
+        <p><img src="/assets/img/leetcode/skyline_ex_1.png" alt="" /></p>
+        <blockquote>
+          <p>빨간 점은 결과 리스트에 들어가야한 좌표들 <code class="highlighter-rouge">[[2 10], [3 15], [7 10], [9 0]]</code></p>
+        </blockquote>
+      </li>
+      <li>위 그림에서 보듯이 결과 리스트에 들어가야하는 것들은 높이 차가 발생할때 라는것을 알 수 있다.</li>
+      <li>높이 차가 발생했다 라는것을 알기 위해서, 기존의 최대 높이 <code class="highlighter-rouge">prev_max_h</code> 와 현재 좌표 입장에서의 최대 높이 <code class="highlighter-rouge">curr_max_h</code>, 그리고 지금까지 거쳐왔던 높이들을 저장할 데이터 스트럭쳐 <code class="highlighter-rouge">queue_h</code>가 필요 하다.</li>
+      <li>처음 <code class="highlighter-rouge">prev_max_h</code>를 0으로 해서 좌표를 순회 하면서, 좌표가 빌딩의 시작 좌표인 경우엔 <code class="highlighter-rouge">queue_h</code>에 현재 높이 를 넣고, <code class="highlighter-rouge">curr_max_h</code>에는 <code class="highlighter-rouge">queue_h</code>에 있는 높이들중 가장 큰 값을 할당한다.</li>
+      <li>만약 <code class="highlighter-rouge">prev_max_h</code>와 <code class="highlighter-rouge">curr_max_h</code>가 다르다면, 높이차가 발생한 것이니 결과 리스트에 추가 하면 되는데, <code class="highlighter-rouge">[현재 x, curr_max_h]</code> 형태로 추가하고, 6~7번을 반복한다.</li>
+      <li><code class="highlighter-rouge">[[2 10], [9 10], [3 15], [7 15]]</code>의 경우 다음과 같은 흐름이 된다.
+        <ol>
+          <li>현재 좌표 = <code class="highlighter-rouge">[2 10]</code>, <code class="highlighter-rouge">prev_max_h</code> = 0, <code class="highlighter-rouge">queue_h</code> = [0, 10], <code class="highlighter-rouge">curr_max_h</code> = 10</li>
+          <li><code class="highlighter-rouge">prev_max_h</code>와 <code class="highlighter-rouge">curr_max_h</code>가 다르기 때문에, 결과 리스트에 <code class="highlighter-rouge">[현재 x, curr_max_h] = [2 10]</code> 추가</li>
+          <li><code class="highlighter-rouge">prev_max_h</code>에 <code class="highlighter-rouge">curr_max_h</code> 할당. <code class="highlighter-rouge">prev_max_h</code> = 10</li>
+          <li>다음 좌표로 반복 수행</li>
+        </ol>
+      </li>
+      <li>6번 내용을 수행하기 이전에 정렬을 해줘야 한다. x좌표에 따라 순차 대로 진행 해야 하기 때문에, <code class="highlighter-rouge">[[2 10],[3 15],[7 15],[9 10]]</code>로 6번을 시작 해야 한다.</li>
+    </ol>
+  </li>
+  <li>각 x좌표에 따른 높이 값을 저장하는 구조체 <code class="highlighter-rouge">Point</code>를 만들자.</li>
+  <li>x좌표 별로 <code class="highlighter-rouge">building</code>의 <code class="highlighter-rouge">Li</code>에 해당 하면 <code class="highlighter-rouge">isStart</code>를 <code class="highlighter-rouge">true</code>로 하고, <code class="highlighter-rouge">Ri</code>에 해당 하면 <code class="highlighter-rouge">isStart</code>를 <code class="highlighter-rouge">false</code>로 하자.</li>
+  <li>총 생성되는 <code class="highlighter-rouge">Point</code>의 갯수는 <code class="highlighter-rouge">building</code>의 갯수 x 2가 되고, <code class="highlighter-rouge">points</code> 배열에 저장하자.</li>
+  <li><code class="highlighter-rouge">points</code>를 정렬 한다, 이때 정렬 조건은 다음과 같다.
+    <ol>
+      <li>x 좌표가 다르다면 x값이 작은것 우선</li>
+      <li><code class="highlighter-rouge">isStart</code>가 <code class="highlighter-rouge">true</code>라면 <code class="highlighter-rouge">높이</code>가 큰 것 우선, <code class="highlighter-rouge">isStart</code>가 <code class="highlighter-rouge">false</code>라면 <code class="highlighter-rouge">높이</code>가 작은 것 우선</li>
+    </ol>
+  </li>
+  <li><code class="highlighter-rouge">points</code>를 순회 하면서, 높이들을 저장하면서, 높이가 큰 순서 대로 정렬될 <code class="highlighter-rouge">PriorityQueue</code>를 준비 한다.</li>
+  <li>현재 <code class="highlighter-rouge">Point</code>가 <code class="highlighter-rouge">isStart</code>라면 <code class="highlighter-rouge">PriorityQueue</code>에 넣고, 아니라면 뺀다.</li>
+  <li><code class="highlighter-rouge">PriorityQueue</code>의 제일 앞에 있는 값, 즉 높이가 가장 높은것을 가져온 후, 이전 순회에서 결정된 높이값과 비교해서, 다르다면 결과 리스트에 추가</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">Point</span> <span class="kd">implements</span> <span class="nc">Comparable</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;{</span>
+        <span class="kt">int</span> <span class="n">x</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">height</span><span class="o">;</span>
+        <span class="kt">boolean</span> <span class="n">isStart</span><span class="o">;</span>
+        
+        <span class="kd">public</span> <span class="nf">Point</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">height</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">isStart</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">height</span> <span class="o">=</span> <span class="n">height</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">isStart</span> <span class="o">=</span> <span class="n">isStart</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="nc">Point</span> <span class="n">p</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">!=</span> <span class="n">p</span><span class="o">.</span><span class="na">x</span><span class="o">)</span> <span class="o">{</span>    <span class="c1">//x가 다른건 볼것도 없다, x값이 작은것을 우선하자.</span>
+                <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">x</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="na">x</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>                <span class="c1">//x가 동일 하다면, this와 p가 isStart라면 높이가 큰것을 우선으로 하고, 아니라면 높이가 작은것을 우선 하자.</span>
+                <span class="k">return</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">isStart</span> <span class="o">?</span> <span class="o">-</span><span class="k">this</span><span class="o">.</span><span class="na">height</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">height</span><span class="o">)</span> <span class="o">-</span> <span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">isStart</span> <span class="o">?</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="na">height</span> <span class="o">:</span> <span class="n">p</span><span class="o">.</span><span class="na">height</span><span class="o">);</span>          
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">getSkyline</span><span class="o">(</span><span class="kt">int</span><span class="o">[][]</span> <span class="n">buildings</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="kt">int</span> <span class="n">total_count</span> <span class="o">=</span> <span class="n">buildings</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">total_count</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="nc">Point</span><span class="o">[]</span> <span class="n">points</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">[</span><span class="n">total_count</span> <span class="o">*</span> <span class="mi">2</span><span class="o">];</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        
+        <span class="k">for</span><span class="o">(</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">building</span> <span class="o">:</span> <span class="n">buildings</span> <span class="o">)</span> <span class="o">{</span> <span class="c1">//building 하나 [Li, Ri, Hi]를 이용해서 2개의 Point를 만들자, [Li, Hi, true], [Ri, Hi, false]</span>
+            <span class="n">points</span><span class="o">[</span><span class="n">i</span><span class="o">++]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="n">building</span><span class="o">[</span><span class="mi">0</span><span class="o">],</span> <span class="n">building</span><span class="o">[</span><span class="mi">2</span><span class="o">],</span> <span class="kc">true</span><span class="o">);</span>       
+            <span class="n">points</span><span class="o">[</span><span class="n">i</span><span class="o">++]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="n">building</span><span class="o">[</span><span class="mi">1</span><span class="o">],</span> <span class="n">building</span><span class="o">[</span><span class="mi">2</span><span class="o">],</span> <span class="kc">false</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="nc">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">points</span><span class="o">);</span>    <span class="c1">//정렬을 반드시 해줘야 한다.</span>
+        
+        <span class="nc">PriorityQueue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">height_queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PriorityQueue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;(</span><span class="nc">Collections</span><span class="o">.</span><span class="na">reverseOrder</span><span class="o">());</span>   <span class="c1">//순회돌면서, 거쳐간 Point의 높이 값을 저장하고, 값이 큰 순서대로 저장할 Queue</span>
+        <span class="n">height_queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>    <span class="c1">//기본 높이 0을 넣어 주자.</span>
+        
+        <span class="kt">int</span> <span class="n">prev_max_height</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span> <span class="nc">Point</span> <span class="n">point</span> <span class="o">:</span> <span class="n">points</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">point</span><span class="o">.</span><span class="na">isStart</span> <span class="o">)</span> <span class="o">{</span>      <span class="c1">//시작 좌표라면 현재 Point의 높이의 시작이니까 넣어 주고, 끝 좌표라면 현재 높이는 처리 했다는 의미니까 빼주자.</span>
+                <span class="n">height_queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="na">height</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">height_queue</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="na">height</span><span class="o">);</span>
+            <span class="o">}</span>
+            
+            <span class="kt">int</span> <span class="n">current_max_height</span> <span class="o">=</span> <span class="n">height_queue</span><span class="o">.</span><span class="na">peek</span><span class="o">();</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">prev_max_height</span> <span class="o">!=</span> <span class="n">current_max_height</span> <span class="o">)</span> <span class="o">{</span>      <span class="c1">//이전 최고 높이와 현재 최고 높이가 다르다는것은 높이차가 발생했다. 결과 리스트에 추가 하자.</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="na">x</span><span class="o">,</span> <span class="n">current_max_height</span><span class="o">));</span>
+                <span class="n">prev_max_height</span> <span class="o">=</span> <span class="n">current_max_height</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>   
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">getSkyline</span><span class="o">(</span><span class="kt">int</span><span class="o">[][]</span> <span class="n">buildings</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">keyPoints</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="kt">int</span> <span class="n">lastLowXIdx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">building</span> <span class="o">:</span> <span class="n">buildings</span><span class="o">){</span>
+            <span class="kt">int</span> <span class="n">li</span> <span class="o">=</span> <span class="n">building</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+            <span class="kt">int</span> <span class="n">ri</span> <span class="o">=</span> <span class="n">building</span><span class="o">[</span><span class="mi">1</span><span class="o">];</span>
+            <span class="kt">int</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">building</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+            <span class="n">lastLowXIdx</span> <span class="o">=</span> <span class="n">insertBuilding</span><span class="o">(</span><span class="n">li</span><span class="o">,</span> <span class="n">ri</span><span class="o">,</span> <span class="n">hi</span><span class="o">,</span> <span class="n">keyPoints</span><span class="o">,</span> <span class="n">lastLowXIdx</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">keyPoints</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">int</span> <span class="nf">insertBuilding</span><span class="o">(</span><span class="kt">int</span> <span class="n">li</span><span class="o">,</span> <span class="kt">int</span> <span class="n">ri</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hi</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">keyPoints</span><span class="o">,</span> <span class="kt">int</span> <span class="n">lastLowXIdx</span><span class="o">){</span>
+        <span class="kt">int</span> <span class="n">nextIdx</span> <span class="o">=</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">lastLowXIdx</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++){</span>   <span class="c1">//기존의 결과리스트에 있는것들 중에서 현재 빌딩의 Li 보다 큰 x인것을 찾는다. 왜냐하면, 결과 리스트를 x값으로 정렬되어야 하기 때문.</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">li</span><span class="o">){</span>
+                <span class="n">nextIdx</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="kt">int</span> <span class="n">currIdx</span> <span class="o">=</span> <span class="n">nextIdx</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>  <span class="c1">//좌표가 들어갈 결과 리스트의 index</span>
+        <span class="kt">int</span> <span class="n">oldHight</span> <span class="o">=</span> <span class="n">currIdx</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="o">:</span> <span class="mi">0</span><span class="o">;</span>    <span class="c1">//기존 결과 리스트에 있던 높이</span>
+        <span class="kt">int</span> <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">oldHight</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">hi</span> <span class="o">&gt;</span> <span class="n">oldHight</span><span class="o">){</span> <span class="c1">//현재 빌딩의 높이가 기존 결과 리스트에 있던 높이 보다 크고</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">currIdx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">li</span><span class="o">)</span> <span class="o">{</span>    <span class="c1">//현재 index가 0보다 작거나 ( 결과 리스트가 비어 있었다 ), x가 li보다 작다면 결과 리스트에 추가.</span>
+                <span class="n">keyPoints</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">currIdx</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">makeKeyPoint</span><span class="o">(</span><span class="n">li</span><span class="o">,</span> <span class="n">hi</span><span class="o">));</span>
+                <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">hi</span><span class="o">;</span>
+                <span class="n">currIdx</span><span class="o">++;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>    <span class="c1">//x가 li와 같다. 즉 같은 빌딩의 시작 위치가 동일한데, 높이가 다르다.</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">currIdx</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span> <span class="o">-</span> <span class="mi">1</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="o">==</span> <span class="n">hi</span><span class="o">){</span>   <span class="c1">//넣어야 할 위치 이전 결과 리스트의 값의 높이가 현재 높이와 동일하다. ???????</span>
+                    <span class="n">keyPoints</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">currIdx</span><span class="o">);</span>
+                    <span class="n">currIdx</span><span class="o">--;</span>
+                    <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">hi</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>    <span class="c1">//높이만 다시 갱신해 주자.</span>
+                    <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">hi</span><span class="o">);</span>
+                    <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">hi</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">oldHight</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">lastLowXIdx</span> <span class="o">=</span> <span class="n">currIdx</span><span class="o">;</span>
+
+        <span class="n">currIdx</span> <span class="o">++;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">currIdx</span> <span class="o">&lt;</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">ri</span><span class="o">){</span>   <span class="c1">//기존의 결과 리스트의 x값들 중, Ri보다 작은것들, 즉 현재 빌딩이 추가 됨으로 인해서 없어져야 하거나, 높이 갱신이 필요한것들 처리</span>
+            <span class="n">oldHight</span> <span class="o">=</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">hi</span> <span class="o">&gt;=</span> <span class="n">oldHight</span><span class="o">){</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">currentHigh</span> <span class="o">==</span> <span class="n">hi</span><span class="o">){</span>
+                    <span class="n">keyPoints</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">currIdx</span><span class="o">);</span>
+                    <span class="n">currIdx</span><span class="o">--;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span><span class="o">).</span><span class="na">set</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">hi</span><span class="o">);</span>    
+                    <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">hi</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">oldHight</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">currIdx</span> <span class="o">++;</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">hi</span> <span class="o">&gt;</span> <span class="n">oldHight</span> <span class="o">&amp;&amp;</span> <span class="n">currentHigh</span> <span class="o">!=</span> <span class="n">oldHight</span><span class="o">){</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">currIdx</span> <span class="o">&gt;=</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">||</span> <span class="n">keyPoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">currIdx</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">ri</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">keyPoints</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">currIdx</span><span class="o">,</span> <span class="n">makeKeyPoint</span><span class="o">(</span><span class="n">ri</span><span class="o">,</span> <span class="n">oldHight</span><span class="o">));</span>
+                <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">oldHight</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">lastLowXIdx</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">makeKeyPoint</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">){</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">keyPoint</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;(</span><span class="mi">2</span><span class="o">);</span>
+        <span class="n">keyPoint</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+        <span class="n">keyPoint</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">y</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">keyPoint</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

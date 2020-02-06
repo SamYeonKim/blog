@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Balanced Binary Tree
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,7 +12,7 @@ Given a binary tree, determine if it is height-balanced.
 
 For this problem, a height-balanced binary tree is defined as: `a binary tree in which the left and right subtrees of every node differ in height by no more than 1.`
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: [3,9,20,null,null,15,7]
@@ -23,7 +24,7 @@ Input: [3,9,20,null,null,15,7]
 Output: true
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: [1,2,2,3,3,null,null,4,4]

@@ -1,0 +1,101 @@
+I"!<h1 id="problem">Problem</h1>
+
+<p>Given an array of integers, find if the array contains any duplicates.</p>
+
+<p>Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-3">Example 3</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">nums</code>에서 최소값과 최대값을 찾자. <code class="highlighter-rouge">nums</code>는 최소값과 최대값 사이에 있는 수로 이루어져 있기 때문에, 중복 여부를 체크할 <code class="highlighter-rouge">boolean배열</code>을 구성하는데, <code class="highlighter-rouge">최대값 - 최소값 +1</code> 사이즈의 배열(<code class="highlighter-rouge">table</code>)을 만들자.</li>
+  <li><code class="highlighter-rouge">nums</code>를 순회 하면서, 현재 숫자 (<code class="highlighter-rouge">i</code>)에서 최소값을 빼면 <code class="highlighter-rouge">table</code>의 <code class="highlighter-rouge">index</code>가 나오고, <code class="highlighter-rouge">table[index]</code>가 <code class="highlighter-rouge">true</code>면 중복된 수가 있다는 의미이다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">containsDuplicate</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MIN_VALUE</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">nums</span><span class="o">){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">max</span><span class="o">)</span> <span class="n">max</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">min</span><span class="o">)</span> <span class="n">min</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kt">boolean</span><span class="o">[]</span> <span class="n">table</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">max</span> <span class="o">-</span> <span class="n">min</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">nums</span><span class="o">){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">table</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">min</span><span class="o">])</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+
+            <span class="n">table</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">min</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer--use-hashset-">My Answer ( Use HashSet )</h1>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">containsDuplicate</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">hashSet</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>          
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nums</span><span class="o">){</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">hashSet</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">n</span><span class="o">))</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            
+            <span class="n">hashSet</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Longest Palindromic Substring
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: "babad"
@@ -17,7 +18,7 @@ Output: "bab"
 Note: "aba" is also a valid answer.
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: "cbbd"

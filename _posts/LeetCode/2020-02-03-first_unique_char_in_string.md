@@ -1,29 +1,30 @@
 ---
-layout: post
 title: First Unique Character in s String
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a string, find the first non-repeating character in it and return it's index. If it doesn't exist, return -1.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: "leetcode"
 Output: 0
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: "loveleetcode"
 Output: 2
 ```
 
-#### Note :
+## Note
 
 * You mau assume the string contain only lowercase letters.
 

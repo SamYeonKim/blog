@@ -1,0 +1,258 @@
+I"�^<h1 id="problem">Problem</h1>
+
+<p>Given a list of unique words, find all pairs of distinct indices (i, j) in the given list, so that the concatenation of the two words, i.e. words[i] + words[j] is a palindrome.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="s">"abcd"</span><span class="p">,</span><span class="s">"dcba"</span><span class="p">,</span><span class="s">"lls"</span><span class="p">,</span><span class="s">"s"</span><span class="p">,</span><span class="s">"sssll"</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]]</span> 
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">The</span> <span class="n">palindromes</span> <span class="n">are</span> <span class="p">[</span><span class="s">"dcbaabcd"</span><span class="p">,</span><span class="s">"abcddcba"</span><span class="p">,</span><span class="s">"slls"</span><span class="p">,</span><span class="s">"llssssll"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="s">"bat"</span><span class="p">,</span><span class="s">"tab"</span><span class="p">,</span><span class="s">"cat"</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span> 
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">The</span> <span class="n">palindromes</span> <span class="n">are</span> <span class="p">[</span><span class="s">"battab"</span><span class="p">,</span><span class="s">"tabbat"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">Palindrome</code>은 가운데 기준으로 좌,우에 배치된 문자가 동일한것을 의미 한다.</li>
+  <li><code class="highlighter-rouge">Trie</code>에는 <code class="highlighter-rouge">words</code>의 역순에 해당하는 문자열을 이용해서 구성한다.
+    <ul>
+      <li>예를 들어 <code class="highlighter-rouge">words=["abc","def"]</code> 라면 <code class="highlighter-rouge">"cba"</code>, <code class="highlighter-rouge">"fed"</code>를 활용</li>
+      <li>위와 같이 역순으로 넣음으로써, <code class="highlighter-rouge">Palindrome</code>을 찾기 수월해 진다.</li>
+      <li>각 마지막 <code class="highlighter-rouge">Trie</code>노드에는 원래 단어의 <code class="highlighter-rouge">index</code></li>
+      <li>각 노드의 이하 <code class="highlighter-rouge">Trie</code>노드가 <code class="highlighter-rouge">Palindrome</code>일때 원래 단어의 <code class="highlighter-rouge">index</code>리스트를 저장하기 위한 <code class="highlighter-rouge">p_index</code>. 다음과 같은 흐름이 된다.
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">words</span><span class="o">=[</span><span class="s">"abc"</span><span class="o">,</span> <span class="s">"bcba"</span><span class="o">,</span> <span class="s">"sscba"</span><span class="o">]</span>
+<span class="n">trie</span><span class="o">=</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">[</span><span class="mi">0</span><span class="o">]-&gt;</span><span class="n">a</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="n">a</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">c</span><span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">]-&gt;</span><span class="n">b</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+                                <span class="o">-&gt;</span><span class="n">s</span><span class="o">[</span><span class="mi">2</span><span class="o">]-&gt;</span><span class="n">s</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>                                                                
+<span class="n">words</span><span class="o">[</span><span class="mi">0</span><span class="o">]=</span><span class="s">"abc"</span><span class="err">의</span> <span class="n">Palindrome</span><span class="err">을</span> <span class="err">찾을때</span> <span class="o">:</span>
+<span class="n">trie</span><span class="o">-&gt;</span><span class="n">a</span><span class="o">-&gt;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">c</span> <span class="err">노드</span> <span class="err">까지</span> <span class="err">찾을</span> <span class="err">수</span> <span class="err">있고</span><span class="o">,</span>
+<span class="n">c</span><span class="err">노드의</span> <span class="n">p_index</span><span class="o">=[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">]</span> <span class="err">이기</span> <span class="err">때문에</span><span class="o">,</span> <span class="n">words</span><span class="o">[</span><span class="mi">1</span><span class="o">],</span> <span class="n">words</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="err">와</span> <span class="n">Palindrome</span><span class="err">을</span> <span class="err">구성</span> <span class="err">한</span> <span class="err">다는것을</span> <span class="err">알</span> <span class="err">수</span> <span class="err">있다</span><span class="o">.</span>
+<span class="n">words</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">+</span> <span class="n">words</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="s">"abcbcba"</span>
+<span class="n">words</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">+</span> <span class="n">words</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="s">"abcsscba"</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">class</span> <span class="nc">Trie</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">index</span><span class="o">;</span>               <span class="c1">//현재 단어가 갖고 있던 index</span>
+        <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">p_index</span><span class="o">;</span>   <span class="c1">//현재 캐릭터 이하의 경로가 Palindrome일 때, index</span>
+        <span class="kd">public</span> <span class="nc">Trie</span><span class="o">[]</span> <span class="n">children</span><span class="o">;</span>
+        
+        <span class="kd">public</span> <span class="nf">Trie</span> <span class="o">()</span> <span class="o">{</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">palindromePairs</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>   
+        
+        <span class="nc">Trie</span> <span class="n">trie</span> <span class="o">=</span> <span class="n">buildTrie</span><span class="o">(</span><span class="n">words</span><span class="o">);</span>
+        
+        <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">words</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">findPalindrome</span><span class="o">(</span><span class="n">trie</span><span class="o">,</span> <span class="n">word</span><span class="o">,</span> <span class="n">i</span><span class="o">++,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">findPalindrome</span> <span class="o">(</span> <span class="nc">Trie</span> <span class="n">trie</span><span class="o">,</span> <span class="nc">String</span> <span class="n">word</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;&gt;</span> <span class="n">result</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="o">)</span> <span class="o">{</span>      <span class="c1">//Trie에 역순으로 들어가 있기 때문에, 정상적으로 앞에서 부터 비교해 나가면 된다.            </span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span><span class="o">.</span><span class="na">children</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="k">break</span><span class="o">;</span>
+            
+            <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="k">break</span><span class="o">;</span>                
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span><span class="o">.</span><span class="na">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">trie</span><span class="o">.</span><span class="na">index</span> <span class="o">!=</span> <span class="n">index</span> <span class="o">&amp;&amp;</span> <span class="n">isPalindrome</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>    <span class="c1">//word 보다 작은길이가 trie에 이미 있으면서, word의 나머지가 Palindrome이다.</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">index</span><span class="o">,</span> <span class="n">trie</span><span class="o">.</span><span class="na">index</span><span class="o">));</span>    
+            <span class="o">}</span>
+        
+            <span class="n">trie</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>
+            <span class="n">i</span><span class="o">++;</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="n">isPalindrome</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">)</span>
+            <span class="k">return</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span><span class="o">.</span><span class="na">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>  <span class="n">trie</span><span class="o">.</span><span class="na">index</span> <span class="o">!=</span> <span class="n">index</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">index</span><span class="o">,</span> <span class="n">trie</span><span class="o">.</span><span class="na">index</span><span class="o">));</span>
+        <span class="o">}</span> 
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">==</span> <span class="n">count</span> <span class="o">&amp;&amp;</span> <span class="n">trie</span><span class="o">.</span><span class="na">p_index</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">p_index</span> <span class="o">:</span> <span class="n">trie</span><span class="o">.</span><span class="na">p_index</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">index</span><span class="o">,</span> <span class="n">p_index</span><span class="o">));</span>    
+            <span class="o">}</span>            
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="nc">Trie</span> <span class="nf">buildTrie</span><span class="o">(</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">words</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Trie</span> <span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+        
+        <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">words</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">insert</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">word</span><span class="o">,</span> <span class="n">i</span><span class="o">++);</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">void</span> <span class="nf">insert</span><span class="o">(</span> <span class="nc">Trie</span> <span class="n">root</span><span class="o">,</span> <span class="nc">String</span> <span class="n">word</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">--)</span> <span class="o">{</span>   <span class="c1">//word의 역순으로 Trie를 구성하자.</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">children</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> 
+                <span class="n">root</span><span class="o">.</span><span class="na">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">[</span><span class="mi">26</span><span class="o">];</span>
+            
+            <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> 
+                <span class="n">root</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">isPalindrome</span><span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>       <span class="c1">//이하 단어 만으로 Palindrome을 만족하는지 확인하자. 만족한다면, 현재 노드까지만 일치 하더라도, 이하는 확인할 필요 없이 만족 한다는것을 증명할 수 있다.</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">p_index</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+                    <span class="n">root</span><span class="o">.</span><span class="na">p_index</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+                <span class="n">root</span><span class="o">.</span><span class="na">p_index</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">index</span><span class="o">);</span>
+            <span class="o">}</span>
+            
+            <span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>
+        <span class="o">}</span>
+
+        <span class="n">root</span><span class="o">.</span><span class="na">index</span> <span class="o">=</span> <span class="n">index</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">boolean</span> <span class="nf">isPalindrome</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span><span class="o">,</span> <span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="k">while</span><span class="o">(</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">word</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">start</span><span class="o">)</span> <span class="o">!=</span> <span class="n">word</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">end</span><span class="o">)</span> <span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>                
+            <span class="n">start</span><span class="o">++;</span>
+            <span class="n">end</span><span class="o">--;</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

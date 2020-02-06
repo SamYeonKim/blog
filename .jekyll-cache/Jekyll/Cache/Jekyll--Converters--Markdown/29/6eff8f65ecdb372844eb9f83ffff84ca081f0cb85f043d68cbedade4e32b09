@@ -1,0 +1,151 @@
+I"�.<h1 id="problem">Problem</h1>
+
+<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
+
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”</p>
+
+<p>Given the following binary tree:  root = [3,5,1,6,2,0,8,null,null,7,4]</p>
+
+<p><img src="/assets/img/leetcode/lca_tree.png" alt="" /></p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">3</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">The</span> <span class="kt">LCA</span> <span class="n">of</span> <span class="n">nodes</span> <span class="mi">5</span> <span class="n">and</span> <span class="mi">1</span> <span class="k">is</span> <span class="mi">3</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">5</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">The</span> <span class="kt">LCA</span> <span class="n">of</span> <span class="n">nodes</span> <span class="mi">5</span> <span class="n">and</span> <span class="mi">4</span> <span class="k">is</span> <span class="mi">5</span><span class="p">,</span> <span class="n">since</span> <span class="n">a</span> <span class="n">node</span> <span class="n">can</span> <span class="n">be</span> <span class="n">a</span> <span class="n">descendant</span> <span class="n">of</span> <span class="n">itself</span> <span class="n">according</span> <span class="n">to</span> <span class="n">the</span> <span class="kt">LCA</span> <span class="n">definition</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>All of the nodes’ values will be unique</li>
+  <li>p and q are different and both values will exist in the binary tree</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">p</code> 와 <code class="highlighter-rouge">q</code>에 대해서 각각의 경로를 구한다.</li>
+  <li>각 경로를 하나씩 비교해 나가면서 값이 달라지는 순간 비교를 끝낸다.</li>
+  <li><code class="highlighter-rouge">search</code> 함수에서 원하는 값에 대응되는 <code class="highlighter-rouge">TreeNode</code> 를 찾을때 까지 재귀호출 하고, 찾게되면 <code class="highlighter-rouge">Stack</code>에 하나씩 넣는다.</li>
+  <li>각 <code class="highlighter-rouge">Stack</code>을 순회 하면서, <code class="highlighter-rouge">TreeNode</code>의 값이 달라지는 순간 까지 순회 한다.</li>
+  <li>값이 달라지기 직전의 <code class="highlighter-rouge">TreeNode</code>가 <code class="highlighter-rouge">LCA</code>이다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">TreeNode</span> <span class="nf">lowestCommonAncestor</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">,</span> <span class="nc">TreeNode</span> <span class="n">p</span><span class="o">,</span> <span class="nc">TreeNode</span> <span class="n">q</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Stack</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">history_q</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Stack</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">history_p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="n">search</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">p</span><span class="o">.</span><span class="na">val</span><span class="o">,</span> <span class="n">history_p</span><span class="o">);</span>
+        <span class="n">search</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">q</span><span class="o">.</span><span class="na">val</span><span class="o">,</span> <span class="n">history_q</span><span class="o">);</span>
+        
+        <span class="nc">TreeNode</span> <span class="n">result</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>
+        
+        <span class="k">while</span> <span class="o">(</span> <span class="o">!</span><span class="n">history_p</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">history_q</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">TreeNode</span> <span class="n">root_p</span> <span class="o">=</span> <span class="n">history_p</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>    
+            <span class="nc">TreeNode</span> <span class="n">root_q</span> <span class="o">=</span> <span class="n">history_q</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>    
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">root_p</span><span class="o">.</span><span class="na">val</span> <span class="o">!=</span> <span class="n">root_q</span><span class="o">.</span><span class="na">val</span> <span class="o">)</span>
+                <span class="k">break</span><span class="o">;</span>
+            
+            <span class="n">result</span> <span class="o">=</span> <span class="n">root_p</span><span class="o">;</span>    <span class="c1">//둘중에 뭘 넣든 상관없다. 값이 같다는것은 똑같은 객체라는 것이니까.</span>
+        <span class="o">}</span>
+            
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">boolean</span> <span class="nf">search</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">,</span> <span class="kt">int</span> <span class="n">val</span><span class="o">,</span> <span class="nc">Stack</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">history</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">val</span> <span class="o">==</span> <span class="n">val</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">history</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">root</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+            
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">search</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">,</span> <span class="n">val</span><span class="o">,</span> <span class="n">history</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">history</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">root</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">search</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span> <span class="n">val</span><span class="o">,</span> <span class="n">history</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">history</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">root</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

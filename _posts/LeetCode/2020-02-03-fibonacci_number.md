@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Fibonacci Number
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -15,7 +16,7 @@ F(N) = F(N - 1) + F(N - 2), for N > 1.
 
 Given N, calculate F(N).
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: 2
@@ -23,7 +24,7 @@ Output: 1
 Explanation: F(2) = F(1) + F(0) = 1 + 0 = 1.
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: 3

@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Populating Next Right Pointers in Each Node
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -22,7 +23,7 @@ Populate each next pointer to point to its next right node. If there is no next 
 
 Initially, all next pointers are set to NULL.
 
-#### Example :
+## Example
 
 ![]({{ site.baseurl }}/assets/img/leetcode/right_node_1.png)
 *Figure A*

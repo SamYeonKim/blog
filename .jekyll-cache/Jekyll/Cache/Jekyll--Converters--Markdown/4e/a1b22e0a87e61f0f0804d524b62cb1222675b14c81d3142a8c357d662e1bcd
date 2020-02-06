@@ -1,0 +1,92 @@
+I"�<h1 id="problem">Problem</h1>
+
+<p>Implement int sqrt(int x).</p>
+
+<p>Compute and return the square root of x, where x is guaranteed to be a non-negative integer.</p>
+
+<p>Since the return type is an integer, the decimal digits are truncated and only the integer part of the result is returned.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">4</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">2</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">8</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">2</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">The</span> <span class="n">square</span> <span class="n">root</span> <span class="n">of</span> <span class="mi">8</span> <span class="k">is</span> <span class="mf">2.82842</span><span class="o">...</span><span class="p">,</span> <span class="n">and</span> <span class="n">since</span> 
+             <span class="n">the</span> <span class="n">decimal</span> <span class="n">part</span> <span class="k">is</span> <span class="n">truncated</span><span class="p">,</span> <span class="mi">2</span> <span class="k">is</span> <span class="n">returned</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>소숫점은 알 필요 없으니까 제곱수 중에서 가장 가까운 정수를 구하면 된다.</li>
+  <li><code class="highlighter-rouge">l</code>은 타겟 까지의 작은 수, <code class="highlighter-rouge">r</code>은 타겟 까지의 가장 가까운 큰 수이다.</li>
+  <li><code class="highlighter-rouge">while</code>문에서는 <code class="highlighter-rouge">l + r</code>한 값을 오른쪽 쉬프트해서 중간 값을 찾는다. 예를 들어 다음과 같이 계산 된다.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>  <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">=</span> <span class="mo">0000</span><span class="o">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">=</span> <span class="mo">0111</span><span class="o">;</span>
+  <span class="n">l</span><span class="o">+</span><span class="n">r</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">=</span> <span class="mo">0111</span>
+  <span class="n">l</span><span class="o">+</span><span class="n">r</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">=</span> <span class="mo">0011</span>
+
+  <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">=</span> <span class="mo">0001</span><span class="o">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">9</span> <span class="o">=</span> <span class="mi">1001</span><span class="o">;</span>
+  <span class="n">l</span><span class="o">+</span><span class="n">r</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">=</span> <span class="mi">1010</span>
+  <span class="n">l</span><span class="o">+</span><span class="n">r</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">=</span> <span class="mo">0101</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>중간값을 제곱한것이 <code class="highlighter-rouge">x</code>와 같으면 정답이고, 만약 <code class="highlighter-rouge">x</code>보다 작다면, 더 큰 중간값을 찾아야 한다는 의미이기때문에, <code class="highlighter-rouge">l</code>을 증가시키고, <code class="highlighter-rouge">x</code>보다 크다면 <code class="highlighter-rouge">r</code>을 감소 시키면 된다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">mySqrt</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">l</span> <span class="o">&lt;=</span><span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="o">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="o">)&gt;&gt;</span><span class="mi">1</span><span class="o">;</span>
+            <span class="kt">long</span> <span class="n">midVal</span> <span class="o">=</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span> <span class="n">mid</span> <span class="o">*</span> <span class="n">mid</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">midVal</span> <span class="o">==</span> <span class="n">x</span><span class="o">)</span> <span class="k">return</span> <span class="n">mid</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">midVal</span> <span class="o">&lt;</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

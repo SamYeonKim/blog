@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Binary Tree Level Order Traversal
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
 
-#### Example :
+## Example
 
 ```swift
 Input: [3,9,20,null,null,15,7]

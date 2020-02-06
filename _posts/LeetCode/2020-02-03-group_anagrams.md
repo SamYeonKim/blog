@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Group Anagrams
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given an array of strings, group anagrams together.
 
-#### Example :
+## Example
 
 ```swift
 Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
@@ -21,7 +22,7 @@ Output:
 ]
 ```
 
-#### Note:
+## Note
 
 * All inputs will be in lowercase.
 * The order of your output does not matter.

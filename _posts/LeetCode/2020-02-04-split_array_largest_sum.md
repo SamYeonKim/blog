@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Split Array Largest Sum
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given an array which consists of non-negative integers and an integer m, you can split the array into m non-empty continuous subarrays. Write an algorithm to minimize the largest sum among these m subarrays.
 
-#### Example :
+## Example
 
 ```swift
 Input:
@@ -25,7 +26,7 @@ The best way is to split it into [7,2,5] and [10,8],
 where the largest sum among the two subarrays is only 18.
 ```
 
-#### Note:
+## Note
 
 If *n* is the length of array, assume the following constraints are satisfied.
 

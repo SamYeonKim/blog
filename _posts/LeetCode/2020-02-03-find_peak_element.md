@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Find Peak Element
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -15,7 +16,7 @@ The array may contain multiple peaks, in that case return the index to any one o
 
 You may imagine that nums[-1] = nums[n] = -∞.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: nums = [1,2,3,1]
@@ -23,7 +24,7 @@ Output: 2
 Explanation: 3 is a peak element and your function should return the index number 2.
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: nums = [1,2,1,3,5,6,4]
@@ -32,7 +33,7 @@ Explanation: Your function can return either index number 1 where the peak eleme
              or index number 5 where the peak element is 6.
 ```
 
-#### Note:
+## Note
 
 Your solution should be in logarithmic complexity.
 

@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Design HashMap
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -16,7 +17,7 @@ To be specific, your design should include these functions:
 * `remove(key)` : Remove the mapping for the value key if this map contains the mapping for the key.
 
 
-#### Example :
+## Example
 
 ```swift
 MyHashMap hashMap = new MyHashMap();
@@ -30,7 +31,7 @@ hashMap.remove(2);          // remove the mapping for 2
 hashMap.get(2);            // returns -1 (not found) 
 ```
 
-#### Note:
+## Note
 
 * All keys and values will be in the range of `[0, 1000000]`
 * The number of operations will be in the range of `[1, 10000]`

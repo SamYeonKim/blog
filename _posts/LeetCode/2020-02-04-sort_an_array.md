@@ -1,29 +1,30 @@
 ---
-layout: post
 title: Sort an Array
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given an array of integers nums, sort the array in ascending order
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: nums = [5,2,3,1]
 Output: [1,2,3,5]
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: nums = [5,1,1,2,0,0]
 Output: [0,0,1,1,2,5]
 ```
 
-#### Constraints
+## Constraints
 
 ```java
 1 <= nums.length <= 50000

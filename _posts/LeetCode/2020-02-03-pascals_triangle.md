@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Pascal's Triangle
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
 
-#### Example :
+## Example
 
 ```swift
 Input: 5

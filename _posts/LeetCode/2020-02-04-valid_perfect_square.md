@@ -1,29 +1,30 @@
 ---
-layout: post
 title: Valid Perfect Square
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a positive integer num, write a function which returns True if num is a perfect square else False.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: 16
 Output: true
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: 14
 Output: false
 ```
 
-#### Note:
+## Note
 
 Do not use any built-in library function such as sqrt.
 

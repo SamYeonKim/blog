@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Climbing Stairs
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,7 +14,7 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 
 Given n will be a positive integer.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: 2
@@ -23,7 +24,7 @@ Explanation: There are two ways to climb to the top.
 2. 2 steps
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: 3

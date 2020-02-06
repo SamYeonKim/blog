@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Pascals Triangle II
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,7 +12,7 @@ Given a non-negative index k where k ≤ 33, return the kth index row of the Pas
 
 Note that the row index starts from 0.
 
-#### Example :
+## Example
 
 ```swift
 Input: 3

@@ -1,0 +1,126 @@
+I"^<h1 id="problem">Problem</h1>
+
+<p>Given a n-ary tree, find its maximum depth.</p>
+
+<p>The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.</p>
+
+<p>Nary-Tree input serialization is represented in their level order traversal, each group of children is separated by the null value (See examples).</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>      <span class="mi">1</span>
+    <span class="o">/</span> <span class="o">|</span> <span class="p">\</span>
+   <span class="mi">3</span>  <span class="mi">2</span>  <span class="mi">4</span>
+  <span class="o">/</span> <span class="p">\</span>
+ <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="kt">Input</span><span class="p">:</span> <span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>        <span class="mi">1</span>
+     <span class="o">/</span> <span class="o">|</span> <span class="o">|</span> <span class="p">\</span>
+    <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span>
+      <span class="o">/|</span> <span class="o">|</span>  <span class="o">|</span><span class="p">\</span>
+     <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">10</span>
+       <span class="o">|</span> <span class="o">|</span>  <span class="o">|</span> 
+      <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span>
+       <span class="o">|</span>
+      <span class="mi">14</span>
+
+<span class="kt">Input</span><span class="p">:</span> <span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">5</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>재귀를 이용</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="cm">/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List&lt;Node&gt; children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List&lt;Node&gt; _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">maxDepth</span><span class="o">(</span><span class="nc">Node</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+        
+        <span class="kt">int</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">Node</span> <span class="n">node</span> <span class="o">:</span> <span class="n">root</span><span class="o">.</span><span class="na">children</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">max_depth</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">max_depth</span><span class="o">,</span> <span class="n">maxDepth</span><span class="o">(</span><span class="n">node</span><span class="o">));</span>            
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">max_depth</span> <span class="o">+</span><span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

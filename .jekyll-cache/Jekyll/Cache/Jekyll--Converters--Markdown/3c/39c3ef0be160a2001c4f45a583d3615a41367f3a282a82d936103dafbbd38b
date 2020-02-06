@@ -1,0 +1,167 @@
+I"',<h1 id="problem">Problem</h1>
+
+<p>Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">2</span><span class="o">-&gt;</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">3</span><span class="o">-&gt;</span><span class="mi">4</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">1</span><span class="o">-&gt;</span><span class="mi">2</span><span class="o">-&gt;</span><span class="mi">3</span><span class="o">-&gt;</span><span class="mi">4</span><span class="o">-&gt;</span><span class="mi">4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>재귀로 구현</li>
+  <li><code class="highlighter-rouge">base case</code> 는 <code class="highlighter-rouge">l1</code>, <code class="highlighter-rouge">l2</code> 둘다 <code class="highlighter-rouge">null</code>일때</li>
+  <li><code class="highlighter-rouge">l1</code>, <code class="highlighter-rouge">l2</code> 둘중에 값이 작은 것을 선택한다.</li>
+  <li>만약 둘중에 <code class="highlighter-rouge">null</code>인 것이 있다면 다른것을 선택하자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">mergeTwoLists</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">l1</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">l2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ListNode</span> <span class="n">head</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ListNode</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        
+        <span class="n">mergeTwoLists</span><span class="o">(</span><span class="n">head</span><span class="o">,</span> <span class="n">l1</span><span class="o">,</span> <span class="n">l2</span><span class="o">);</span>
+        
+        <span class="k">return</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">void</span> <span class="nf">mergeTwoLists</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">result</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">l1</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">l2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">l1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">l2</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+            <span class="k">return</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">l1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">(</span><span class="n">l2</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">l1</span><span class="o">.</span><span class="na">val</span> <span class="o">&gt;</span> <span class="n">l2</span><span class="o">.</span><span class="na">val</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">l2</span><span class="o">;</span>
+            <span class="n">l2</span> <span class="o">=</span> <span class="n">l2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">l1</span><span class="o">;</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="n">mergeTwoLists</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">next</span><span class="o">,</span> <span class="n">l1</span><span class="o">,</span> <span class="n">l2</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<ul>
+  <li>반복을 이용해서 구현</li>
+  <li><code class="highlighter-rouge">l1</code>, <code class="highlighter-rouge">l2</code> 둘다 <code class="highlighter-rouge">null</code>이 될때까지 수행</li>
+  <li>비교해서 최종 리스트에 넣는다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">mergeTwoLists</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">l1</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">l2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">l1</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">l2</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">l2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">l1</span><span class="o">;</span>
+        
+        <span class="nc">ListNode</span> <span class="n">start</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">l1</span><span class="o">.</span><span class="na">val</span> <span class="o">&lt;=</span>  <span class="n">l2</span><span class="o">.</span><span class="na">val</span><span class="o">){</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">l1</span><span class="o">;</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">l2</span><span class="o">;</span>
+            <span class="n">l2</span> <span class="o">=</span> <span class="n">l2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">ListNode</span> <span class="n">call</span> <span class="o">=</span> <span class="n">start</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span><span class="n">l1</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">l2</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">l1</span> <span class="o">==</span> <span class="kc">null</span><span class="o">){</span>
+                <span class="n">start</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">l2</span><span class="o">;</span>
+                <span class="n">l2</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>                
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">l2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">){</span>
+                <span class="n">start</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span><span class="n">l1</span><span class="o">;</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>                
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">l1</span><span class="o">.</span><span class="na">val</span> <span class="o">&lt;=</span> <span class="n">l2</span><span class="o">.</span><span class="na">val</span><span class="o">){</span>
+                <span class="n">start</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">l1</span><span class="o">;</span>
+                <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">start</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">l2</span><span class="o">;</span>
+                <span class="n">l2</span> <span class="o">=</span> <span class="n">l2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">call</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

@@ -1,0 +1,180 @@
+I"�B<h1 id="problem">Problem</h1>
+
+<p>Given an integer array, return the k-th smallest distance among all the pairs. The distance of a pair (A, B) is defined as the absolute difference between A and B.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span>
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">0</span> 
+<span class="kt">Explanation</span><span class="p">:</span>
+<span class="kt">Here</span> <span class="n">are</span> <span class="n">all</span> <span class="n">the</span> <span class="nv">pairs</span><span class="p">:</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">2</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">2</span>
+<span class="kt">Then</span> <span class="n">the</span> <span class="mi">1</span><span class="n">st</span> <span class="n">smallest</span> <span class="n">distance</span> <span class="n">pair</span> <span class="nf">is</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">and</span> <span class="n">its</span> <span class="n">distance</span> <span class="k">is</span> <span class="mi">0</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>2 &lt;= len(nums) &lt;= 10000.</li>
+  <li>0 &lt;= nums[i] &lt; 1000000.</li>
+  <li>1 &lt;= k &lt;= len(nums) * (len(nums) - 1) / 2.</li>
+</ul>
+
+<h1 id="solution">Solution</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">lo</code>, <code class="highlighter-rouge">hi</code>는 각각 최소 거리와 최대 거리를 의미 한다. <code class="highlighter-rouge">nums</code>의 가장 마지막 원소에서 첫번째 원소를 뺀 만큼이 최대 거리이다.</li>
+  <li><code class="highlighter-rouge">for (int right = 0; right &lt; nums.length; ++right)</code> 에서 현재 <code class="highlighter-rouge">중간거리(mi)</code>와 같거나 작은 거리의 갯수를 구한다. 예를들어 다음과 같은 흐름으로 계산 된다.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre>  <span class="nc">Input</span> <span class="o">:</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span>
+  <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span> <span class="n">hi</span><span class="o">=</span><span class="mi">5</span><span class="o">-</span><span class="mi">1</span><span class="o">=</span><span class="mi">4</span>
+  <span class="mi">1</span><span class="o">:</span>
+      <span class="n">mi</span><span class="o">=(</span><span class="mi">0</span><span class="o">+</span><span class="mi">4</span><span class="o">)/</span><span class="mi">2</span><span class="o">=</span><span class="mi">2</span>
+      <span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">-</span><span class="mi">1</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">mi</span>
+          <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">0</span>
+      <span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">:</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">4</span><span class="o">-</span><span class="mi">1</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">&gt;</span> <span class="n">mi</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">4</span><span class="o">-</span><span class="mi">2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">=</span> <span class="n">mi</span>            
+          <span class="n">count</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+      <span class="mi">1</span><span class="o">-</span><span class="mi">3</span><span class="o">:</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">5</span><span class="o">-</span><span class="mi">2</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">&gt;</span> <span class="n">mi</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="mi">5</span><span class="o">-</span><span class="mi">4</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">mi</span>
+          <span class="n">count</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">2</span>
+      <span class="n">count</span><span class="o">=</span><span class="mi">3</span>
+      <span class="c1">//mi=2 보다 같거나 작은 경우의 수</span>
+      <span class="c1">//(1,2), (4,5), (2,4) = 3개</span>
+        
+      <span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">3</span>
+      <span class="n">hi</span><span class="o">=</span><span class="mi">2</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">count</code>가 <code class="highlighter-rouge">k</code>보다 같거나 크다면, <code class="highlighter-rouge">최대거리(hi)</code>에 <code class="highlighter-rouge">중간거리(mi)</code>를 할당하고 <code class="highlighter-rouge">k</code>보다 작다면 <code class="highlighter-rouge">최소거리(lo)</code>에 <code class="highlighter-rouge">중간거리(mi)</code> + 1을 할당 하자. 위 코드에서 이어서 수행하면 다음과 같이 계산된다.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre>  <span class="nc">Input</span> <span class="o">:</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span>
+  <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span> <span class="n">hi</span><span class="o">=</span><span class="mi">2</span>
+  <span class="mi">1</span><span class="o">:</span>
+      <span class="n">mi</span><span class="o">=(</span><span class="mi">0</span><span class="o">+</span><span class="mi">2</span><span class="o">)/</span><span class="mi">2</span><span class="o">=</span><span class="mi">1</span>
+      <span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">-</span><span class="mi">1</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">=</span> <span class="n">mi</span>
+          <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">0</span>
+      <span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">:</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">4</span><span class="o">-</span><span class="mi">1</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">&gt;</span> <span class="n">mi</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">4</span><span class="o">-</span><span class="mi">2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="n">mi</span>            
+          <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="mi">4</span><span class="o">-</span><span class="mi">4</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">mi</span>            
+          <span class="n">count</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span>
+      <span class="mi">1</span><span class="o">-</span><span class="mi">3</span><span class="o">:</span>
+          <span class="n">nums</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="mi">5</span><span class="o">-</span><span class="mi">4</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">=</span> <span class="n">mi</span>
+          <span class="n">count</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">2</span>
+      <span class="n">count</span><span class="o">=</span><span class="mi">2</span>
+      <span class="c1">//mi=1 보다 같거나 작은 경우의 수</span>
+      <span class="c1">//(1,2), (4,5) = 2개</span>
+      <span class="n">count</span><span class="o">&lt;</span><span class="mi">3</span>
+      <span class="n">lo</span><span class="o">=</span><span class="n">mi</span><span class="o">+</span><span class="mi">1</span><span class="o">=</span><span class="mi">2</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>최종적으로 <code class="highlighter-rouge">lo</code>가 <code class="highlighter-rouge">k</code>번째 작은거리이다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">smallestDistancePair</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">k</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">nums</span><span class="o">);</span>
+
+        <span class="kt">int</span> <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">nums</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">mi</span> <span class="o">=</span> <span class="o">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">right</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="o">++</span><span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">while</span> <span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">right</span><span class="o">]</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="n">left</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">mi</span><span class="o">)</span> <span class="o">{</span>
+                  <span class="n">left</span><span class="o">++;</span>  
+                <span class="o">}</span> 
+                
+                <span class="n">count</span> <span class="o">+=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="c1">//count = number of pairs with distance &lt;= mi</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">count</span> <span class="o">&gt;=</span> <span class="n">k</span><span class="o">)</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">mi</span><span class="o">;</span>
+            <span class="k">else</span> <span class="n">lo</span> <span class="o">=</span> <span class="n">mi</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">lo</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

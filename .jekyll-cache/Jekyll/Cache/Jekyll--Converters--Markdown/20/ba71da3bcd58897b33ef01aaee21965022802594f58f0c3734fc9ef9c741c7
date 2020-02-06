@@ -1,0 +1,90 @@
+I"h<h1 id="problem">Problem</h1>
+
+<p>Given two strings s and t, determine if they are isomorphic.</p>
+
+<p>Two strings are isomorphic if the characters in s can be replaced to get t.</p>
+
+<p>All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character but a character may map to itself.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"egg"</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="s">"add"</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"foo"</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="s">"bar"</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">false</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-3">Example 3</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"paper"</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="s">"title"</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>You may assume both <code class="highlighter-rouge">s</code> and <code class="highlighter-rouge">t</code> have the same length.</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">HashMap</code>을 이용하자. <code class="highlighter-rouge">HashMap</code>의 키는 <code class="highlighter-rouge">s</code>의 문자, 값은 <code class="highlighter-rouge">t</code>의 문자를 넣자.</li>
+  <li><code class="highlighter-rouge">s</code>를 순회 하면서, 문자가 <code class="highlighter-rouge">HashMap</code>의 키로 포함되어 있는지 확인하자.</li>
+  <li>만약 키로 포함되어 있으면서, 값이 <code class="highlighter-rouge">t</code>의 문자와 다르다면 <code class="highlighter-rouge">false</code></li>
+  <li>만약 키로 포함되어 있지 않은데, <code class="highlighter-rouge">t</code>의 문자가 값으로 <code class="highlighter-rouge">HashMap</code>에 포함되어 있다면 <code class="highlighter-rouge">false</code></li>
+  <li>위 조건을 만족하지 않는다면, <code class="highlighter-rouge">HashMap</code>에 넣고 다음 순회.</li>
+  <li>반복해서 돌았는데, <code class="highlighter-rouge">false</code>가 발생하지 않는다면, <code class="highlighter-rouge">true</code>이다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isIsomorphic</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">,</span> <span class="nc">String</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">,</span> <span class="nc">Character</span><span class="o">&gt;</span> <span class="n">hashmap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="kt">char</span> <span class="n">s_c</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">hashmap</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">s_c</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">hashmap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">s_c</span><span class="o">)</span> <span class="o">!=</span> <span class="n">t</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">))</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">hashmap</span><span class="o">.</span><span class="na">containsValue</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">)))</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+                
+                <span class="n">hashmap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">s_c</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>               
+            <span class="o">}</span>             
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

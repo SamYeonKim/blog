@@ -1,21 +1,22 @@
 ---
-layout: post
 title: What is Quick Sort
 tags: [LeetCode, Article]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
-#### Definition
+# Definition
 
 이름 처럼 빠른 정렬 방식이고, `Merge Sort`에 비해 2~3배 빠르다.
 
-#### Flow
+# Flow
 
 1. 주어진 리스트를 2개로 나눌 `pivot` 값을 선정 한다. 하나의 서브 리스트에는 `pivot` 보다 작은 값들로만 구성되고, 다른 서브리스트에는 `pivot`과 동일하거나 큰 값으로 구성 한다. 이렇게 나누는 작업을 `partitioning` 이라 한다. `pivot` 값을 선정 하는 방식은 주어진 리스트의 첫번째 인자를 사용하거나, 랜덤하게 선택 하면 된다.
 2. `partitioning` 이후 재귀저그로 2개의 서브 리스트를 정렬 한다.
 3. 정렬된 2개의 서브리스트를 합치기만 하면 끝난다.
 
-#### Implements
+# Implements
 
 0. `pivot`은 가장 마지막 원소로 설정
 1. [1,5,3,2,8,7,6,4] 리스트에서 `pivot`을 선정, 리스트의 가장 마지막 값인 `4`로 설정
@@ -76,6 +77,6 @@ public class Solution {
 }
 ```
 
-#### 참조
+# 참조
 
 * [한글 좋아](https://gmlwjd9405.github.io/2018/05/10/algorithm-quick-sort.html)

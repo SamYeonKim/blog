@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Guess Number Higher or Lower
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -21,7 +22,7 @@ You call a pre-defined API guess(int num) which returns 3 possible results (-1, 
  0 : Congrats! You got it!
 ```
 
-#### Example :
+## Example
 
 ```swift
 Input: n = 10, pick = 6

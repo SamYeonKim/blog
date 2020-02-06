@@ -1,0 +1,76 @@
+I"�<h1 id="problem">Problem</h1>
+
+<p>The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1. That is,</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>F(0) = 0,   F(1) = 1
+F(N) = F(N - 1) + F(N - 2), for N &gt; 1.
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Given N, calculate F(N).</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">2</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">1</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">F</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="kt">F</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="kt">F</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">3</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">2</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">F</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="kt">F</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="kt">F</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">2</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>중복 연산으로 인해서 <code class="highlighter-rouge">N</code>이 커질수록 연산시간이 오래 걸리기 때문에, 중간 결과값을 <code class="highlighter-rouge">m_cache</code>에서 기록 했다가 나중에 쓰자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">m_cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;();</span>
+    
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fib</span><span class="o">(</span><span class="kt">int</span> <span class="no">N</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="no">N</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">)</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="no">N</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">m_cache</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="no">N</span><span class="o">))</span>
+            <span class="k">return</span> <span class="n">m_cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="no">N</span><span class="o">);</span>
+        
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">fib</span><span class="o">(</span><span class="no">N</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">fib</span><span class="o">(</span><span class="no">N</span><span class="o">-</span><span class="mi">2</span><span class="o">);</span>
+        <span class="n">m_cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="no">N</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

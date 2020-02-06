@@ -6,7 +6,7 @@ for (let element of mathElements) {
   // See: https://github.com/rohanchandra/type-theme/issues/47
   const textToRender = (element.innerText || element.textContent).replace(/%.*/g, '');
   const katexElement = document.createElement('span');
-  const isDisplayMode = element.type.includes('mode=display');
+  const isDisplayMode = false;//element.type.includes('mode=display');  //DisplyMode로 하면 가운데 정렬이 기본이다 보기 안좋다.
   katexElement.className = isDisplayMode ? "math-display" : "math-inline";
   katex.render(textToRender, katexElement, { displayMode: isDisplayMode });
   element.parentNode.insertBefore(katexElement, element);

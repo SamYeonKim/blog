@@ -1,11 +1,12 @@
 ---
-layout: post
 title: Convert Recursion to Iteration
 tags: [LeetCode, Article]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
-#### Definition
+# Definition
 
 재귀적으로 알고리즘을 구현하는것은 좋은 접근이나, 다음과 같은 이유에 의해서 재귀적으로 구현 못 하는경우가 발생한다.
 
@@ -16,7 +17,7 @@ categories : [LeetCode]
 3. 복잡성
     재귀적인 알고리즘은 코드의 흐름을 이해하기 어렵게 만든다.
 
-#### Example
+# Example
 
 2개의 Binary Tree가 있을때 같은지 다른지 확인 하는 코드를 `재귀적`으로, `반복적`으로 구현하면 다음과 같이 할 수 있다.
 
@@ -91,7 +92,7 @@ class Solution {
 }
 ```
 
-#### Conclusion
+# Conclusion
 
 재귀적인 알고리즘을 반복적인 알고리즘으로 변경할 땐 다음과 같은 흐름으로 하면 된다.
 

@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Kth Largest Element in a Stream
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,7 +12,7 @@ Design a class to find the kth largest element in a stream. Note that it is the 
 
 Your KthLargest class will have a constructor which accepts an integer k and an integer array nums, which contains initial elements from the stream. For each call to the method KthLargest.add, return the element representing the kth largest element in the stream.
 
-#### Example :
+## Example
 
 ```swift
 int k = 3;
@@ -24,7 +25,7 @@ kthLargest.add(9);   // returns 8
 kthLargest.add(4);   // returns 8
 ```
 
-#### Note:
+## Note
 
 * You may assume that `nums`'length >= `k-1` and `k` >= 1.
 * `k`는 `KthLargest` 생성자의 파라미터로 정해져 있다.

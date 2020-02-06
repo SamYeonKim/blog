@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Maximum XOR of Two Numbers in an Array
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,7 +14,7 @@ Find the maximum result of $$a_i$$ XOR $$a_j$$, where 0 ≤ i, j < n.
 
 Could you do this in O(n) runtime?
 
-#### Example :
+## Example
 
 ```swift
 Input: [3, 10, 5, 25, 2, 8]

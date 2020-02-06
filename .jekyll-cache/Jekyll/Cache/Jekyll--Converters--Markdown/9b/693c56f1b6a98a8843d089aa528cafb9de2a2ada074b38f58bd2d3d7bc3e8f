@@ -1,0 +1,200 @@
+I"�?<h1 id="problem">Problem</h1>
+
+<p>Given an array which consists of non-negative integers and an integer m, you can split the array into m non-empty continuous subarrays. Write an algorithm to minimize the largest sum among these m subarrays.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span>
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="kt">Output</span><span class="p">:</span>
+<span class="mi">18</span>
+
+<span class="kt">Explanation</span><span class="p">:</span>
+<span class="kt">There</span> <span class="n">are</span> <span class="n">four</span> <span class="n">ways</span> <span class="n">to</span> <span class="n">split</span> <span class="n">nums</span> <span class="n">into</span> <span class="n">two</span> <span class="n">subarrays</span><span class="o">.</span>
+<span class="kt">The</span> <span class="n">best</span> <span class="n">way</span> <span class="k">is</span> <span class="n">to</span> <span class="n">split</span> <span class="n">it</span> <span class="n">into</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="n">and</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
+<span class="k">where</span> <span class="n">the</span> <span class="n">largest</span> <span class="n">sum</span> <span class="n">among</span> <span class="n">the</span> <span class="n">two</span> <span class="n">subarrays</span> <span class="k">is</span> <span class="n">only</span> <span class="mi">18</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<p>If <em>n</em> is the length of array, assume the following constraints are satisfied.</p>
+
+<ul>
+  <li>
+    <script type="math/tex; mode=display">1 \le n \le 1000</script>
+  </li>
+  <li>
+    <script type="math/tex; mode=display">1 \le m \le min(50,n)</script>
+  </li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>중간값을 이용해서 해결</li>
+  <li><code class="highlighter-rouge">l</code>, <code class="highlighter-rouge">r</code>은 각각 <code class="highlighter-rouge">subarray</code>의 최대 값과, 전체 배열의 최대값을 의미 한다.</li>
+  <li>만약 <code class="highlighter-rouge">m==1</code> 이라면, 전체 배열을 의미 하니까 <code class="highlighter-rouge">r</code>이 정답.</li>
+  <li>만약 <code class="highlighter-rouge">m==nums.length</code> 라면, 원소 하나하나가 <code class="highlighter-rouge">subarray</code>라는 의미니까 <code class="highlighter-rouge">l</code>이 정답.</li>
+  <li><code class="highlighter-rouge">m</code>으로 분할한 <code class="highlighter-rouge">각 subarray의 총합(s)</code>의 범위는 <script type="math/tex">l \le s \le r</script>이 되고, 이중 <code class="highlighter-rouge">m</code>으로 분할되면서 작은 값을 찾으면 된다. 위 예제를 다음과 같은 흐름으로 찾을 수 있다.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre>  <span class="n">nums</span> <span class="o">=</span> <span class="o">[</span><span class="mi">7</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">10</span><span class="o">,</span><span class="mi">8</span><span class="o">],</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="n">l</span><span class="o">=</span><span class="mi">10</span><span class="o">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">7</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">5</span><span class="o">+</span><span class="mi">10</span><span class="o">+</span><span class="mi">8</span><span class="o">=</span><span class="mi">32</span><span class="o">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="o">~</span><span class="mi">32</span>    
+  <span class="mi">1</span><span class="o">:</span>
+      <span class="n">mid</span><span class="o">=(</span><span class="mi">10</span><span class="o">+</span><span class="mi">32</span><span class="o">)/</span><span class="mi">2</span><span class="o">=</span><span class="mi">21</span>      
+      <span class="o">[</span><span class="mi">7</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">5</span><span class="o">][</span><span class="mi">10</span><span class="o">,</span><span class="mi">8</span><span class="o">]</span>
+      <span class="n">subarray</span> <span class="err">갯수가</span> <span class="mi">7</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">5</span> <span class="err">에서</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">10</span><span class="o">+</span><span class="mi">8</span> <span class="err">에서</span> <span class="mi">2</span><span class="err">가</span> <span class="err">되면서</span> <span class="n">subarray</span><span class="err">의</span> <span class="err">합이</span> <span class="mi">21</span><span class="err">이</span> <span class="err">안되기</span> <span class="err">때문에</span>
+      <span class="n">r</span><span class="o">=</span><span class="mi">21</span>
+  <span class="mi">2</span><span class="o">:</span>
+      <span class="n">mid</span><span class="o">=(</span><span class="mi">10</span><span class="o">+</span><span class="mi">21</span><span class="o">)/</span><span class="mi">2</span><span class="o">=</span><span class="mi">15</span>
+      <span class="o">[</span><span class="mi">7</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">5</span><span class="o">][</span><span class="mi">10</span><span class="o">][</span><span class="mi">8</span><span class="o">]</span>
+      <span class="n">subarray</span> <span class="err">갯수가</span> <span class="mi">7</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">5</span> <span class="err">에서</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">10</span><span class="err">에서</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">8</span><span class="err">에서</span> <span class="mi">3</span><span class="err">이</span> <span class="err">되면서</span> <span class="n">m</span> <span class="err">보다</span> <span class="err">커져서</span>
+      <span class="n">l</span><span class="o">=</span><span class="mi">16</span>
+  <span class="mi">3</span><span class="o">:</span>
+      <span class="n">mid</span><span class="o">=(</span><span class="mi">16</span><span class="o">+</span><span class="mi">21</span><span class="o">)/</span><span class="mi">2</span><span class="o">=</span><span class="mi">18</span>
+      <span class="o">[</span><span class="mi">7</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">5</span><span class="o">][</span><span class="mi">10</span><span class="o">,</span><span class="mi">8</span><span class="o">]</span>
+      <span class="n">subarray</span> <span class="err">갯수가</span> <span class="mi">7</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">5</span> <span class="err">에서</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">10</span><span class="o">+</span><span class="mi">8</span> <span class="err">에서</span> <span class="mi">2</span><span class="err">가</span> <span class="err">되면서</span> <span class="n">subarray</span><span class="err">의</span> <span class="err">합이</span> <span class="mi">18</span><span class="err">이</span> <span class="err">안되기</span> <span class="err">때문에</span>
+      <span class="n">r</span><span class="o">=</span><span class="mi">18</span>
+  <span class="mi">4</span><span class="o">:</span>
+      <span class="n">mid</span><span class="o">=(</span><span class="mi">16</span><span class="o">+</span><span class="mi">18</span><span class="o">)/</span><span class="mi">2</span><span class="o">=</span><span class="mi">17</span>
+      <span class="o">[</span><span class="mi">7</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">5</span><span class="o">][</span><span class="mi">10</span><span class="o">,</span><span class="mi">8</span><span class="o">]</span>
+      <span class="n">subarray</span> <span class="err">갯수가</span> <span class="mi">7</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">5</span> <span class="err">에서</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">10</span><span class="err">에서</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">8</span><span class="err">에서</span> <span class="mi">3</span><span class="err">이</span> <span class="err">되면서</span> <span class="n">m</span> <span class="err">보다</span> <span class="err">커져서</span>
+      <span class="n">l</span><span class="o">=</span><span class="mi">18</span>
+  <span class="n">l</span><span class="err">과</span> <span class="n">r</span><span class="err">이</span> <span class="err">동일해</span> <span class="err">졌기</span> <span class="err">때문에</span><span class="o">,</span> <span class="err">반복</span> <span class="err">종료</span> <span class="err">정답은</span> <span class="mi">18</span>         
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">splitArray</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">m</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">n</span><span class="o">);</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="n">n</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">)</span>
+            <span class="k">return</span> <span class="n">r</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">m</span> <span class="o">)</span>
+            <span class="k">return</span> <span class="n">l</span><span class="o">;</span>
+        
+        <span class="k">while</span> <span class="o">(</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="o">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="o">)/</span><span class="mi">2</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">canSplit</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">m</span><span class="o">,</span> <span class="n">mid</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">mid</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">l</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">boolean</span> <span class="nf">canSplit</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">m</span><span class="o">,</span> <span class="kt">int</span> <span class="n">max</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">split_count</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nums</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">sum</span> <span class="o">+=</span> <span class="n">n</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">sum</span> <span class="o">&gt;</span> <span class="n">max</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">sum</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+                <span class="n">split_count</span><span class="o">++;</span>
+                
+                <span class="k">if</span> <span class="o">(</span> <span class="n">split_count</span> <span class="o">&gt;</span> <span class="n">m</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>        
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

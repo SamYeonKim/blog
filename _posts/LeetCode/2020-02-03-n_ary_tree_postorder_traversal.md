@@ -1,8 +1,9 @@
 ---
-layout: post
 title: N-ary Tree Postorder Traversal
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,7 +12,7 @@ Given an n-ary tree, return the postorder traversal of its nodes' values.
 
 Nary-Tree input serialization is represented in their level order traversal, each group of children is separated by the null value (See examples).
 
-#### Example 1:
+## Example 1
 
 ```swift
       1
@@ -24,7 +25,7 @@ Input: root = [1,null,3,2,4,null,5,6]
 Output: [5,6,3,2,4,1]
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
         1

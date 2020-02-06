@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Replace Words
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,7 +14,7 @@ Now, given a dictionary consisting of many roots and a sentence. You need to rep
 
 You need to output the sentence after the replacement.
 
-#### Example :
+## Example
 
 ```swift
 Input: dict = ["cat", "bat", "rat"]
@@ -21,7 +22,7 @@ sentence = "the cattle was rattled by the battery"
 Output: "the cat was rat by the bat"
 ```
 
-#### Note :
+## Note
 
 * The input will only have lower-case letters.
 * 1 <= dict words number <= 1000

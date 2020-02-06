@@ -1,0 +1,12 @@
+I"_<ul class="toc__menu">
+  <li><a href="#definition">Definition</a></li>
+  <li><a href="#keywod">Keywod</a></li>
+  <li><a href="#example">Example</a>
+    <ul>
+      <li><a href="#recurrence-relation">recurrence relation</a></li>
+      <li><a href="#base-case">base case</a></li>
+    </ul>
+  </li>
+  <li><a href="#memoization">Memoization</a></li>
+</ul>
+:ET

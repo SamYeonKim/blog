@@ -1,0 +1,329 @@
+I"�X<h1 id="problem">Problem</h1>
+
+<p>In English, we have a concept called root, which can be followed by some other words to form another longer word - let’s call this word successor. For example, the root an, followed by other, which can form another word another.</p>
+
+<p>Now, given a dictionary consisting of many roots and a sentence. You need to replace all the successor in the sentence with the root forming it. If a successor has many roots can form it, replace it with the root with the shortest length.</p>
+
+<p>You need to output the sentence after the replacement.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="p">[</span><span class="s">"cat"</span><span class="p">,</span> <span class="s">"bat"</span><span class="p">,</span> <span class="s">"rat"</span><span class="p">]</span>
+<span class="n">sentence</span> <span class="o">=</span> <span class="s">"the cattle was rattled by the battery"</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="s">"the cat was rat by the bat"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>The input will only have lower-case letters.</li>
+  <li>1 &lt;= dict words number &lt;= 1000</li>
+  <li>1 &lt;= sentence words number &lt;= 1000</li>
+  <li>1 &lt;= root length &lt;= 100</li>
+  <li>1 &lt;= sentence words length &lt;= 1000</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">dict</code>를 이용해서, <code class="highlighter-rouge">Trie</code>를 구성하자.</li>
+  <li><code class="highlighter-rouge">sentence</code>를 단어 기준으로 분리하고, 각 단어에 대해서 <code class="highlighter-rouge">Trie</code>에서 <code class="highlighter-rouge">prefix</code>를 찾자.</li>
+  <li>만약 <code class="highlighter-rouge">prefix</code>를 찾았다면, 해당 단어를 반환, 못 찾았다면 원래 단어를 반환</li>
+  <li>반환된 단어들을 이용해서 하나의 문장을 구성하자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">class</span> <span class="nc">Trie</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">isWord</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nc">Trie</span><span class="o">[]</span> <span class="n">children</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nf">Trie</span><span class="o">(){</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">[</span><span class="mi">26</span><span class="o">];</span>
+        <span class="o">}</span>    
+        
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">insert</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Trie</span> <span class="n">cur</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+            
+            <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">word</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+                <span class="o">}</span>
+                
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>
+            <span class="o">}</span>
+            
+            <span class="n">cur</span><span class="o">.</span><span class="na">isWord</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">replace</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span><span class="o">)</span> <span class="o">{</span>
+            
+            <span class="nc">Trie</span> <span class="n">cur</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+            <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">word</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">()){</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="n">word</span><span class="o">;</span>
+                <span class="o">}</span>
+                
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>
+                <span class="n">i</span><span class="o">++;</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">isWord</span> <span class="o">)</span>
+                    <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="c1">//check exist</span>
+            <span class="c1">//not = return word</span>
+            <span class="c1">//ok = rebuild word</span>
+            <span class="k">return</span> <span class="n">word</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">replaceWords</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">dict</span><span class="o">,</span> <span class="nc">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Trie</span> <span class="n">trie</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+        
+        <span class="k">for</span><span class="o">(</span> <span class="nc">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">dict</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">trie</span><span class="o">.</span><span class="na">insert</span><span class="o">(</span><span class="n">word</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">words</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">" "</span><span class="o">);</span>
+        
+        <span class="nc">StringBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">words</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">String</span> <span class="n">word</span> <span class="o">=</span> <span class="n">words</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="n">word</span><span class="o">);</span>    
+            
+            <span class="n">builder</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">word</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">words</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">builder</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">" "</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>        
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">String::split</code> 과 <code class="highlighter-rouge">StringBuilder</code>를 사용해서 재 조합하는 대신 <code class="highlighter-rouge">String::substring</code>을 이용하도록 변경</li>
+  <li><code class="highlighter-rouge">start, end</code>를 이용, 각각 <code class="highlighter-rouge">sentence</code>에서 단어의 <code class="highlighter-rouge">시작 index</code>와 <code class="highlighter-rouge">끝 + 1 index</code>를 의미</li>
+  <li><code class="highlighter-rouge">Trie::replace</code>를 <code class="highlighter-rouge">Trie::getPrefixLength</code> 로 변경하고, 기능을 특정 단어에 대해서 변경해야 할 단어가 있는지 확인후 변경할 것이 있다면, 변경해야 하는 단어의 길이를 반환.</li>
+  <li>만약 <code class="highlighter-rouge">Trie::getPrefixLength</code>의 반환 값이 0보다 크다면, 기존 단어에서 필요 없는 부분을 잘라내야 한다. 그래서 <code class="highlighter-rouge">0 ~ start + len</code> 부분과 <code class="highlighter-rouge">end ~</code> 부분을 합쳐서 새로운 <code class="highlighter-rouge">sentence</code>를 만든다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">class</span> <span class="nc">Trie</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">isWord</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nc">Trie</span><span class="o">[]</span> <span class="n">children</span><span class="o">;</span>
+        
+        <span class="kd">public</span> <span class="nf">Trie</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">[</span><span class="mi">26</span><span class="o">];</span>
+        <span class="o">}</span>    
+        
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">insert</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Trie</span> <span class="n">cur</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+            
+            <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">word</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+                <span class="o">}</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>
+            <span class="o">}</span>                    
+            
+            <span class="n">cur</span><span class="o">.</span><span class="na">isWord</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getPrefixLength</span><span class="o">(</span><span class="nc">String</span> <span class="n">sentence</span><span class="o">,</span> <span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="nc">String</span> <span class="n">word</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">start</span><span class="o">,</span><span class="n">end</span><span class="o">);</span>
+            
+            <span class="nc">Trie</span> <span class="n">cur</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+            
+            <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            
+            <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">word</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+                <span class="o">}</span>
+                
+                <span class="n">len</span><span class="o">++;</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">isWord</span> <span class="o">)</span>
+                    <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>                    
+            
+            <span class="k">return</span> <span class="n">len</span><span class="o">;</span>            
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">replaceWords</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">dict</span><span class="o">,</span> <span class="nc">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Trie</span> <span class="n">trie</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">dict</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">trie</span><span class="o">.</span><span class="na">insert</span><span class="o">(</span><span class="n">word</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">end</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>    
+        
+        <span class="k">while</span><span class="o">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">sentence</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="sc">' '</span><span class="o">,</span> <span class="n">start</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">end</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
+            <span class="o">}</span>
+            
+            <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="na">getPrefixLength</span><span class="o">(</span><span class="n">sentence</span><span class="o">,</span> <span class="n">start</span><span class="o">,</span> <span class="n">end</span> <span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">len</span><span class="o">)</span> <span class="o">+</span> <span class="n">sentence</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">end</span><span class="o">);</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>    
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">sentence</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

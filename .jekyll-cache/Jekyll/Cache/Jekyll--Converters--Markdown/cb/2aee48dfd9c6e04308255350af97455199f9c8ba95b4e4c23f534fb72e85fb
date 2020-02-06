@@ -1,0 +1,89 @@
+I"><h1 id="problem">Problem</h1>
+
+<p>Given an array of strings, group anagrams together.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="p">[</span><span class="s">"eat"</span><span class="p">,</span> <span class="s">"tea"</span><span class="p">,</span> <span class="s">"tan"</span><span class="p">,</span> <span class="s">"ate"</span><span class="p">,</span> <span class="s">"nat"</span><span class="p">,</span> <span class="s">"bat"</span><span class="p">],</span>
+<span class="kt">Output</span><span class="p">:</span>
+<span class="p">[</span>
+  <span class="p">[</span><span class="s">"ate"</span><span class="p">,</span><span class="s">"eat"</span><span class="p">,</span><span class="s">"tea"</span><span class="p">],</span>
+  <span class="p">[</span><span class="s">"nat"</span><span class="p">,</span><span class="s">"tan"</span><span class="p">],</span>
+  <span class="p">[</span><span class="s">"bat"</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>All inputs will be in lowercase.</li>
+  <li>The order of your output does not matter.</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">HashMap</code>을 이용하자. 문자열의 정렬된 형태의 문자열을 키로 하고, 문자열의 리스트를 값으로 할당.</li>
+  <li><code class="highlighter-rouge">strs</code>를 순회하면서, <code class="highlighter-rouge">strs[i]</code>를 정렬한다.</li>
+  <li><code class="highlighter-rouge">정렬된 strs[i]</code>가 <code class="highlighter-rouge">HashMap</code>의 키로 존재 하는지 확인 하고, 없다면 <code class="highlighter-rouge">List&lt;String&gt;</code>을 만들어서 <code class="highlighter-rouge">HashMap</code>과 결과 리스트에 추가 한다. <code class="highlighter-rouge">List&lt;String&gt;</code>를 참조 타입이기 때문에 수정하기 용이 하다.</li>
+  <li><code class="highlighter-rouge">HashMap</code>에서 <code class="highlighter-rouge">정렬된 strs[i]</code>의 값에 <code class="highlighter-rouge">strs[i]</code>를 넣으면 된다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="nf">groupAnagrams</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">strs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;</span> <span class="n">hashmap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="k">for</span> <span class="o">(</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">:</span> <span class="n">strs</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="kt">char</span><span class="o">[]</span> <span class="n">arr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">();</span>
+            
+            <span class="nc">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">arr</span><span class="o">);</span>
+            
+            <span class="nc">String</span> <span class="n">sorted_str</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">arr</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="n">hashmap</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">sorted_str</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">sub_result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>                
+                <span class="n">hashmap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">sorted_str</span><span class="o">,</span> <span class="n">sub_result</span><span class="o">);</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sub_result</span><span class="o">);</span>                
+            <span class="o">}</span>
+            
+            <span class="n">hashmap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">sorted_str</span><span class="o">).</span><span class="na">add</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

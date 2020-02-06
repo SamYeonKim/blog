@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Longest Substring Without Repeating Characters
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a string, find the length of the longest substring without repeating characters.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: "abcabcbb"
@@ -17,7 +18,7 @@ Output: 3
 Explanation: The answer is "abc", with the length of 3.
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: "bbbbb"
@@ -25,7 +26,7 @@ Output: 1
 Explanation: The answer is "b", with the length of 1.
 ```
 
-#### Example 3:
+## Example 3
 
 ```swift
 Input: "pwwkew"

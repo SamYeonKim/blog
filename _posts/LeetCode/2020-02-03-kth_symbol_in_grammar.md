@@ -1,8 +1,9 @@
 ---
-layout: post
 title: K-th Symbol in Grammar
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,7 +12,7 @@ On the first row, we write a 0. Now in every subsequent row, we look at the prev
 
 Given row N and index K, return the K-th indexed symbol in row N. (The values of K are 1-indexed.) (1 indexed).
 
-#### Example :
+## Example
 
 ```swift
 Input: N = 1, K = 1

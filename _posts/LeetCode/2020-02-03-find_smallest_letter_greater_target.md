@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Find Smallest Letter Greater than Target
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,13 +12,13 @@ Given a list of sorted characters letters containing only lowercase letters, and
 
 Letters also wrap around. For example, if the target is target = 'z' and letters = ['a', 'b'], the answer is 'a'.
 
-#### Note:
+## Note
 
 1. `letters` has a length in range `[2, 10000]`.
 2. `letters` consists of lowercase letters, and contains at least 2 unique letters.
 3. `target` is a lowercase letter.
 
-#### Example:
+## Example
 
 ```swift
 Input:

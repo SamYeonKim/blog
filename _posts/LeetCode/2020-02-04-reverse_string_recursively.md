@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Reverse String Recursively
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,14 +14,14 @@ Do not allocate extra space for another array, you must do this by modifying the
 
 You may assume all the characters consist of printable ascii characters.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: ["h","e","l","l","o"]
 Output: ["o","l","l","e","h"]
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: ["H","a","n","n","a","h"]

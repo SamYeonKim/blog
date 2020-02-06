@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Binary Tree Inorder Traversal
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a binary tree, return the inorder traversal of its nodes' values.
 
-#### Example :
+## Example
 
 ```swift
 Input: [1,null,2,3]

@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Find Duplicate Subtrees
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,7 +12,7 @@ Given a binary tree, return all duplicate subtrees. For each kind of duplicate s
 
 Two trees are duplicate if they have the same structure with same node values.
 
-#### Example :
+## Example
 
 ```swift
         1

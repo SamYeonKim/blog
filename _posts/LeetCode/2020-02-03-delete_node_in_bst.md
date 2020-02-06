@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Delete Node in a BST
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -14,7 +15,7 @@ Basically, the deletion can be divided into two stages:
 Search for a node to remove.
 If the node is found, delete the node.
 
-#### Example :
+## Example
 
 ```swift
 Input: 

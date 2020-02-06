@@ -1,0 +1,343 @@
+I"o<h1 id="problem">Problem</h1>
+
+<p>Given a 2D board and a list of words from the dictionary, find all words in the board.</p>
+
+<p>Each word must be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> 
+<span class="n">board</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">[</span><span class="sc">'o'</span><span class="p">,</span><span class="sc">'a'</span><span class="p">,</span><span class="sc">'a'</span><span class="p">,</span><span class="sc">'n'</span><span class="p">],</span>
+  <span class="p">[</span><span class="sc">'e'</span><span class="p">,</span><span class="sc">'t'</span><span class="p">,</span><span class="sc">'a'</span><span class="p">,</span><span class="sc">'e'</span><span class="p">],</span>
+  <span class="p">[</span><span class="sc">'i'</span><span class="p">,</span><span class="sc">'h'</span><span class="p">,</span><span class="sc">'k'</span><span class="p">,</span><span class="sc">'r'</span><span class="p">],</span>
+  <span class="p">[</span><span class="sc">'i'</span><span class="p">,</span><span class="sc">'f'</span><span class="p">,</span><span class="sc">'l'</span><span class="p">,</span><span class="sc">'v'</span><span class="p">]</span>
+<span class="p">]</span>
+<span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">"oath"</span><span class="p">,</span><span class="s">"pea"</span><span class="p">,</span><span class="s">"eat"</span><span class="p">,</span><span class="s">"rain"</span><span class="p">]</span>
+
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="s">"eat"</span><span class="p">,</span><span class="s">"oath"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>All inputs are consist of lowercase letters <code class="highlighter-rouge">a-z</code></li>
+  <li>The values of <code class="highlighter-rouge">words</code> are distinct</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">board</code>의 원소들을 순회 하면서 각 원소의 사방으로 이웃한 노드를 <code class="highlighter-rouge">Trie</code>로 구성한다.</li>
+  <li>반복횟수가 너무 많은 문제가 있다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Trie</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">use</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">char</span> <span class="n">val</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Trie</span><span class="o">&gt;</span> <span class="n">neighbors</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Trie</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">search</span><span class="o">(</span><span class="nc">Trie</span> <span class="n">trie</span><span class="o">,</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">array</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">array</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">index</span> <span class="o">)</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        
+        <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">array</span><span class="o">[</span><span class="n">index</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span> <span class="nc">Trie</span> <span class="n">next</span> <span class="o">:</span> <span class="n">trie</span><span class="o">.</span><span class="na">neighbors</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">next</span><span class="o">.</span><span class="na">val</span> <span class="o">!=</span> <span class="n">c</span> <span class="o">)</span> <span class="k">continue</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">next</span><span class="o">.</span><span class="na">use</span> <span class="o">)</span> <span class="k">continue</span><span class="o">;</span>
+            <span class="n">next</span><span class="o">.</span><span class="na">use</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">search</span><span class="o">(</span><span class="n">next</span><span class="o">,</span> <span class="n">array</span><span class="o">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">next</span><span class="o">.</span><span class="na">use</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>                  
+            <span class="o">}</span> 
+            
+            <span class="n">next</span><span class="o">.</span><span class="na">use</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>            
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">findWords</span><span class="o">(</span><span class="kt">char</span><span class="o">[][]</span> <span class="n">board</span><span class="o">,</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Trie</span> <span class="n">trie</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">(</span><span class="sc">'-'</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">height</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">width</span><span class="o">=</span><span class="n">board</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">length</span><span class="o">;</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">y</span><span class="o">&lt;</span><span class="n">height</span><span class="o">;</span><span class="n">y</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">x</span><span class="o">&lt;</span><span class="n">width</span><span class="o">;</span><span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">trie</span><span class="o">.</span><span class="na">neighbors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Trie</span><span class="o">(</span><span class="n">board</span><span class="o">[</span><span class="n">y</span><span class="o">][</span><span class="n">x</span><span class="o">]));</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">y</span><span class="o">&lt;</span><span class="n">height</span><span class="o">;</span><span class="n">y</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">x</span><span class="o">&lt;</span><span class="n">width</span><span class="o">;</span><span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="kt">int</span> <span class="n">cur_idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">y</span><span class="o">;</span>
+                <span class="nc">Trie</span> <span class="n">center</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="na">neighbors</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">cur_idx</span><span class="o">);</span>
+                
+                <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                    <span class="kt">int</span> <span class="n">new_x</span><span class="o">=</span><span class="n">x</span><span class="o">;</span>
+                    <span class="kt">int</span> <span class="n">new_y</span><span class="o">=</span><span class="n">y</span><span class="o">;</span>
+                    <span class="kt">int</span> <span class="n">neighbor_idx</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+                    <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>
+                        <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>                        
+                    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">new_y</span> <span class="o">=</span> <span class="n">y</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="n">new_y</span> <span class="o">=</span> <span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span>
+                    <span class="o">}</span>
+                    
+                    <span class="k">if</span> <span class="o">(</span> <span class="n">new_x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">new_x</span> <span class="o">&gt;=</span> <span class="n">width</span> <span class="o">||</span> <span class="n">new_y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">new_y</span> <span class="o">&gt;=</span> <span class="n">height</span> <span class="o">)</span>
+                        <span class="k">continue</span><span class="o">;</span>
+                    
+                    <span class="n">neighbor_idx</span> <span class="o">=</span> <span class="n">new_x</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">new_y</span><span class="o">;</span>
+                    
+                    <span class="k">if</span> <span class="o">(</span> <span class="n">neighbor_idx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">neighbor_idx</span> <span class="o">&gt;=</span> <span class="n">trie</span><span class="o">.</span><span class="na">neighbors</span><span class="o">.</span><span class="na">size</span><span class="o">())</span>
+                        <span class="k">continue</span><span class="o">;</span>
+                    
+                    <span class="n">center</span><span class="o">.</span><span class="na">neighbors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">trie</span><span class="o">.</span><span class="na">neighbors</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">neighbor_idx</span><span class="o">));</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">words</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">trie</span><span class="o">,</span> <span class="n">word</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(),</span> <span class="mi">0</span><span class="o">)</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">word</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>    
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">words</code>의 원소들을 이용해서 <code class="highlighter-rouge">Trie</code>를 구성하고, <code class="highlighter-rouge">board</code>에 맞는것을 찾자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Trie</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">word</span><span class="o">;</span>    
+    <span class="kd">public</span> <span class="nc">Trie</span><span class="o">[]</span> <span class="n">children</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Trie</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">[</span><span class="mi">26</span><span class="o">];</span>
+    <span class="o">}</span>   
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">insert</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Trie</span> <span class="n">cur</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">str</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+                <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+            
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>
+        <span class="o">}</span>
+        
+        <span class="n">cur</span><span class="o">.</span><span class="na">word</span> <span class="o">=</span> <span class="n">str</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">findWords</span><span class="o">(</span><span class="kt">char</span><span class="o">[][]</span> <span class="n">board</span><span class="o">,</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Trie</span> <span class="n">trie</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+        
+        <span class="k">for</span><span class="o">(</span> <span class="nc">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">words</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">trie</span><span class="o">.</span><span class="na">insert</span><span class="o">(</span><span class="n">word</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">board</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">board</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">length</span><span class="o">;</span><span class="n">j</span><span class="o">++)</span>
+                <span class="n">search</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="n">trie</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>   
+    
+    <span class="kt">void</span> <span class="nf">search</span><span class="o">(</span><span class="kt">char</span><span class="o">[][]</span> <span class="n">board</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="nc">Trie</span> <span class="n">trie</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">board</span><span class="o">.</span><span class="na">length</span> <span class="o">||</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">board</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">length</span> <span class="o">||</span> <span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">==</span> <span class="sc">'@'</span> <span class="o">||</span> <span class="n">trie</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+            <span class="k">return</span><span class="o">;</span>
+        
+        <span class="n">trie</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]-</span><span class="sc">'a'</span><span class="o">];</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+            <span class="k">return</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span><span class="o">.</span><span class="na">word</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">trie</span><span class="o">.</span><span class="na">word</span><span class="o">);</span>
+            <span class="n">trie</span><span class="o">.</span><span class="na">word</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">];</span>
+        <span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]=</span><span class="sc">'@'</span><span class="o">;</span>        <span class="c1">//임의의 값으로 치환하자. 이미 방문 했다는 의미이다.</span>
+        <span class="n">search</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span><span class="n">j</span><span class="o">,</span> <span class="n">trie</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="n">search</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span><span class="n">j</span><span class="o">,</span> <span class="n">trie</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="n">search</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">trie</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="n">search</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="n">trie</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]=</span><span class="n">c</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

@@ -1,0 +1,107 @@
+I"R<h1 id="problem">Problem</h1>
+
+<p>Given an array where elements are sorted in ascending order, convert it to a height balanced BST.</p>
+
+<p>For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kt">Given</span> <span class="n">the</span> <span class="n">sorted</span> <span class="nv">array</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span>
+
+<span class="kt">One</span> <span class="n">possible</span> <span class="n">answer</span> <span class="nv">is</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">which</span> <span class="n">represents</span> <span class="n">the</span> <span class="n">following</span> <span class="n">height</span> <span class="n">balanced</span> <span class="kt">BST</span><span class="p">:</span>
+
+      <span class="mi">0</span>
+     <span class="o">/</span> <span class="p">\</span>
+   <span class="o">-</span><span class="mi">3</span>   <span class="mi">9</span>
+   <span class="o">/</span>   <span class="o">/</span>
+ <span class="o">-</span><span class="mi">10</span>  <span class="mi">5</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>재귀를 이용해서, 중간 index의 값을 해당 뎁스의 root로 사용하고, right, left를 추가한다.</li>
+  <li>기본적으로 이진탐색으로 mid, start, end index를 구한다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">TreeNode</span> <span class="nf">sortedArrayToBST</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>        
+        <span class="nc">TreeNode</span> <span class="n">root</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        
+        <span class="n">root</span> <span class="o">=</span> <span class="nc">AddNode</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+        
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>            
+    <span class="o">}</span>
+    
+    <span class="nc">TreeNode</span> <span class="nf">AddNode</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">start_idx</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end_idx</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">start_idx</span> <span class="o">&gt;</span> <span class="n">end_idx</span> <span class="o">)</span>  <span class="c1">//start가 end 보다 커질경우는 더이상 찾을 값이 없다는 의미 이기 때문에 null로 처리</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        
+        <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="o">(</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">end_idx</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>    <span class="c1">//중간 index를 찾고 </span>
+        <span class="nc">TreeNode</span> <span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeNode</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]);</span>    <span class="c1">//현재 뎁스의 root로 사용</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">start_idx</span> <span class="o">==</span> <span class="n">end_idx</span> <span class="o">)</span> <span class="c1">//start와 end가 같다는건 mid를 제외한 다른 원소가 없다는 의미</span>
+            <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+        
+        <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="nc">AddNode</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">mid</span> <span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="n">end_idx</span><span class="o">);</span>    <span class="c1">//mid +1 ~ end 까지를 이용해서 right를 채우고</span>
+        <span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="nc">AddNode</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">start_idx</span><span class="o">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>  <span class="c1">//start ~ mid -1 까지를 이용해서 left를 채운다.</span>
+        
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+        
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

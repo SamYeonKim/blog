@@ -1,0 +1,71 @@
+I"�<h1 id="problem">Problem</h1>
+
+<p>Reverse a singly linked list iteratively.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">2</span><span class="o">-&gt;</span><span class="mi">3</span><span class="o">-&gt;</span><span class="mi">4</span><span class="o">-&gt;</span><span class="mi">5</span><span class="o">-&gt;</span><span class="kt">NULL</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">5</span><span class="o">-&gt;</span><span class="mi">4</span><span class="o">-&gt;</span><span class="mi">3</span><span class="o">-&gt;</span><span class="mi">2</span><span class="o">-&gt;</span><span class="mi">1</span><span class="o">-&gt;</span><span class="kt">NULL</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">cur</code> 가 <code class="highlighter-rouge">null</code>이 아닐때 까지 순회돌자.</li>
+  <li><code class="highlighter-rouge">prev</code>에 <code class="highlighter-rouge">cur</code>을 할당하기 전까진 이전 노드를 가리키기 때문에, <code class="highlighter-rouge">cur.next = prev</code>를 하게 되면 현재 노드의 이전 노드를 다음 노드로 할당한다.</li>
+  <li>마지막 노드 까지 간 이후 <code class="highlighter-rouge">while문</code>을 나오게되면 현재 <code class="highlighter-rouge">prev</code>가 가리키고 있는건 마지막 노드이자 <code class="highlighter-rouge">Head</code>를 의미 한다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">reverseList</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        
+        <span class="nc">ListNode</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">prev</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="nc">ListNode</span> <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">prev</span><span class="o">;</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>   
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">prev</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

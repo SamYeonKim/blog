@@ -1,0 +1,72 @@
+I"n<h1 id="problem">Problem</h1>
+
+<p>Given a positive integer num, write a function which returns True if num is a perfect square else False.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">16</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">14</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="kc">false</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<p>Do not use any built-in library function such as sqrt.</p>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>특정 수의 제곱수 인지 확인 하는 문제.</li>
+  <li><code class="highlighter-rouge">low</code>, <code class="highlighter-rouge">high</code>의 중간값 <code class="highlighter-rouge">mid</code>를 구한다.</li>
+  <li><code class="highlighter-rouge">num</code>을 <code class="highlighter-rouge">mid</code>로 나눈값이 <code class="highlighter-rouge">mid</code>보다 작을 경우엔 <code class="highlighter-rouge">num</code>의 제곱근이 <code class="highlighter-rouge">mid</code>보다 크다는 것이기 때문에, <code class="highlighter-rouge">low</code>를 <code class="highlighter-rouge">mid+1</code>값으로 할당한다.</li>
+  <li><code class="highlighter-rouge">num</code>을 <code class="highlighter-rouge">mid</code>로 나눈값이 <code class="highlighter-rouge">mid</code>보다 클 경우엔 <code class="highlighter-rouge">num</code>의 제곱근이 <code class="highlighter-rouge">mid</code>보다 작다는 것이기 때문에, <code class="highlighter-rouge">high</code>를 <code class="highlighter-rouge">mid-1</code>값으로 할당한다.</li>
+  <li>최종적으로 <code class="highlighter-rouge">low</code>는 <code class="highlighter-rouge">num</code>의 제곱근이거나, 가장 가까운 수가 된다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isPerfectSquare</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">high</span><span class="o">=</span><span class="n">num</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span><span class="n">low</span> <span class="o">&lt;=</span> <span class="n">high</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">low</span> <span class="o">+</span> <span class="o">((</span><span class="n">high</span><span class="o">-</span><span class="n">low</span><span class="o">)/</span><span class="mi">2</span><span class="o">);</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">mid</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">/</span><span class="n">mid</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">low</span><span class="o">=</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">high</span><span class="o">=</span><span class="n">mid</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">low</span><span class="o">*</span><span class="n">low</span> <span class="o">==</span> <span class="n">num</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

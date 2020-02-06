@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Find Minimum in Rotated Sorted Array
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -15,14 +16,14 @@ Find the minimum element.
 
 You may assume no duplicate exists in the array.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: [3,4,5,1,2] 
 Output: 1
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: [4,5,6,7,0,1,2]

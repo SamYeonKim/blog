@@ -1,0 +1,166 @@
+I"�)<h1 id="problem">Problem</h1>
+
+<p>Design a data structure that supports the following two operations:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">addWord</span><span class="o">(</span><span class="n">word</span><span class="o">)</span>
+<span class="kt">boolean</span> <span class="nf">search</span><span class="o">(</span><span class="n">word</span><span class="o">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent any one letter.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="nf">addWord</span><span class="p">(</span><span class="s">"bad"</span><span class="p">)</span>
+<span class="nf">addWord</span><span class="p">(</span><span class="s">"dad"</span><span class="p">)</span>
+<span class="nf">addWord</span><span class="p">(</span><span class="s">"mad"</span><span class="p">)</span>
+<span class="nf">search</span><span class="p">(</span><span class="s">"pad"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">false</span>
+<span class="nf">search</span><span class="p">(</span><span class="s">"bad"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">true</span>
+<span class="nf">search</span><span class="p">(</span><span class="s">".ad"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">true</span>
+<span class="nf">search</span><span class="p">(</span><span class="s">"b.."</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">true</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>You may assume that all words are consist of lowercase letters <code class="highlighter-rouge">a-z</code></li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">search</code> 에선 재귀 함수를 이용하자.</li>
+  <li>만약 <code class="highlighter-rouge">word</code>의 문자가 <code class="highlighter-rouge">.</code>이라면, 현재 <code class="highlighter-rouge">Trie</code>의 자식들을 순회하자. 하나라도 <code class="highlighter-rouge">true</code>라면 정답</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Trie</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">isWord</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nc">Trie</span><span class="o">[]</span> <span class="n">children</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">Trie</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">[</span><span class="mi">26</span><span class="o">];</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">WordDictionary</span> <span class="o">{</span>
+    <span class="nc">Trie</span> <span class="n">root</span><span class="o">;</span>
+    <span class="cm">/** Initialize your data structure here. */</span>
+    <span class="kd">public</span> <span class="nf">WordDictionary</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>
+    <span class="o">}</span>
+    
+    <span class="cm">/** Adds a word into the data structure. */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addWord</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Trie</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>
+        <span class="kt">char</span><span class="o">[]</span> <span class="n">array</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">array</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Trie</span><span class="o">();</span>                
+            <span class="o">}</span>
+            
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">];</span>   
+        <span class="o">}</span>
+        
+        <span class="n">cur</span><span class="o">.</span><span class="na">isWord</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="cm">/** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">search</span><span class="o">(</span><span class="nc">String</span> <span class="n">word</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">search</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">word</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(),</span> <span class="mi">0</span><span class="o">);</span>        
+    <span class="o">}</span>
+    
+    <span class="kt">boolean</span> <span class="nf">search</span><span class="o">(</span><span class="nc">Trie</span> <span class="n">trie</span><span class="o">,</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">array</span><span class="o">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="o">)</span> <span class="o">{</span> 
+        <span class="k">if</span> <span class="o">(</span> <span class="n">trie</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">idx</span> <span class="o">==</span> <span class="n">array</span><span class="o">.</span><span class="na">length</span> <span class="o">)</span> <span class="k">return</span> <span class="n">trie</span><span class="o">.</span><span class="na">isWord</span><span class="o">;</span>
+            
+        <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">array</span><span class="o">[</span><span class="n">idx</span><span class="o">];</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'.'</span><span class="o">)</span> <span class="o">{</span>        <span class="c1">//모든 자식들 중에 만족하는것이 있는지 확인해야 한다.</span>
+            <span class="k">for</span><span class="o">(</span><span class="nc">Trie</span> <span class="n">t</span> <span class="o">:</span> <span class="n">trie</span><span class="o">.</span><span class="na">children</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">search</span><span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">array</span><span class="o">,</span> <span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="o">)</span> <span class="o">)</span>  <span class="c1">//만족 하는게 있다면 더 이상 확인할 필요 없다.</span>
+                    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>                            
+            <span class="o">}</span>
+            
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>       <span class="c1">//아무것도 만족 하지 않는 다면 false</span>
+        <span class="o">}</span> 
+        <span class="k">return</span> <span class="nf">search</span><span class="o">(</span><span class="n">trie</span><span class="o">.</span><span class="na">children</span><span class="o">[</span><span class="n">c</span><span class="o">-</span><span class="sc">'a'</span><span class="o">],</span> <span class="n">array</span><span class="o">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>        
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

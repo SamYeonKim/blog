@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Minimum Index Sum of Two Lists
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,7 +12,7 @@ Suppose Andy and Doris want to choose a restaurant for dinner, and they both hav
 
 You need to help them find out their common interest with the least list index sum. If there is a choice tie between answers, output all of them with no order requirement. You could assume there always exists an answer.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input:
@@ -21,7 +22,7 @@ Output: ["Shogun"]
 Explanation: The only restaurant they both like is "Shogun".
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input:
@@ -31,7 +32,7 @@ Output: ["Shogun"]
 Explanation: The restaurant they both like and have the least index sum is "Shogun" with index sum 1 (0+1).
 ```
 
-#### Note :
+## Note
 
 * The length of both lists will be in the rang of [1,1000].
 * The length of strings in both lists will be in the range of [1,30].

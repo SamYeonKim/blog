@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Unique Binary Search Trees II
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given an integer n, generate all structurally unique BST's (binary search trees) that store values 1 ... n.
 
-#### Example :
+## Example
 
 ```swift
 Input: 3

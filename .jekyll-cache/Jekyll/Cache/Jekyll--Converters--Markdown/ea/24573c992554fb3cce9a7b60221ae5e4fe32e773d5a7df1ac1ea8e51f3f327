@@ -1,0 +1,156 @@
+I"�2<h1 id="problem">Problem</h1>
+
+<p>Given inorder and postorder traversal of a tree, construct the binary tree</p>
+
+<h2 id="note">Note</h2>
+
+<p>You may assume that duplicates do not exist in the tree.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> 
+<span class="n">inorder</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="n">postorder</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> 
+    <span class="mi">3</span>
+   <span class="o">/</span> <span class="p">\</span>
+  <span class="mi">9</span>  <span class="mi">20</span>
+    <span class="o">/</span>  <span class="p">\</span>
+   <span class="mi">15</span>   <span class="mi">7</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>재귀를 이용해서 해결</li>
+  <li><code class="highlighter-rouge">postorder</code> 의 <code class="highlighter-rouge">i_r</code>의 위치에 있는 값이 <code class="highlighter-rouge">Node</code>의 값이다.</li>
+  <li><code class="highlighter-rouge">inorder</code>에서 <code class="highlighter-rouge">Node</code> 값의 <code class="highlighter-rouge">index</code> 기준으로 왼쪽 값들이 left를 구성할 후보군, 오른쪽 값들이 right를 구성할 후보군이다.</li>
+  <li>만약 각 후보군이 하나라면, 해당 값으로 <code class="highlighter-rouge">left or right</code>의 값이다.</li>
+  <li>만약 <code class="highlighter-rouge">left</code> 후보군이 다수 라면, <code class="highlighter-rouge">generateTree</code> 함수를 재귀 호출 하면서 <code class="highlighter-rouge">inorder</code> 배열의 <code class="highlighter-rouge">0~index</code> 까지를 파라미터로 넘기고, <code class="highlighter-rouge">i_r</code> 에서 <code class="highlighter-rouge">오른쪽 후보군의 갯수 + 1</code>만큼을 뺀 값을 파라미터로 넘긴다.</li>
+  <li>만약 <code class="highlighter-rouge">right</code> 후보군이 다수 라면, <code class="highlighter-rouge">generateTree</code> 함수를 재귀 호출 하면서 <code class="highlighter-rouge">inorder</code> 배열의 <code class="highlighter-rouge">index+1~inorder갯수</code> 까지를 파라미터로 넘기고, <code class="highlighter-rouge">i_r</code> 에서 하나 뺀 값을 파라미터로 넘긴다.</li>
+  <li>위 예제는 다음과 같은 흐름으로 진행 된다.
+  ```swift
+    <ol>
+      <li>inorder = [9,3,15,20,7], postorder = [9,15,7,20,3], i_r = 4  <br />
+  postorder의 i_r에 해당하는 index의 값은 3이기 때문에 root의 값은 3
+  inorder에서 3의 인덱스는 1이므로, [9]가 left 후보군, [15,20,7]이 오른쪽 후보군
+  left 후보군의 갯수가 1개 이기 때문에 root.left는 9
+  right 후보군의 갯수가 1개 이상 이기 때문에 재귀 호출 하면서, 마지막 인덱스 -1인 3을 넘김</li>
+      <li>inorder = [15,20,7], postorder = [9,15,7,20,3], i_r = 3  <br />
+  postorder의 i_r에 해당하는 index의 값은 20이기 때문에 root의 값은 20
+  inorder에서 20의 인덱스는 1이므로, [15]가 left 후보군, [7]이 오른쪽 후보군
+  left 후보군의 갯수가 1개 이기 때문에 root.left는 15
+  right 후보군의 갯수가 1개 이기 때문에 root.right는 7
+  ```</li>
+    </ol>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">TreeNode</span> <span class="nf">buildTree</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">inorder</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">postorder</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">inorder</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">inorder</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">)</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>     
+        
+        <span class="nc">TreeNode</span> <span class="n">root</span> <span class="o">=</span> <span class="n">generateTree</span><span class="o">(</span><span class="n">inorder</span><span class="o">,</span> <span class="n">postorder</span><span class="o">,</span> <span class="n">postorder</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+        
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="nc">TreeNode</span> <span class="nf">generateTree</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">inorder</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">postorder</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i_r</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">TreeNode</span> <span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeNode</span><span class="o">(</span><span class="n">postorder</span><span class="o">[</span><span class="n">i_r</span><span class="o">]);</span>    
+
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>     <span class="c1">//inorder의 기준이 될 숫자의 index = pivot        </span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">inorder</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">n</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">inorder</span><span class="o">[</span><span class="n">n</span><span class="o">]</span> <span class="o">==</span> <span class="n">postorder</span><span class="o">[</span><span class="n">i_r</span><span class="o">])</span> <span class="o">{</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>                
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">inorder</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>    <span class="c1">//pivot 기준으로 우측에 1개 밖에 없다면, 재귀 호출 필요 없이 바로 root.right</span>
+            <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeNode</span><span class="o">(</span><span class="n">inorder</span><span class="o">[</span><span class="n">inorder</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="o">&lt;</span> <span class="n">inorder</span><span class="o">.</span><span class="na">length</span> <span class="o">)</span> <span class="o">{</span>     <span class="c1">//pivot 기준으로 우측에 2개 이상 있다면, 재귀 호출</span>
+            <span class="kt">int</span><span class="o">[]</span> <span class="n">right_array</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">copyOfRange</span><span class="o">(</span><span class="n">inorder</span><span class="o">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="n">inorder</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>    
+            <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">generateTree</span><span class="o">(</span><span class="n">right_array</span><span class="o">,</span> <span class="n">postorder</span><span class="o">,</span> <span class="n">i_r</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>       <span class="c1">//pivot 기준으로 좌측에 1개 밖에 없다면, 재귀 호출 필요 없이 바로 root.left</span>
+            <span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeNode</span><span class="o">(</span><span class="n">inorder</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span> <span class="n">i</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>    <span class="c1">//pivor 기준으로 좌측에 2개 이상 있다면, 재귀 호출</span>
+            <span class="kt">int</span><span class="o">[]</span> <span class="n">left_array</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">copyOfRange</span><span class="o">(</span><span class="n">inorder</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span> 
+            <span class="c1">//다음 i_r의 값은 현재 i_r에서 pivot 기준 오른쪽 요소들의 갯수 + 1을 뺀 값</span>
+            <span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span> <span class="n">generateTree</span><span class="o">(</span><span class="n">left_array</span><span class="o">,</span> <span class="n">postorder</span><span class="o">,</span> <span class="n">i_r</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="o">(</span><span class="n">inorder</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span><span class="mi">1</span><span class="o">));</span>
+        <span class="o">}</span> 
+        
+        <span class="k">return</span> <span class="n">root</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

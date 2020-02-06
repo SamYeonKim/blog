@@ -1,0 +1,81 @@
+I"<h1 id="problem">Problem</h1>
+
+<p>On the first row, we write a 0. Now in every subsequent row, we look at the previous row and replace each occurrence of 0 with 01, and each occurrence of 1 with 10.</p>
+
+<p>Given row N and index K, return the K-th indexed symbol in row N. (The values of K are 1-indexed.) (1 indexed).</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="kt">N</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kt">K</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="kt">Input</span><span class="p">:</span> <span class="kt">N</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="kt">K</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="kt">Input</span><span class="p">:</span> <span class="kt">N</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="kt">K</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="kt">Input</span><span class="p">:</span> <span class="kt">N</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="kt">K</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="kt">Explanation</span><span class="p">:</span>
+<span class="n">row</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">row</span> <span class="mi">2</span><span class="p">:</span> <span class="mo">01</span>
+<span class="n">row</span> <span class="mi">3</span><span class="p">:</span> <span class="mo">0110</span>
+<span class="n">row</span> <span class="mi">4</span><span class="p">:</span> <span class="mo">01101001</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>이진 트리로 생각 할 수 있다.</li>
+  <li>부모노드가 0일때 왼쪽 자식 노드는 0, 오른쪽 자식 노드는 1</li>
+  <li>부모노드가 1일때 왼쪽 자식 노드는 1, 오른쪽 자식 노드는 0</li>
+  <li><img src="../img/kth_tree.png" alt="" /></li>
+  <li>만약 K가 짝수이면 <code class="highlighter-rouge">k/2</code>번째 노드의 오른쪽 노드이다.</li>
+  <li>만약 K가 홀수이면 <code class="highlighter-rouge">(k+1)/2</code> 번째 노드의 왼쪽 노드이다.</li>
+  <li>하지만, 부모노드의 값을 알아야 하기 때문에, 재귀로 부모 노드의 값이 뭔지 알아 낸다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">kthGrammar</span><span class="o">(</span><span class="kt">int</span> <span class="no">N</span><span class="o">,</span> <span class="kt">int</span> <span class="no">K</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="no">N</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>     <span class="c1">//N이 1이라는것은 루트노드 (0)을 의미 K는 의미 없다.</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>  
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span> <span class="no">K</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>  <span class="c1">// K가 짝수라면, 이전 Row의 K/2의 값이 뭔지 알아내야 한다. 그것이 부모노드니까. 그리고, 부모노드가 0이라면 나는 1이고 1이라면 나는 0이다.</span>
+            <span class="k">return</span> <span class="nf">kthGrammar</span> <span class="o">(</span> <span class="no">N</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="no">K</span> <span class="o">/</span> <span class="mi">2</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>      <span class="c1">// K가 홀수라면, 이전 Row의 (K+1)/2의 값이 뭔지 알아내야 한다. 그것이 부모노드니까. 그리고, 부모노드가 0이라면 나는 0이고 1이라면 나는 1이다.</span>
+            <span class="k">return</span> <span class="nf">kthGrammar</span><span class="o">(</span> <span class="no">N</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">(</span><span class="no">K</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">/</span><span class="mi">2</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="o">;</span>       
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

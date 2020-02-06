@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Symmetric Tree
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
 
-#### Example 1:
+## Example 1
 
 ```swift
     1
@@ -22,7 +23,7 @@ Input: [1,2,2,3,4,4,3]
 Output: true
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
     1

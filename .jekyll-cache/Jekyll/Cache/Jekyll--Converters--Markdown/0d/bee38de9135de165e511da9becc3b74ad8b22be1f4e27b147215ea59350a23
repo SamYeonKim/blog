@@ -1,0 +1,298 @@
+I"�:<h1 id="problem">Problem</h1>
+
+<p>Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.</p>
+
+<p>Calling next() will return the next smallest number in the BST.</p>
+
+<h2 id="example">Example</h2>
+
+<p><img src="/assets/img/leetcode/bst_iterator.png" alt="" /></p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kt">BSTIterator</span> <span class="n">iterator</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">BSTIterator</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">next</span><span class="p">();</span>    <span class="c1">// return 3</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">next</span><span class="p">();</span>    <span class="c1">// return 7</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">hasNext</span><span class="p">();</span> <span class="c1">// return true</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">next</span><span class="p">();</span>    <span class="c1">// return 9</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">hasNext</span><span class="p">();</span> <span class="c1">// return true</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">next</span><span class="p">();</span>    <span class="c1">// return 15</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">hasNext</span><span class="p">();</span> <span class="c1">// return true</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">next</span><span class="p">();</span>    <span class="c1">// return 20</span>
+<span class="n">iterator</span><span class="o">.</span><span class="nf">hasNext</span><span class="p">();</span> <span class="c1">// return false</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li><code class="highlighter-rouge">next()</code> and <code class="highlighter-rouge">hasNext()</code> should run in average O(1) time and uses O(h) memory, where h is the height of the tree.</li>
+  <li>You may assume that <code class="highlighter-rouge">next()</code> call will always be valid, that is, there will be at least a next smallest number in the BST when <code class="highlighter-rouge">next()</code> is called.</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>작은 순서로 탐색하는것은 BST의 <code class="highlighter-rouge">In-order탐색</code>이다, <a href="binary_tree_inorder_traversal.md">Binary Tree Inorder Traversal</a></li>
+  <li><code class="highlighter-rouge">BSTIterator</code>의 생성자에서, <code class="highlighter-rouge">Queue(m_q)</code>를 구성한다.</li>
+  <li><code class="highlighter-rouge">next()</code>에선 <code class="highlighter-rouge">m_q.poll()</code> 하면된다.</li>
+  <li><code class="highlighter-rouge">hasNext()</code>에선 <code class="highlighter-rouge">m_q</code>가 비어 있지만 않으면 <code class="highlighter-rouge">true</code>이다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">BSTIterator</span> <span class="o">{</span>
+    <span class="nc">Queue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">m_q</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">BSTIterator</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">m_q</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Stack</span><span class="o">&lt;</span><span class="nc">TreeNode</span><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">TreeNode</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span><span class="n">curr</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">!</span><span class="n">s</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">curr</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>                
+                <span class="n">s</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">curr</span><span class="o">);</span>
+                <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+            <span class="o">}</span>
+            
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+            <span class="n">m_q</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">curr</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+            
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+        <span class="o">}</span>            
+    <span class="o">}</span>
+    
+    <span class="cm">/** @return the next smallest number */</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">m_q</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+    <span class="o">}</span>
+    
+    <span class="cm">/** @return whether we have a next smallest number */</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">!</span><span class="n">m_q</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator obj = new BSTIterator(root);
+ * int param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">nxt</code>가 다음 노드를 가리키는 객체이다.</li>
+  <li><code class="highlighter-rouge">next()</code>에선 다음 노드의 값을 반환함과 동시에 <code class="highlighter-rouge">nxt</code>의 값을 다음 <code class="highlighter-rouge">next()</code>가 호출될때 사용할 값으로 할당한다.</li>
+  <li><code class="highlighter-rouge">right</code> 값이 <code class="highlighter-rouge">null</code> 인것을 이용해서 다음 노드와의 연결을 만든다.</li>
+  <li><code class="highlighter-rouge">left</code>가 <code class="highlighter-rouge">null</code>인 경우엔 <code class="highlighter-rouge">next()</code>의 타겟이 되는 노드는 <code class="highlighter-rouge">nxt</code>이고, 다음 노드는 <code class="highlighter-rouge">nxt.right</code>가 된다.</li>
+  <li>예를 들어 예제는 다음과 같은 흐름으로 진행된다.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre>  Input : [7,3,15,null,null,9,20]
+  nxt = 7
+  next()
+      nxt = 3, 3's right is 7
+      res = 3, nxt = 7
+  next()
+      nxt = 7, 3's right is null
+      res = 7, nxt = 15
+  ...
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">3</code>의 <code class="highlighter-rouge">left</code>, <code class="highlighter-rouge">right</code> 둘 다 처음엔 <code class="highlighter-rouge">null</code>이 였는데, <code class="highlighter-rouge">next()</code> 호출에서 <code class="highlighter-rouge">right</code>에 <code class="highlighter-rouge">7</code>을 할당해서 다음 호출시 사용한다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">BSTIterator</span> <span class="o">{</span>
+
+    <span class="nc">TreeNode</span> <span class="n">nxt</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">BSTIterator</span><span class="o">(</span><span class="nc">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">nxt</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="cm">/** @return the next smallest number */</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">TreeNode</span> <span class="n">res</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        
+        <span class="k">while</span> <span class="o">(</span><span class="n">nxt</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">nxt</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">TreeNode</span> <span class="n">pre</span> <span class="o">=</span> <span class="n">nxt</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+                <span class="k">while</span> <span class="o">(</span><span class="n">pre</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">pre</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="n">nxt</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">pre</span> <span class="o">=</span> <span class="n">pre</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+                <span class="o">}</span>
+                
+                <span class="k">if</span> <span class="o">(</span><span class="n">pre</span><span class="o">.</span><span class="na">right</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">pre</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="n">nxt</span><span class="o">;</span>
+                    <span class="n">nxt</span> <span class="o">=</span> <span class="n">nxt</span><span class="o">.</span><span class="na">left</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">pre</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="n">nxt</span><span class="o">;</span>
+                    <span class="n">nxt</span> <span class="o">=</span> <span class="n">nxt</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+                
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">nxt</span><span class="o">;</span>
+                <span class="n">nxt</span> <span class="o">=</span> <span class="n">nxt</span><span class="o">.</span><span class="na">right</span><span class="o">;</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="cm">/** @return whether we have a next smallest number */</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">nxt</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator obj = new BSTIterator(root);
+ * int param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

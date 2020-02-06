@@ -1,0 +1,56 @@
+I"o<h1 id="problem">Problem</h1>
+
+<p>Reverse a singly linked list recursively.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">2</span><span class="o">-&gt;</span><span class="mi">3</span><span class="o">-&gt;</span><span class="mi">4</span><span class="o">-&gt;</span><span class="mi">5</span><span class="o">-&gt;</span><span class="kt">NULL</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">5</span><span class="o">-&gt;</span><span class="mi">4</span><span class="o">-&gt;</span><span class="mi">3</span><span class="o">-&gt;</span><span class="mi">2</span><span class="o">-&gt;</span><span class="mi">1</span><span class="o">-&gt;</span><span class="kt">NULL</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">head.next == null</code> 인 경우가 마지막 노드인데, 우린 마지막 노드를 <code class="highlighter-rouge">Head</code>로 사용 해야 한다.</li>
+  <li>이하 <code class="highlighter-rouge">head</code>로 되어 있지만, 그냥 <code class="highlighter-rouge">cur(현재 처리 중인 노드)</code>로 생각하는게, 이해하는데 도움 된다.</li>
+  <li><code class="highlighter-rouge">cur.next</code>는 현재 노드의 그 다음 노드를 가리키는데, 이것이 현재 노드의 새로운 <code class="highlighter-rouge">head</code>로서 역할해야 한다.</li>
+  <li><code class="highlighter-rouge">rest</code>는 사실상 맨 마지막 노드만 설정되고 계속 그 상태로 <code class="highlighter-rouge">reverseList</code>의 상위 호출 부분으로 가도 무방하다. 어짜피 참조타입이라 <code class="highlighter-rouge">reverseList</code> 함수를 재귀로 호출 하는 부분 위, 아래에서 열심히 새로운 형태로 뒤집고 있다. 결국 뒤집어진 완성형을 최종 리턴하기 위한 존재일 뿐.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">reverseList</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">head</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+        
+        <span class="nc">ListNode</span> <span class="n">new_head</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>        
+        <span class="nc">ListNode</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">reverseList</span><span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">);</span>
+        <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">new_head</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+       
+        <span class="k">return</span> <span class="n">rest</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

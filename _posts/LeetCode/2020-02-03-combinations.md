@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Combinations
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
 
-#### Example :
+## Example
 
 ```swift
 Input: n = 4, k = 2

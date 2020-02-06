@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Implement Trie (Prefix Tree)
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Implement a trie with insert, search, and startsWith methods.
 
-#### Example :
+## Example
 
 ```swift
 Trie trie = new Trie();
@@ -22,7 +23,7 @@ trie.insert("app");
 trie.search("app");     // returns true
 ```
 
-#### Note :
+## Note
 
 * You may assume that all inputs are consist of lowercase letters `a-z`
 * All inputs are guaranteed to be non-empty strings

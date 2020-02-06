@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Lowest Common Ancestor of a Binary Search Tree
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -15,7 +16,7 @@ Given binary search tree:  root = [6,2,8,0,4,7,9,null,null,3,5]
 
 ![]({{ site.baseurl }}/assets/img/leetcode/lca_bst_tree.png)
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
@@ -23,7 +24,7 @@ Output: 6
 Explanation: The LCA of nodes 2 and 8 is 6.
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
@@ -31,7 +32,7 @@ Output: 2
 Explanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
 ```
 
-#### Notes
+## Note
 
 * All of the nodes' values will be unique
 * p and q are different and both values will exist in the BST.

@@ -1,0 +1,110 @@
+I"/*<h1 id="problem">Problem</h1>
+
+<p>A peak element is an element that is greater than its neighbors.</p>
+
+<p>Given an input array nums, where nums[i] ≠ nums[i+1], find a peak element and return its index.</p>
+
+<p>The array may contain multiple peaks, in that case return the index to any one of the peaks is fine.</p>
+
+<p>You may imagine that nums[-1] = nums[n] = -∞.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">2</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="mi">3</span> <span class="k">is</span> <span class="n">a</span> <span class="n">peak</span> <span class="n">element</span> <span class="n">and</span> <span class="n">your</span> <span class="n">function</span> <span class="n">should</span> <span class="k">return</span> <span class="n">the</span> <span class="n">index</span> <span class="n">number</span> <span class="mi">2</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">1</span> <span class="n">or</span> <span class="mi">5</span> 
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">Your</span> <span class="n">function</span> <span class="n">can</span> <span class="k">return</span> <span class="n">either</span> <span class="n">index</span> <span class="n">number</span> <span class="mi">1</span> <span class="k">where</span> <span class="n">the</span> <span class="n">peak</span> <span class="n">element</span> <span class="k">is</span> <span class="mi">2</span><span class="p">,</span> 
+             <span class="n">or</span> <span class="n">index</span> <span class="n">number</span> <span class="mi">5</span> <span class="k">where</span> <span class="n">the</span> <span class="n">peak</span> <span class="n">element</span> <span class="k">is</span> <span class="mi">6</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<p>Your solution should be in logarithmic complexity.</p>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>중간값을 이용해서 찾자.</li>
+  <li><code class="highlighter-rouge">l</code>과 <code class="highlighter-rouge">r</code>을 이용해서 <code class="highlighter-rouge">중간 index(mid)</code>를 찾고 <code class="highlighter-rouge">nums[mid]</code>와 <code class="highlighter-rouge">nums[mid+1]</code>이 만족하는지 확인하자. 만족 한다면 <code class="highlighter-rouge">peek</code> 조건의 우측항은 만족 했다는 의미.</li>
+  <li>우측항이 만족했다면, 좌측항이 만족 하는지 확인 하기 위해서 <code class="highlighter-rouge">r</code>에 <code class="highlighter-rouge">mid</code>를 할당한다.</li>
+  <li>좌측항이 만족했다면, <code class="highlighter-rouge">l</code>에 <code class="highlighter-rouge">mid + 1</code>을 할당한다.</li>
+  <li>최종 결과는 <code class="highlighter-rouge">l</code>이 된다.</li>
+  <li>예를 들어 다음과 같은 흐름이 된다.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre>  <span class="nl">Input:</span> <span class="n">nums</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">1</span><span class="o">]</span>
+  <span class="mi">1</span><span class="o">:</span>
+      <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">3</span><span class="o">,</span> <span class="n">mid</span><span class="o">=</span><span class="mi">1</span><span class="o">,</span>
+      <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]=</span><span class="mi">2</span><span class="o">,</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="o">]=</span><span class="mi">3</span><span class="o">,</span>
+      <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="err">좌측항</span> <span class="err">만족</span><span class="o">,</span> <span class="err">우측항</span> <span class="err">확인</span> <span class="err">위해</span> <span class="n">l</span><span class="o">=</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span>
+  <span class="mi">2</span><span class="o">:</span>
+      <span class="n">l</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">3</span><span class="o">,</span> <span class="n">mid</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span>
+      <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]=</span><span class="mi">3</span><span class="o">,</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="o">]=</span><span class="mi">1</span><span class="o">,</span>
+      <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="err">우측항</span> <span class="err">만족</span><span class="o">,</span> <span class="err">좌측항</span> <span class="err">확인</span> <span class="err">위해</span> <span class="n">r</span><span class="o">=</span><span class="n">mid</span>
+  <span class="mi">3</span><span class="o">:</span> 
+      <span class="n">l</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="o">,</span> <span class="n">r</span><span class="err">이</span> <span class="n">l</span><span class="err">보다</span> <span class="err">크지</span> <span class="err">않기</span> <span class="err">때문에</span> <span class="err">반복</span> <span class="err">종료</span><span class="o">,</span> <span class="err">결과는</span> <span class="mi">2</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">findPeakElement</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+        
+        <span class="k">while</span> <span class="o">(</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="o">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="o">)&gt;&gt;</span><span class="mi">1</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span> <span class="o">+</span><span class="mi">1</span><span class="o">])</span> <span class="o">{</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">mid</span><span class="o">;</span>                
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span>             
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">l</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

@@ -1,29 +1,30 @@
 ---
-layout: post
 title: Find K Closest Elements
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a sorted array, two integers k and x, find the k closest elements to x in the array. The result should also be sorted in ascending order. If there is a tie, the smaller elements are always preferred.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: [1,2,3,4,5], k=4, x=3
 Output: [1,2,3,4]
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: [1,2,3,4,5], k=4, x=-1
 Output: [1,2,3,4]
 ```
 
-#### Note:
+## Note
 
 1. The value k is positive and will always be smaller than the length of the sorted array.
 2. Length of the given array is positive and will not exceed 10^4

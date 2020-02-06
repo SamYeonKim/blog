@@ -1,0 +1,156 @@
+I"�<<h1 id="problem">Problem</h1>
+
+<p>Suppose Andy and Doris want to choose a restaurant for dinner, and they both have a list of favorite restaurants represented by strings.</p>
+
+<p>You need to help them find out their common interest with the least list index sum. If there is a choice tie between answers, output all of them with no order requirement. You could assume there always exists an answer.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span>
+<span class="p">[</span><span class="s">"Shogun"</span><span class="p">,</span> <span class="s">"Tapioca Express"</span><span class="p">,</span> <span class="s">"Burger King"</span><span class="p">,</span> <span class="s">"KFC"</span><span class="p">]</span>
+<span class="p">[</span><span class="s">"Piatti"</span><span class="p">,</span> <span class="s">"The Grill at Torrey Pines"</span><span class="p">,</span> <span class="s">"Hungry Hunter Steakhouse"</span><span class="p">,</span> <span class="s">"Shogun"</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="s">"Shogun"</span><span class="p">]</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">The</span> <span class="n">only</span> <span class="n">restaurant</span> <span class="n">they</span> <span class="n">both</span> <span class="n">like</span> <span class="k">is</span> <span class="s">"Shogun"</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span>
+<span class="p">[</span><span class="s">"Shogun"</span><span class="p">,</span> <span class="s">"Tapioca Express"</span><span class="p">,</span> <span class="s">"Burger King"</span><span class="p">,</span> <span class="s">"KFC"</span><span class="p">]</span>
+<span class="p">[</span><span class="s">"KFC"</span><span class="p">,</span> <span class="s">"Shogun"</span><span class="p">,</span> <span class="s">"Burger King"</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="s">"Shogun"</span><span class="p">]</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">The</span> <span class="n">restaurant</span> <span class="n">they</span> <span class="n">both</span> <span class="n">like</span> <span class="n">and</span> <span class="n">have</span> <span class="n">the</span> <span class="n">least</span> <span class="n">index</span> <span class="n">sum</span> <span class="k">is</span> <span class="s">"Shogun"</span> <span class="n">with</span> <span class="n">index</span> <span class="n">sum</span> <span class="mi">1</span> <span class="p">(</span><span class="mi">0</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>The length of both lists will be in the rang of [1,1000].</li>
+  <li>The length of strings in both lists will be in the range of [1,30].</li>
+  <li>The index is starting from 0 to the list length minus 1.</li>
+  <li>No duplicates in both lists</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">HashMap</code>을 이용하자. <code class="highlighter-rouge">list1</code>을 순회하면서 <code class="highlighter-rouge">HashMap</code>의 키로 <code class="highlighter-rouge">list1[i]</code>를 넣고 값으로 index(<code class="highlighter-rouge">i</code>)를 넣자.</li>
+  <li><code class="highlighter-rouge">list2</code>를 순회하면서, <code class="highlighter-rouge">HashMap</code>에 <code class="highlighter-rouge">list2[i]</code>가 키로 있는것만 확인하면된다.</li>
+  <li><code class="highlighter-rouge">HashMap</code>의 값 + <code class="highlighter-rouge">i</code>가 <code class="highlighter-rouge">Sum</code>이 되고, <code class="highlighter-rouge">최소Sum</code>과 비교 하자.</li>
+  <li>만약 <code class="highlighter-rouge">최소Sum</code>보다 <code class="highlighter-rouge">Sum</code>이 작다면, <code class="highlighter-rouge">최소Sum</code>을 만족하는 값의 갯수를 1로 초기화.</li>
+  <li>만약 <code class="highlighter-rouge">최소Sum</code>과 <code class="highlighter-rouge">Sum</code>이 같다면, <code class="highlighter-rouge">최소Sum</code>을 만족하는 값의 갯수를 1증가.</li>
+  <li>위의 2가지 경우에 대해서, <code class="highlighter-rouge">list1[최소Sum을 만족하는 값의 갯수-1]</code>에 <code class="highlighter-rouge">list2[i]</code>를 할당하자. 차후에 결과 배열로 옮기기 위한 사전단계이다. 위 예제2는 다음과 같은 흐름으로 진행 된다.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre>  <span class="n">list1</span><span class="o">=[</span><span class="s">"Shogun"</span><span class="o">,</span> <span class="s">"Tapioca Express"</span><span class="o">,</span> <span class="s">"Burger King"</span><span class="o">,</span> <span class="s">"KFC"</span><span class="o">]</span>
+  <span class="n">list2</span><span class="o">=[</span><span class="s">"KFC"</span><span class="o">,</span> <span class="s">"Shogun"</span><span class="o">,</span> <span class="s">"Burger King"</span><span class="o">]</span>
+
+  <span class="mi">1</span><span class="o">:</span>
+      <span class="n">curr</span> <span class="o">=</span> <span class="n">list2</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="no">KFC</span>
+      <span class="n">sum</span> <span class="o">=</span> <span class="nc">HashMap</span><span class="o">[</span><span class="no">KFC</span><span class="o">]</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">=</span> <span class="mi">3</span>
+      <span class="n">min_sum</span> <span class="o">&gt;</span> <span class="n">sum</span>
+          <span class="n">min_sum_count</span><span class="o">=</span><span class="mi">1</span><span class="o">,</span> <span class="n">list1</span><span class="o">[</span><span class="n">min_sum_count</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">list1</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="no">KFC</span>
+  <span class="mi">2</span><span class="o">:</span>
+      <span class="n">curr</span> <span class="o">=</span> <span class="n">list2</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Shogun</span>
+      <span class="n">sum</span> <span class="o">=</span> <span class="nc">HashMap</span><span class="o">[</span><span class="nc">Shogun</span><span class="o">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">1</span>
+      <span class="n">min_sum</span> <span class="o">&gt;</span> <span class="n">sum</span>
+          <span class="n">min_sum_count</span><span class="o">=</span><span class="mi">1</span><span class="o">,</span> <span class="n">list1</span><span class="o">[</span><span class="n">min_sum_count</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">list1</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Shogun</span>
+  <span class="mi">3</span><span class="o">:</span> 
+      <span class="n">curr</span> <span class="o">=</span> <span class="n">list2</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="nc">Burger</span> <span class="nc">King</span>
+      <span class="n">sum</span> <span class="o">=</span> <span class="nc">HashMap</span><span class="o">[</span><span class="nc">Burger</span> <span class="nc">King</span><span class="o">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">4</span>
+      <span class="n">min_sum</span> <span class="o">&lt;</span> <span class="n">sum</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">list1</span><span class="o">[</span><span class="mi">0</span><span class="o">~</span><span class="n">min_sum_count</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">list1</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="nc">Shogun</span><span class="o">]</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">list2</code>의 순회가 끝나면, <code class="highlighter-rouge">list1[0 ~ 최소Sum을 만족하는 값의 갯수-1]</code>가 정답이다. 따라서 결과배열로 옮겨주자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span><span class="o">[]</span> <span class="nf">findRestaurant</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">list1</span><span class="o">,</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">list2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">hashmap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">list1</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">hashmap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">list1</span><span class="o">[</span><span class="n">i</span><span class="o">],</span><span class="n">i</span><span class="o">);</span>            
+        <span class="o">}</span>
+        
+        <span class="kt">int</span> <span class="n">min_sum</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">duple_count</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">list2</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="n">hashmap</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">list2</span><span class="o">[</span><span class="n">i</span><span class="o">]))</span> <span class="k">continue</span><span class="o">;</span>
+            
+            <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">hashmap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">list2</span><span class="o">[</span><span class="n">i</span><span class="o">])</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">min_sum</span> <span class="o">&gt;=</span> <span class="n">sum</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">duple_count</span> <span class="o">=</span> <span class="n">min_sum</span> <span class="o">&gt;</span> <span class="n">sum</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">duple_count</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span>                
+                <span class="n">list1</span><span class="o">[</span><span class="n">duple_count</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">list2</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="o">}</span>            
+            
+            <span class="n">min_sum</span> <span class="o">=</span> <span class="n">min_sum</span> <span class="o">&lt;</span> <span class="n">sum</span> <span class="o">?</span> <span class="n">min_sum</span> <span class="o">:</span> <span class="n">sum</span><span class="o">;</span>
+        <span class="o">}</span>  
+        
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">[</span><span class="n">duple_count</span><span class="o">];</span>
+        
+        <span class="nc">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">list1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">duple_count</span><span class="o">);</span>
+        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

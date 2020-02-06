@@ -1,0 +1,263 @@
+I"�A<h1 id="problem">Problem</h1>
+
+<p>Given an n-ary tree, return the postorder traversal of its nodes’ values.</p>
+
+<p>Nary-Tree input serialization is represented in their level order traversal, each group of children is separated by the null value (See examples).</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>      <span class="mi">1</span>
+    <span class="o">/</span> <span class="o">|</span> <span class="p">\</span>
+   <span class="mi">3</span>  <span class="mi">2</span>  <span class="mi">4</span>
+  <span class="o">/</span> <span class="p">\</span>
+ <span class="mi">5</span>   <span class="mi">6</span>
+
+<span class="kt">Input</span><span class="p">:</span> <span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>        <span class="mi">1</span>
+     <span class="o">/</span> <span class="o">|</span> <span class="o">|</span> <span class="p">\</span>
+    <span class="mi">2</span>  <span class="mi">3</span> <span class="mi">4</span>  <span class="mi">5</span>
+      <span class="o">/|</span> <span class="o">|</span>  <span class="o">|</span><span class="p">\</span>
+     <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">10</span>
+       <span class="o">|</span> <span class="o">|</span>  <span class="o">|</span> 
+      <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span>
+       <span class="o">|</span>
+      <span class="mi">14</span>
+
+<span class="kt">Input</span><span class="p">:</span> <span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="n">null</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer--recursive-">My Answer ( Recursive )</h1>
+
+<ul>
+  <li>재귀를 이용</li>
+  <li>재귀 함수 <code class="highlighter-rouge">search</code>에서 <code class="highlighter-rouge">Node</code>가 <code class="highlighter-rouge">null</code>이 아니라면, <code class="highlighter-rouge">Node.children</code>을 순회 하면서, <code class="highlighter-rouge">search</code>함수를 재귀 호출하자.</li>
+  <li>결과 리스트에 <code class="highlighter-rouge">Node</code>의 값을 넣자</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></td><td class="rouge-code"><pre><span class="cm">/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List&lt;Node&gt; children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List&lt;Node&gt; _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">postorder</span><span class="o">(</span><span class="nc">Node</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="n">search</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">void</span> <span class="nf">search</span><span class="o">(</span><span class="nc">Node</span> <span class="n">root</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">root</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+            <span class="k">return</span><span class="o">;</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="nc">Node</span> <span class="n">node</span> <span class="o">:</span> <span class="n">root</span><span class="o">.</span><span class="na">children</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">search</span><span class="o">(</span><span class="n">node</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer--iteration-">My Answer ( Iteration )</h1>
+
+<ul>
+  <li>반복문 이용</li>
+  <li><code class="highlighter-rouge">Stack</code>을 이용하자.</li>
+  <li>만약 <code class="highlighter-rouge">curr</code>이 <code class="highlighter-rouge">null</code>이라면, <code class="highlighter-rouge">Stack</code>에서 <code class="highlighter-rouge">children</code>이 있는것들중 해당 <code class="highlighter-rouge">Node</code>의 마지막 자식을 <code class="highlighter-rouge">curr</code>에 할당하자.</li>
+  <li>만약 <code class="highlighter-rouge">curr</code>이 <code class="highlighter-rouge">null</code>이 아니라면, 결과 리스트의 첫번째에 <code class="highlighter-rouge">curr</code>의 값을 넣고, <code class="highlighter-rouge">children</code>의 마지막 자식을 <code class="highlighter-rouge">curr</code>에 할당하자. 만약 자식이 없다면 <code class="highlighter-rouge">curr</code>을 <code class="highlighter-rouge">null</code>로 할당하자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+</pre></td><td class="rouge-code"><pre><span class="cm">/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List&lt;Node&gt; children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List&lt;Node&gt; _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">postorder</span><span class="o">(</span><span class="nc">Node</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="nc">Stack</span><span class="o">&lt;</span><span class="nc">Node</span><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Node</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">root</span><span class="o">;</span>
+        
+        <span class="k">while</span><span class="o">(</span> <span class="o">!</span><span class="n">s</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="n">curr</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+                <span class="n">s</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">curr</span><span class="o">);</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">curr</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+                
+                <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">Node</span> <span class="n">head</span> <span class="o">=</span> <span class="n">curr</span><span class="o">;</span>                
+                    <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+                    <span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">curr</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">curr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">peek</span><span class="o">();</span>
+                
+                <span class="k">if</span> <span class="o">(</span> <span class="n">curr</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">Node</span> <span class="n">head</span> <span class="o">=</span> <span class="n">curr</span><span class="o">;</span>                
+                    <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+                    <span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span> <span class="n">head</span><span class="o">.</span><span class="na">children</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">)</span>
+                        <span class="n">s</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">curr</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                    <span class="n">s</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>            
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

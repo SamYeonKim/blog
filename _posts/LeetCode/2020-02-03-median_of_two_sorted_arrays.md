@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Median of Two Sorted Arrays
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,7 +14,7 @@ Find the median of the two sorted arrays. The overall run time complexity should
 
 You may assume nums1 and nums2 cannot be both empty.
 
-#### Example 1:
+## Example 1
 
 ```swift
 nums1 = [1, 3]
@@ -22,7 +23,7 @@ nums2 = [2]
 The median is 2.0
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 nums1 = [1, 2]

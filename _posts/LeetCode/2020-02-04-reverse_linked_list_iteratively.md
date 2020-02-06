@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Reverse Linked List Iteratively
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Reverse a singly linked list iteratively. 
 
-#### Example :
+## Example
 
 ```swift
 Input: 1->2->3->4->5->NULL

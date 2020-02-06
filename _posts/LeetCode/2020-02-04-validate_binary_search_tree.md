@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Validate Binary Search Tree
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -15,7 +16,7 @@ Assume a BST is defined as follows:
 * The right subtree of a node contains only nodes with keys greater than the node's key.
 * Both the left and right subtrees must also be binary search trees.
 
-#### Example 1:
+## Example 1
 
 ```swift
     2
@@ -26,7 +27,7 @@ Input: [2,1,3]
 Output: true
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
     5

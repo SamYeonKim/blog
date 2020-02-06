@@ -1,8 +1,9 @@
 ---
-layout: post
 title: The Skyline Problem
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -20,7 +21,7 @@ The output is a list of "key points" (red dots in Figure B) in the format of `[ 
 
 For instance, the skyline in Figure B should be represented as:`[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8], [24, 0] ]`.
 
-#### Notes
+## Note
 
 * The number of buildings in any input list is guaranteed to be in the range `[0, 10000]`
 * The input list is already sorted in ascending order by the left x position `Li`

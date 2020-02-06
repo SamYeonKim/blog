@@ -1,0 +1,135 @@
+I""<h1 id="problem">Problem</h1>
+
+<p>The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.</p>
+
+<p><img src="/assets/img/leetcode/n_queen_ii.png" alt="" /></p>
+
+<p>Given an integer n, return the number of distinct solutions to the n-queens puzzle.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="mi">4</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">2</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="kt">There</span> <span class="n">are</span> <span class="n">two</span> <span class="n">distinct</span> <span class="n">solutions</span> <span class="n">to</span> <span class="n">the</span> <span class="mi">4</span><span class="o">-</span><span class="n">queens</span> <span class="n">puzzle</span> <span class="k">as</span> <span class="n">shown</span> <span class="n">below</span><span class="o">.</span>
+<span class="p">[</span>
+ <span class="p">[</span><span class="s">".Q.."</span><span class="p">,</span>  <span class="c1">// Solution 1</span>
+  <span class="s">"...Q"</span><span class="p">,</span>
+  <span class="s">"Q..."</span><span class="p">,</span>
+  <span class="s">"..Q."</span><span class="p">],</span>
+
+ <span class="p">[</span><span class="s">"..Q."</span><span class="p">,</span>  <span class="c1">// Solution 2</span>
+  <span class="s">"Q..."</span><span class="p">,</span>
+  <span class="s">"...Q"</span><span class="p">,</span>
+  <span class="s">".Q.."</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>재귀를 이용해서 해결</li>
+  <li><code class="highlighter-rouge">board 배열</code>의 index는 Row를 의미하고, 해당 index의 값은 Column을 의미 한다. 예를 들어 
+<code class="highlighter-rouge">zero base, board[1]의 값이 2</code> 라면, 1번 줄의 2번 칸에 퀸이 위치해 있다는 의미.</li>
+  <li>각 Column 별로 퀸을 위치 시킬수 있는지 <code class="highlighter-rouge">isValid</code> 함수로 확인</li>
+  <li><code class="highlighter-rouge">isValid</code> 함수에서는 현재 Row이전 <code class="highlighter-rouge">board</code> 값을 이용해서 위치 시킬수 있는지 확인</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>    <span class="c1">//NQueens를 위치 시킬수 있는 방법의 총 갯수를 의미</span>
+    
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">totalNQueens</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>        
+        <span class="n">placeQueen</span><span class="o">(</span><span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">n</span><span class="o">],</span> <span class="mi">0</span><span class="o">,</span> <span class="n">n</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">cnt</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">placeQueen</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">board</span><span class="o">,</span> <span class="kt">int</span> <span class="n">row</span><span class="o">,</span> <span class="kt">int</span> <span class="n">n_queens</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">row</span> <span class="o">==</span> <span class="n">n_queens</span><span class="o">)</span> <span class="o">{</span>      <span class="c1">//현재 Row와 n_queens가 같다는 의미는 모든 Row에 대해서 위치 시켰다는 의미이기 때문에, 횟수 증가</span>
+            <span class="n">cnt</span><span class="o">++;</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_queens</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">board</span><span class="o">[</span><span class="n">row</span><span class="o">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">isValid</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">row</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">placeQueen</span><span class="o">(</span><span class="n">board</span><span class="o">,</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">n_queens</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kt">boolean</span> <span class="nf">isValid</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">board</span><span class="o">,</span> <span class="kt">int</span> <span class="n">row</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">row</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>     <span class="c1">//현재 위치 시키려는 Row이전 board값들을 이용해서 확인</span>
+            <span class="cm">/*
+            1. board[i] == board[row] 는 현재 위치 시키려는 Row의 값을 이미 이전 Row에서 사용하고 있다. 즉 같은 Column에 배치 하려고 한다.
+            2. row - i == Math.abs(board[i] - board[row]) 는 현재 위치 시키려는 Column과 대각선으로 위치 하고 있는 값이 있다.
+            예를 들어 0번째 Row의 3번째 Column에 이미 퀸이 위치해 있고, 1번째 Row의 2번째 Column에 배치 하려고 할때 위 조건을 만족 하게 된다.
+            [-][-][-][X]
+            [-][-][X][-]
+            ....
+            row(1) - i(0) == Math.abs(board[i](3) - board[row](2))
+            =&gt; 1 - 0 == Math.abs(3 - 2)
+            =&gt; 1 == 1 = true
+            */</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">board</span><span class="o">[</span><span class="n">row</span><span class="o">]</span> <span class="o">||</span> <span class="n">row</span> <span class="o">-</span> <span class="n">i</span> <span class="o">==</span> <span class="nc">Math</span><span class="o">.</span><span class="na">abs</span><span class="o">(</span><span class="n">board</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">-</span> <span class="n">board</span><span class="o">[</span><span class="n">row</span><span class="o">]))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

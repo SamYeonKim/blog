@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Generate Parenthesis
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 
-#### Example :
+## Example
 
 ```swift
 Input: 3

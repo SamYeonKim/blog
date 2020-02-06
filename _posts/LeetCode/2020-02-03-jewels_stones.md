@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Jewels and Stones
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -11,21 +12,21 @@ You're given strings `J` representing the types of stones that are jewels, and `
 
 The letters in `J` are guaranteed distinct, and all characters in `J` and `S` are letters. Letters are case sensitive, so `"a"` is considered a different type of stone from `"A"`.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: J = "aA", S = "aAAbbbb"
 Output: 3
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: J = "z", S = "ZZ"
 Output: 0
 ```
 
-#### Note:
+## Note
 
 * `S` and `J` will consist of letters and have length at most 50.
 * The characters in `J` are distinct.

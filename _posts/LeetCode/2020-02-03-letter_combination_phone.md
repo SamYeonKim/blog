@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Letter Combinations of a Phone Number
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,7 +14,7 @@ A mapping of digit to letters (just like on the telephone buttons) is given belo
 
 ![]({{ site.baseurl }}/assets/img/leetcode/phone_number.png)
 
-#### Example :
+## Example
 
 ```swift
 Input: "23"

@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Add and Search Word - Data structure design
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -16,7 +17,7 @@ boolean search(word)
 
 search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent any one letter.
 
-#### Example :
+## Example
 
 ```swift
 addWord("bad")
@@ -28,7 +29,7 @@ search(".ad") -> true
 search("b..") -> true
 ```
 
-#### Note :
+## Note
 
 * You may assume that all words are consist of lowercase letters `a-z`
 

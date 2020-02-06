@@ -1,22 +1,23 @@
 ---
-layout: post
 title: Single Number
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a non-empty array of integers, every element appears twice except for one. Find that single one.
 
-#### Example 1:
+## Example 1
 
 ```swift
 Input: [2,2,1]
 Output: 1
 ```
 
-#### Example 2:
+## Example 2
 
 ```swift
 Input: [4,1,2,1,2]

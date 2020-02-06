@@ -1,8 +1,9 @@
 ---
-layout: post
 title: N-Queens II
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
@@ -13,7 +14,7 @@ The n-queens puzzle is the problem of placing n queens on an n×n chessboard suc
 
 Given an integer n, return the number of distinct solutions to the n-queens puzzle.
 
-#### Example :
+## Example
 
 ```swift
 Input: 4

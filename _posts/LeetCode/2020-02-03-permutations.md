@@ -1,15 +1,16 @@
 ---
-layout: post
 title: Permutations
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem
 
 Given a collection of distinct integers, return all possible permutations.
 
-#### Example :
+## Example
 
 ```swift
 Input: [1,2,3]

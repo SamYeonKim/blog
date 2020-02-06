@@ -1,0 +1,65 @@
+I"k<h1 id="definition">Definition</h1>
+
+<p>문제를 풀기 위한 접근방법중 하나로서, 함수 자기자신을 서브루틴 처럼 호출 하는 방식</p>
+
+<h1 id="keywod">Keywod</h1>
+
+<p><code class="highlighter-rouge">base case</code> : 추가적인 재귀호출없이 바로 결과를 연산해 내는 case, 재귀 호출의 가장 마지막 단계를 수행하는 호출.</p>
+
+<p><code class="highlighter-rouge">recurrence relation</code> : 문제의 결과와 하위 문제들의 관계, <code class="highlighter-rouge">base case</code>에 도달 하기 위한 규칙</p>
+
+<h1 id="example">Example</h1>
+
+<p><code class="highlighter-rouge">Pascal's Triangle</code>이 재귀 호출의 기본적인 예시가 될 수 있다.
+<code class="highlighter-rouge">Pascal's Triangle</code>은 삼각형 모양을 이루게 하는 숫자의 배열인데, 각 로우의 첫번째와 마지막번째의 숫자는 항상 1이고, 그 사이에있는 숫자들은 이전 로우의 바로 위에 있는 숫자와 그 앞 숫자의 합이다.</p>
+
+<p><img src="/assets/img/leetcode/pascal_triangle.png" alt="" /></p>
+
+<h2 id="recurrence-relation">recurrence relation</h2>
+
+<p><code class="highlighter-rouge">Pascal's Triangle</code>에서 <code class="highlighter-rouge">i</code>번째 로우의 <code class="highlighter-rouge">j</code>번째에 있는 숫자를 산출해 내는 함수 <code class="highlighter-rouge">f(i,j)</code>가 있다고 하자.
+이때 다음의 수식을 이용해서 <code class="highlighter-rouge">recurrence relation</code>을 표현 할 수 있다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="base-case">base case</h2>
+
+<p>우측끝 과 좌측끝에 해당하는것들이 <code class="highlighter-rouge">base case</code>이다. 다음과 같은 수식이 된다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">where</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">or</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="memoization">Memoization</h1>
+
+<p>재귀를 하다보면 <code class="highlighter-rouge">중복 연산</code>을 하게 되는 경우가 발생한다. 예를 들어 <code class="highlighter-rouge">Fibonacci number</code>같은 경우 다음과 같은 수식으로 구할 수 있다.</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">n</span><span class="o">!</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>그래서 다음 예시로 <code class="highlighter-rouge">중복 연산</code>이 발생한다는것을 알 수 있다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>f(4) = f(3) + f(2) = (f(2) + f(1)) + f(2)
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>위 식 처럼 <code class="highlighter-rouge">f(2)</code>에 대한 연산이 2번 발생한다. 이렇게 되면 우린 이미 <code class="highlighter-rouge">f(2)</code>에 대한 연산을 한번 했는데, 한번 더 함으로써
+불필요한 연산을 더 하게 된다. 위 예시는 <code class="highlighter-rouge">4</code>에 대한 예시라서 그렇지 만약 숫자가 더 커지면 <code class="highlighter-rouge">중복 연산</code>은 미친듯이 많이 발생한다.</p>
+
+<p><code class="highlighter-rouge">중복 연산</code>을 방지하기 위해선 한번 연산했던것에 대한 저장이 필요하다. 그것을 해결하기 위한 방법중 하나로 <code class="highlighter-rouge">Memoization</code>을 도입한다.
+<code class="highlighter-rouge">Memoization</code>은 중간 결과값을 메모리에 저장하고 있는것으로 특정 <code class="highlighter-rouge">Input</code>에 의한 값을 저장 함으로써 다음에 동일한 <code class="highlighter-rouge">Input</code>이 왔을땐 연산을 하기 보단 저장해 놨던 값을
+반환 하는 식으로 처리 한다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">if</span> <span class="p">(</span> <span class="n">n</span> <span class="n">is</span> <span class="n">cached</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">cached</span> <span class="n">result</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

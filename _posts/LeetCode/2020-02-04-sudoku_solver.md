@@ -1,8 +1,9 @@
 ---
-layout: post
 title: Sudoku Solver
 tags: [LeetCode, Java]
 categories : [LeetCode]
+toc: true
+toc_sticky: true
 ---
 
 # Problem

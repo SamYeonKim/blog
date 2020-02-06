@@ -1,0 +1,250 @@
+I"_S<h1 id="problem">Problem</h1>
+
+<p>Given two arrays, write a function to compute their intersection.</p>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>Each element in the result should appear as many times as it shows in both arrays.</li>
+  <li>The result can be in any order.</li>
+</ul>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">nums1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">nums2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">nums1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">nums2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>nums1, nums2 중에 갯수가 작은 것 기준으로 순회하자.</li>
+  <li>갯수가 작은것과 큰것을 따로 구분해서 lower, higher 라는 이름의 배열을 사용하자.</li>
+  <li>결과를 담을 리스트와 이미 체크한 higher의 index를 담을 Set을 선언하자</li>
+  <li>lower 기준으로 순회 하면서 higher의 원소와 같은지 확인 하고, 이미 Set에 저장된 index라면 볼것도 없이 continue</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span><span class="o">[]</span> <span class="nf">intersect</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums1</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">nums2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">nums1</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> 
+            <span class="k">return</span> <span class="n">nums1</span><span class="o">;</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">nums2</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+            <span class="k">return</span> <span class="n">nums2</span><span class="o">;</span>
+        
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">lower</span> <span class="o">=</span> <span class="n">nums1</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="n">nums2</span><span class="o">.</span><span class="na">length</span> <span class="o">?</span> <span class="n">nums2</span> <span class="o">:</span> <span class="n">nums1</span><span class="o">;</span>
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">higher</span> <span class="o">=</span> <span class="n">nums1</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="n">nums2</span><span class="o">.</span><span class="na">length</span> <span class="o">?</span> <span class="n">nums1</span> <span class="o">:</span> <span class="n">nums2</span><span class="o">;</span>
+        
+        <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">arrayList</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">checked_index</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>      
+       
+        <span class="kt">long</span> <span class="n">n_checked_index</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">n_1</span> <span class="o">=</span> <span class="n">lower</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span><span class="n">j</span><span class="o">&lt;=</span> <span class="n">higher</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">checked_index</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">j</span><span class="o">))</span>
+                    <span class="k">continue</span><span class="o">;</span>
+                
+                <span class="kt">int</span> <span class="n">n_2</span> <span class="o">=</span> <span class="n">higher</span><span class="o">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="o">];</span>
+                <span class="k">if</span> <span class="o">(</span> <span class="n">n_1</span> <span class="o">==</span> <span class="n">n_2</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">arrayList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">n_1</span><span class="o">);</span>
+                    <span class="n">checked_index</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">j</span><span class="o">);</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+                    		
+        <span class="k">return</span> <span class="n">arrayList</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">mapToInt</span><span class="o">(</span><span class="nl">Integer:</span><span class="o">:</span><span class="n">intValue</span><span class="o">).</span><span class="na">toArray</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="my-answer--use-hashmap-">My Answer ( Use HashMap )</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">HashMap</code>을 이용하자.</li>
+  <li><code class="highlighter-rouge">nums1</code>을 순회하면서, <code class="highlighter-rouge">nums1[i]</code>을 <code class="highlighter-rouge">HashMap</code>의 키로, <code class="highlighter-rouge">nums1[i]</code>의 발생횟수를 값으로 할당하자.</li>
+  <li><code class="highlighter-rouge">nums2</code>를 순회하면서, <code class="highlighter-rouge">HashMap</code>에 <code class="highlighter-rouge">nums2[i]</code>가 키로 포함되어 있고, 해당 값이 1이상 이라면, 해당 값을 1빼고, 정답 갯수를 의미 하는 <code class="highlighter-rouge">k</code>를 증가 시키면서 <code class="highlighter-rouge">nums1[k]</code>를 <code class="highlighter-rouge">nums2[i]</code>로 대체하자.</li>
+  <li><code class="highlighter-rouge">nums1[0~k-1]</code>까지를 결과 배열로 옮기자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span><span class="o">[]</span> <span class="nf">intersect</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums1</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">nums2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">hashmap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">nums1</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>       <span class="c1">//각 숫자의 발생횟수 기록</span>
+            <span class="n">hashmap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">nums1</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="n">hashmap</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="n">nums1</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="mi">0</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+        
+        <span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>    <span class="c1">//intersection이 발생하는 갯수</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">nums2</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="n">hashmap</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">nums2</span><span class="o">[</span><span class="n">i</span><span class="o">]))</span> <span class="k">continue</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span> <span class="n">hashmap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">nums2</span><span class="o">[</span><span class="n">i</span><span class="o">])</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">)</span> <span class="k">continue</span><span class="o">;</span>     <span class="c1">//발생횟수가 0이하라는것은 이미 결과 배열에 기록 했다는 의미이다.</span>
+            
+            <span class="n">hashmap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">nums2</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="n">hashmap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">nums2</span><span class="o">[</span><span class="n">i</span><span class="o">])</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>   <span class="c1">//발생횟수를 1 빼주자. </span>
+            <span class="n">nums1</span><span class="o">[</span><span class="n">k</span><span class="o">++]</span> <span class="o">=</span> <span class="n">nums2</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            
+            <span class="k">if</span> <span class="o">(</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">nums1</span><span class="o">.</span><span class="na">length</span> <span class="o">)</span> <span class="k">break</span><span class="o">;</span>     <span class="c1">//k가 nums1의 갯수만큼 됬다는건 이 이후에 더 돌아봐야 intersection은 없다는 의미이다. nums1.length &lt; nums2.length 일때 의미 있다.</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">k</span> <span class="o">==</span> <span class="n">nums1</span><span class="o">.</span><span class="na">length</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">nums1</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="kt">int</span><span class="o">[]</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">k</span><span class="o">];</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">nums1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">k</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+        <span class="o">}</span>            
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="fastest-answer">Fastest Answer</h1>
+
+<ul>
+  <li>nums1, nums2를 정렬, 1차 결과를 담을 배열(result)선언 사이즈는 nums1로 하든 nums2로 하든 상관없다.</li>
+  <li>nums1, nums2를 둘다 다 순회 할때 까지 while</li>
+  <li>만약 같으면 result에 담고 i, j, k 증가.</li>
+  <li>만약 nums1이 더 작다면 i만 증가.</li>
+  <li>최종 결과를 담을 배열(res)선언 1차 결과 배열에서 중첩된 갯수만 최종 결과로 옮겨 담는다.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span><span class="o">[]</span> <span class="nf">intersect</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums1</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">nums2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">nums1</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+        
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="nc">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">nums1</span><span class="o">);</span>
+        <span class="nc">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">nums2</span><span class="o">);</span>
+        
+        <span class="k">while</span><span class="o">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">nums1</span><span class="o">.</span><span class="na">length</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nums2</span><span class="o">.</span><span class="na">length</span><span class="o">){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">nums1</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">nums2</span><span class="o">[</span><span class="n">j</span><span class="o">]){</span>
+                <span class="n">result</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="n">nums1</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+                <span class="n">k</span><span class="o">++;</span>
+                <span class="n">i</span><span class="o">++;</span>
+                <span class="n">j</span><span class="o">++;</span>
+            <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">nums1</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">nums2</span><span class="o">[</span><span class="n">j</span><span class="o">]){</span>
+                <span class="n">i</span><span class="o">++;</span>
+            <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                <span class="n">j</span><span class="o">++;</span>
+            <span class="o">}</span>
+            
+        <span class="o">}</span>
+        
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">res</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">k</span><span class="o">];</span>
+        
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">l</span><span class="o">&lt;</span><span class="n">k</span><span class="o">;</span> <span class="n">l</span><span class="o">++){</span>
+            <span class="n">res</span><span class="o">[</span><span class="n">l</span><span class="o">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">[</span><span class="n">l</span><span class="o">];</span>
+        <span class="o">}</span>
+        
+        <span class="k">return</span> <span class="n">res</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET

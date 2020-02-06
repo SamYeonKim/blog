@@ -1,0 +1,81 @@
+I";<h1 id="problem">Problem</h1>
+
+<p>Given a sorted (in ascending order) integer array nums of n elements and a target value, write a function to search target in nums. If target exists, then return its index, otherwise return -1.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span> <span class="n">target</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="mi">4</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="mi">9</span> <span class="n">exists</span> <span class="k">in</span> <span class="n">nums</span> <span class="n">and</span> <span class="n">its</span> <span class="n">index</span> <span class="k">is</span> <span class="mi">4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">Input</span><span class="p">:</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span> <span class="n">target</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="kt">Output</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span>
+<span class="kt">Explanation</span><span class="p">:</span> <span class="mi">2</span> <span class="n">does</span> <span class="n">not</span> <span class="n">exist</span> <span class="k">in</span> <span class="n">nums</span> <span class="n">so</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="note">Note</h2>
+
+<ul>
+  <li>You may assume that all elements in <code class="highlighter-rouge">nums</code> are unique.</li>
+  <li><code class="highlighter-rouge">n</code> will be in the range <code class="highlighter-rouge">[1,10000]</code></li>
+  <li>The value of each element in <code class="highlighter-rouge">nums</code> will be in the range <code class="highlighter-rouge">[-9999,9999]</code>.</li>
+</ul>
+
+<h1 id="my-answer">My Answer</h1>
+
+<ul>
+  <li>재귀를 이용해서 해결</li>
+  <li><code class="highlighter-rouge">l</code>, <code class="highlighter-rouge">r</code>은 각각 <code class="highlighter-rouge">nums</code>에서 확인 해야할 시작 <code class="highlighter-rouge">index</code>와 마지막 <code class="highlighter-rouge">index</code>이다.</li>
+  <li><code class="highlighter-rouge">nums</code>가 이미 정렬되어있기 때문에, <code class="highlighter-rouge">l</code>과 <code class="highlighter-rouge">r</code>의 중간값이 찾으려는 <code class="highlighter-rouge">target</code>인지 확인해서 중간값 과 같다면 해당 index를, <code class="highlighter-rouge">target</code> 보다 크다면 <code class="highlighter-rouge">search</code>를 재귀 호출 하면서 <code class="highlighter-rouge">r</code>에 <code class="highlighter-rouge">pivot</code>값을 넘기면 된다. <code class="highlighter-rouge">target</code>보다 작다면, <code class="highlighter-rouge">l</code>에 <code class="highlighter-rouge">pivot+1</code>을 넘기자.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">search</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">search</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">target</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>        
+    <span class="o">}</span>
+    
+    <span class="kt">int</span> <span class="nf">search</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">target</span><span class="o">,</span> <span class="kt">int</span> <span class="n">l</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>        
+        <span class="k">if</span> <span class="o">(</span> <span class="n">l</span> <span class="o">&gt;=</span> <span class="n">r</span> <span class="o">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        
+        <span class="kt">int</span> <span class="n">pivot</span> <span class="o">=</span> <span class="o">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">nums</span><span class="o">[</span><span class="n">pivot</span><span class="o">]</span> <span class="o">==</span> <span class="n">target</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">pivot</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span> <span class="n">nums</span><span class="o">[</span><span class="n">pivot</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">target</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nf">search</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">target</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">pivot</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nf">search</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">target</span><span class="o">,</span> <span class="n">pivot</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET
