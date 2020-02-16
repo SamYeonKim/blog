@@ -17,8 +17,9 @@ layout: archive
       {% if tag[1].size == i %}
         <li>
           <a href="{{ tag[0] | slugify | prepend: path_type | prepend: site.tag_archive.path | relative_url }}" class="page__taxonomy-item" rel="tag">
-            <strong>{{ tag[0] }}</strong> <span class="taxonomy__count">{{ i }}</span>
+            <strong>{{ tag[0] }}</strong><span class="taxonomy__counts">{{ i }}</span> 
           </a>
+          
         </li>
       {% endif %}
     {% endfor %}
