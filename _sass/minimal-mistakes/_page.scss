@@ -579,3 +579,29 @@ body {
     }
   }
 }
+
+.wideleft {
+  .page {
+    @include breakpoint($large) {
+      float: left;
+      width: calc(100% - #{$right-sidebar-width-narrow});
+      padding-right: 0;
+    }
+  
+    @include breakpoint($x-large) {
+      width: calc(100% - #{$right-sidebar-width});
+      padding-right: 0;
+    }
+  }
+
+  .page__related {
+    @include breakpoint($large) {
+      float: left;
+      padding-left: 0;
+    }
+
+    @include breakpoint($x-large) {
+      padding-left: 0;
+    }
+  }
+}

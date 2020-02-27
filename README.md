@@ -8,3 +8,13 @@
   * `메인 소스` 리파지터리에는 `_site` 폴더를 `.gitignore`에 등록
   * `bundle exec rake publish` 를 이용해서 배포
   * `bundle exec jekyll serve --watch` 를 이용해서 로컬 테스트
+* File Description
+    |file|description|
+    |:--:|:--:|
+    |_includes||
+    |archive-single.html|최근 포스트의 리스트 아이템|
+    |_layouts||
+    |archive.html|`layout: arhive`로 되어 있는것들의 기본형|
+    |single.html|`post`를 표현|
+
+  
