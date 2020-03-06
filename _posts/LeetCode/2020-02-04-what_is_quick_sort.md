@@ -4,6 +4,7 @@ tags: [LeetCode, Article]
 categories : [LeetCode]
 toc: true
 toc_sticky: true
+author_profile: false
 ---
 
 # Definition

@@ -5,7 +5,6 @@ categories : [LeetCode]
 toc: true
 toc_sticky: true
 author_profile: false
-classes: wideleft
 ---
 
 # Problem

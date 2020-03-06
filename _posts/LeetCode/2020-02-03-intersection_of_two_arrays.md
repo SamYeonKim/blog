@@ -4,6 +4,7 @@ tags: [LeetCode, Java]
 categories : [LeetCode]
 toc: true
 toc_sticky: true
+author_profile: false
 ---
 
 # Problem
